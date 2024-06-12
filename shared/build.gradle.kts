@@ -28,6 +28,7 @@ kotlin {
     }
 
     sourceSets {
+        //noinspection UseTomlInstead
         commonMain.dependencies {
             api(projects.lorraine)
 
@@ -48,9 +49,11 @@ kotlin {
 android {
     namespace = "fr.modulotech.workmanager.app"
     compileSdk = 34
+
     defaultConfig {
         minSdk = 24
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

@@ -1,8 +1,7 @@
 package fr.modulotech.workmanager.app
 
-import fr.modulotech.workmanager.Lorraine
 import fr.modulotech.workmanager.app.worker.GetRequestWorker
-import fr.modulotech.workmanager.lorraine
+import fr.modulotech.workmanager.dsl.lorraine
 
 interface Platform {
     val name: String
@@ -17,5 +16,8 @@ const val GET_REQUEST_WORKER = "GET_REQUEST_WORKER"
 fun initialize() {
     lorraine {
         work(GET_REQUEST_WORKER) { GetRequestWorker() }
+        logger {
+            enable = true
+        }
     }
 }

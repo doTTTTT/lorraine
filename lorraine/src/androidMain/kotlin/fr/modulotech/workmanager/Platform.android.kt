@@ -3,11 +3,13 @@ package fr.modulotech.workmanager
 import android.content.Context
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
+import androidx.work.Data
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
 import androidx.work.WorkerParameters
+import androidx.work.workDataOf
 import fr.modulotech.workmanager.db.entity.WorkerEntity
 import fr.modulotech.workmanager.db.getDatabaseBuilder
 import fr.modulotech.workmanager.db.initDatabase
@@ -59,6 +61,7 @@ internal class LorraineWorker(
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
+        workDataOf()
         val identifier = requireNotNull(inputData.getString(IDENTIFIER)) { "Identifier not found" }
         val workerDefinition = requireNotNull(Lorraine.definitions[identifier]) {
             "Worker definition not found"
@@ -97,5 +100,6 @@ internal fun WorkInfo.toLorraineInfo() = LorraineInfo(
         WorkInfo.State.FAILED -> LorraineInfo.State.FAILED
         WorkInfo.State.BLOCKED -> LorraineInfo.State.BLOCKED
         WorkInfo.State.CANCELLED -> LorraineInfo.State.CANCELLED
-    }
+    },
+    tags = tags
 )

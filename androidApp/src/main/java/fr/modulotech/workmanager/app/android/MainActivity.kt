@@ -14,6 +14,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         Lorraine.initialize(this)
+
         initialize()
 
         setContent {

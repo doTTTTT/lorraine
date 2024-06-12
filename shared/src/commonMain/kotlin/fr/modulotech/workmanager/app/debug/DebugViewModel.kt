@@ -36,9 +36,9 @@ class DebugViewModel : ViewModel() {
     private fun add() {
         viewModelScope.launch {
             Lorraine.enqueueWork(
-                identifier = GET_REQUEST_WORKER,
+                uniqueId = "MY_UNIQUE_ID",
                 type = Lorraine.Type.APPEND_OR_REPLACE,
-                workRequest = buildWorkRequest {
+                request = buildWorkRequest(GET_REQUEST_WORKER) {
                     constraints {
                         requiredNetwork = true
                     }

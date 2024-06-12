@@ -30,24 +30,25 @@ object Lorraine {
     }
 
     suspend fun enqueueWork(
-        identifier: String,
+        uniqueId: String,
         type: Type,
-        workRequest: WorkRequest
+        request: WorkRequest
     ) {
-        requireNotNull(definitions[identifier]) { "Worker definition not found" }
+        requireNotNull(definitions[request.identifier]) { "Worker definition not found" }
 
         val worker = WorkerEntity(
             id = createUUID(),
-            identifier = identifier,
+            queueId = uniqueId,
+            identifier = request.identifier,
             state = LorraineInfo.State.ENQUEUED,
-            tags = workRequest.tags,
-            inputData = workRequest.inputData
+            tags = request.tags,
+            inputData = request.inputData
         )
 
         database.workerDao()
             .insert(worker)
 
-        platform.enqueue(worker, type, workRequest)
+        platform.enqueue(worker, type, request)
     }
 
     suspend fun getWorker(identifier: String): WorkLorraine? {

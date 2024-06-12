@@ -4,10 +4,10 @@ import fr.modulotech.workmanager.db.LorraineDB
 import fr.modulotech.workmanager.db.entity.WorkerEntity
 import fr.modulotech.workmanager.db.entity.toInfo
 import fr.modulotech.workmanager.dsl.Instantiate
-import fr.modulotech.workmanager.work.LorraineInfo
-import fr.modulotech.workmanager.work.WorkLorraine
 import fr.modulotech.workmanager.dsl.WorkRequest
 import fr.modulotech.workmanager.logger.Logger
+import fr.modulotech.workmanager.work.LorraineInfo
+import fr.modulotech.workmanager.work.WorkLorraine
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.json.Json
@@ -40,7 +40,8 @@ object Lorraine {
             id = createUUID(),
             identifier = identifier,
             state = LorraineInfo.State.ENQUEUED,
-            tags = workRequest.tags
+            tags = workRequest.tags,
+            inputData = workRequest.inputData
         )
 
         database.workerDao()

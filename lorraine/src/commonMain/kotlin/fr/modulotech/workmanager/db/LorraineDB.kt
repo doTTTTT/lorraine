@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import fr.modulotech.workmanager.Lorraine
+import fr.modulotech.workmanager.db.converter.DataConverter
 import fr.modulotech.workmanager.db.converter.StringSetConverter
 import fr.modulotech.workmanager.db.dao.WorkerDao
 import fr.modulotech.workmanager.db.entity.WorkerEntity
@@ -18,7 +19,8 @@ import kotlinx.coroutines.IO
     ]
 )
 @TypeConverters(
-    StringSetConverter::class
+    StringSetConverter::class,
+    DataConverter::class
 )
 internal abstract class LorraineDB : RoomDatabase() {
 

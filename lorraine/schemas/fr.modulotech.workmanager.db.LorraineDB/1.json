@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ad88e5c9fae7c04cee33f047799f7a06",
+    "identityHash": "4fb5cb56128a3a711e8fc453bed62450",
     "entities": [
       {
         "tableName": "worker",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `identifier` TEXT NOT NULL, `state` TEXT NOT NULL, `tags` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `identifier` TEXT NOT NULL, `state` TEXT NOT NULL, `tags` TEXT NOT NULL, `input_data` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -31,6 +31,11 @@
             "columnName": "tags",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "inputData",
+            "columnName": "input_data",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -43,7 +48,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ad88e5c9fae7c04cee33f047799f7a06')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4fb5cb56128a3a711e8fc453bed62450')"
     ]
   }
 }

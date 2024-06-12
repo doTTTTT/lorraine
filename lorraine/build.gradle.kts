@@ -37,10 +37,12 @@ kotlin {
         val coroutineVersion = "1.9.0-RC"
         val roomVersion = "2.7.0-alpha03"
         val workVersion = "2.9.0"
+        val serializationVersion = "1.7.0"
         val sqliteVersion = "2.5.0-alpha03"
 
         commonMain.dependencies {
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
 
             implementation("androidx.room:room-runtime:$roomVersion")
 

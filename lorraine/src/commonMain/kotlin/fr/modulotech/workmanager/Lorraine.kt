@@ -7,8 +7,10 @@ import fr.modulotech.workmanager.dsl.Instantiate
 import fr.modulotech.workmanager.work.LorraineInfo
 import fr.modulotech.workmanager.work.WorkLorraine
 import fr.modulotech.workmanager.dsl.WorkRequest
+import fr.modulotech.workmanager.logger.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.serialization.json.Json
 
 internal const val LORRAINE_DATABASE = "lorraine.db"
 
@@ -18,7 +20,14 @@ object Lorraine {
     internal lateinit var database: LorraineDB
     internal lateinit var platform: Platform
 
+    internal var loggerEnable: Boolean = false
+    internal lateinit var logger: Logger
+
     internal val definitions = mutableMapOf<String, Instantiate<out WorkLorraine>>()
+
+    internal val json = Json {
+        ignoreUnknownKeys = true
+    }
 
     suspend fun enqueueWork(
         identifier: String,

@@ -2,6 +2,8 @@ package fr.modulotech.workmanager.db.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.TypeConverters
+import fr.modulotech.workmanager.db.converter.StringSetConverter
 import fr.modulotech.workmanager.work.LorraineInfo
 
 @Entity(
@@ -20,6 +22,7 @@ internal data class WorkerEntity(
     val state: LorraineInfo.State,
 
     @ColumnInfo(name = "tags")
+    @TypeConverters(StringSetConverter::class)
     val tags: Set<String>
 
 ) {

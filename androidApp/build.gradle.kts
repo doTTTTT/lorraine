@@ -7,10 +7,10 @@ plugins {
 }
 
 android {
-    namespace = "fr.modulotech.workmanager.app.android"
+    namespace = "fr.dot.lorraine.sample.android"
     compileSdk = 34
     defaultConfig {
-        applicationId = "fr.modulotech.workmanager.app.android"
+        applicationId = "fr.dot.lorraine.sample.android"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -40,9 +40,11 @@ android {
 
 dependencies {
     implementation(projects.shared)
+
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)
     implementation(libs.androidx.activity.compose)
+    
     debugImplementation(libs.compose.ui.tooling)
 }

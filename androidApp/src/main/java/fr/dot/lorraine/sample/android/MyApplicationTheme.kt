@@ -1,4 +1,4 @@
-package fr.modulotech.workmanager.app.android
+package fr.dot.lorraine.sample.android
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape

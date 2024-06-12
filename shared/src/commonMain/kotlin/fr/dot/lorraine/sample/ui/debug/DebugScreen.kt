@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import fr.dot.lorraine.sample.ui.debug.DebugViewModel
 import fr.modulotech.workmanager.work.LorraineInfo
 
 @Composable

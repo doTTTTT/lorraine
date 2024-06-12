@@ -16,6 +16,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Sample-app"
 
-include(":androidApp")
-include(":shared")
 include(":lorraine")
+include(":composeApp")

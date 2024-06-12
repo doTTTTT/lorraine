@@ -5,6 +5,9 @@ compose = "1.6.7"
 compose-compiler = "1.5.4"
 compose-material3 = "1.2.1"
 androidx-activityCompose = "1.9.0"
+android-compileSdk = "34"
+android-minSdk = "24"
+android-targetSdk = "34"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

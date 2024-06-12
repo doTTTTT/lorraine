@@ -5,8 +5,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
-    alias(libs.plugins.jetbrainsCompose)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.compose.core)
+    alias(libs.plugins.kotlin.compose.compiler)
 }
 
 kotlin {
@@ -41,6 +41,12 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(projects.lorraine)
+
+            implementation(compose.material3)
+
+            implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:2.8.0")
+            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha07")
         }
     }
 }

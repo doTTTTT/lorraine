@@ -1,4 +1,4 @@
-package fr.modulotech.workmanager.app.worker
+package fr.dot.lorraine.sample.worker
 
 import fr.modulotech.workmanager.work.Data
 import fr.modulotech.workmanager.work.WorkLorraine

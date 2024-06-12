@@ -3,20 +3,16 @@
 package fr.modulotech.workmanager
 
 import fr.modulotech.workmanager.db.entity.WorkerEntity
-import fr.modulotech.workmanager.work.WorkRequest
+import fr.modulotech.workmanager.dsl.WorkRequest
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import platform.CarPlay.CPTemplate
 import platform.CoreFoundation.CFUUIDCreateString
 import platform.Foundation.NSOperation
 import platform.Foundation.NSOperationQueue
-import platform.Foundation.addObserver
-import platform.UIKit.UIApplication
-import platform.UIKit.UIApplicationDelegateProtocol
 import platform.UIKit.UIDevice
 
 internal class IOSPlatform : Platform {

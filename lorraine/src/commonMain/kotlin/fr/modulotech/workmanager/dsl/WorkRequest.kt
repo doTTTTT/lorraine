@@ -1,6 +1,9 @@
-package fr.modulotech.workmanager.work
+package fr.modulotech.workmanager.dsl
 
-class WorkRequest internal constructor()
+class WorkRequest internal constructor(
+    val constraints: Constraints,
+    val tags: Set<String>
+)
 
 class WorkDefinition internal constructor() {
     private val tags: MutableSet<String> = mutableSetOf()
@@ -16,7 +19,10 @@ class WorkDefinition internal constructor() {
         constraints = definition.build()
     }
 
-    internal fun build() = WorkRequest()
+    internal fun build() = WorkRequest(
+        constraints = constraints,
+        tags = tags
+    )
 
 }
 
@@ -25,25 +31,5 @@ fun buildWorkRequest(block: WorkDefinition.() -> Unit): WorkRequest {
 
     return definition.apply(block)
         .build()
-}
-
-data class Constraints internal constructor(
-    val requireNetwork: Boolean
-) {
-
-    companion object {
-        val NONE = Constraints(
-            requireNetwork = false
-        )
-    }
-}
-
-class ConstraintsDefinition internal constructor() {
-    var requiredNetwork: Boolean = false
-
-    fun build() = Constraints(
-        requireNetwork = requiredNetwork
-    )
-
 }
 

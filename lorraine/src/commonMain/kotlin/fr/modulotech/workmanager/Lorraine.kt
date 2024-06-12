@@ -3,9 +3,10 @@ package fr.modulotech.workmanager
 import fr.modulotech.workmanager.db.LorraineDB
 import fr.modulotech.workmanager.db.entity.WorkerEntity
 import fr.modulotech.workmanager.db.entity.toInfo
+import fr.modulotech.workmanager.dsl.Instantiate
 import fr.modulotech.workmanager.work.LorraineInfo
 import fr.modulotech.workmanager.work.WorkLorraine
-import fr.modulotech.workmanager.work.WorkRequest
+import fr.modulotech.workmanager.dsl.WorkRequest
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -19,12 +20,6 @@ object Lorraine {
 
     internal val definitions = mutableMapOf<String, Instantiate<out WorkLorraine>>()
 
-    enum class Type {
-        APPEND,
-        APPEND_OR_REPLACE,
-        REPLACE
-    }
-
     suspend fun enqueueWork(
         identifier: String,
         type: Type,
@@ -35,7 +30,8 @@ object Lorraine {
         val worker = WorkerEntity(
             id = createUUID(),
             identifier = identifier,
-            state = LorraineInfo.State.ENQUEUED
+            state = LorraineInfo.State.ENQUEUED,
+            tags = workRequest.tags
         )
 
         database.workerDao()
@@ -62,23 +58,10 @@ object Lorraine {
         return definitions[identifier]?.invoke()
     }
 
-}
-
-fun lorraine(block: Definition.() -> Unit) {
-    val definition = Definition().apply(block)
-
-    Lorraine.definitions.clear()
-    Lorraine.definitions.putAll(definition.definitions)
-}
-
-class Definition internal constructor() {
-
-    internal val definitions = mutableMapOf<String, Instantiate<out WorkLorraine>>()
-
-    fun <T : WorkLorraine> work(identifier: String, create: Instantiate<T>) {
-        definitions[identifier] = create
+    enum class Type {
+        APPEND,
+        APPEND_OR_REPLACE,
+        REPLACE
     }
 
 }
-
-typealias Instantiate<T> = () -> T

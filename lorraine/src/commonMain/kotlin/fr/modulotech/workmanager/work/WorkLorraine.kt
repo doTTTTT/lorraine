@@ -1,10 +1,10 @@
 package fr.modulotech.workmanager.work
 
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.CompletableJob
 
-abstract class WorkLorraine {
+expect abstract class WorkLorraine {
 
-    internal val job = Job()
+    internal val job: CompletableJob
 
     abstract suspend fun doWork() // TODO Pass args
 

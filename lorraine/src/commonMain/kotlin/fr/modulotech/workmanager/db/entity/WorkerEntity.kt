@@ -17,7 +17,10 @@ internal data class WorkerEntity(
     val identifier: String,
 
     @ColumnInfo(name = "state")
-    val state: LorraineInfo.State
+    val state: LorraineInfo.State,
+
+    @ColumnInfo(name = "tags")
+    val tags: Set<String>
 
 ) {
 
@@ -29,5 +32,6 @@ internal data class WorkerEntity(
 
 internal fun WorkerEntity.toInfo() = LorraineInfo(
     id = id,
-    state = state
+    state = state,
+    tags = tags
 )

@@ -12,7 +12,7 @@ import fr.modulotech.workmanager.db.entity.WorkerEntity
 import fr.modulotech.workmanager.db.getDatabaseBuilder
 import fr.modulotech.workmanager.db.initDatabase
 import fr.modulotech.workmanager.work.LorraineInfo
-import fr.modulotech.workmanager.work.WorkRequest
+import fr.modulotech.workmanager.dsl.WorkRequest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

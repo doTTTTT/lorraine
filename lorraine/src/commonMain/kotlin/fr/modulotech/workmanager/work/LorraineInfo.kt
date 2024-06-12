@@ -2,7 +2,8 @@ package fr.modulotech.workmanager.work
 
 data class LorraineInfo internal constructor(
     val id: String,
-    val state: State
+    val state: State,
+    val tags: Set<String>
 ) {
 
     /**

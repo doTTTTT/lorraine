@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.modulotech.workmanager.Lorraine
 import fr.modulotech.workmanager.app.GET_REQUEST_WORKER
-import fr.modulotech.workmanager.work.buildWorkRequest
+import fr.modulotech.workmanager.dsl.buildWorkRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,7 +1,7 @@
 package fr.modulotech.workmanager
 
 import fr.modulotech.workmanager.db.entity.WorkerEntity
-import fr.modulotech.workmanager.work.WorkRequest
+import fr.modulotech.workmanager.dsl.WorkRequest
 
 internal interface Platform {
     val name: String

@@ -14,7 +14,8 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "WorkManager_test_app"
+rootProject.name = "Sample-app"
+
 include(":androidApp")
 include(":shared")
-include(":kmp-workmanager")
+include(":lorraine")

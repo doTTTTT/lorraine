@@ -29,7 +29,7 @@ kotlin {
 
     sourceSets {
         commonMain.dependencies {
-            api(projects.kmpWorkmanager)
+            api(projects.lorraine)
 
             implementation(compose.ui)
             implementation(compose.runtime)

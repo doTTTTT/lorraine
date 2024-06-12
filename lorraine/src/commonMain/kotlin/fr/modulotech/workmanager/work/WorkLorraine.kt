@@ -6,6 +6,6 @@ expect abstract class WorkLorraine {
 
     internal val job: CompletableJob
 
-    abstract suspend fun doWork() // TODO Pass args
+    abstract suspend fun doWork(inputData: Data?)
 
 }

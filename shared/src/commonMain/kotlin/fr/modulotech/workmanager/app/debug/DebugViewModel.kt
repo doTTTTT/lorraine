@@ -21,7 +21,11 @@ class DebugViewModel : ViewModel() {
     ) { uiState, workInfos ->
         uiState.copy(workers = workInfos)
     }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), _uiState.value)
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = _uiState.value
+        )
 
     fun onAction(action: DebugAction) {
         when (action) {

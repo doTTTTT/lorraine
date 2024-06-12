@@ -1,7 +1,7 @@
 package fr.modulotech.workmanager.work
 
 data class Data internal constructor(
-    val map: Map<String, *>
+    val map: Map<String, Any?>
 )
 
 fun dataOf(vararg arg: Pair<String, Any?>): Data {

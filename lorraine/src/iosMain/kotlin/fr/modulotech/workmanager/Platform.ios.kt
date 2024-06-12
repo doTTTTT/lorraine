@@ -3,15 +3,12 @@
 package fr.modulotech.workmanager
 
 import fr.modulotech.workmanager.db.entity.WorkerEntity
+import fr.modulotech.workmanager.db.getDatabaseBuilder
+import fr.modulotech.workmanager.db.initDatabase
 import fr.modulotech.workmanager.dsl.WorkRequest
+import fr.modulotech.workmanager.work.LorraineWorker
 import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import platform.CoreFoundation.CFUUIDCreateString
-import platform.Foundation.NSOperation
 import platform.Foundation.NSOperationQueue
 import platform.UIKit.UIDevice
 
@@ -19,45 +16,39 @@ internal class IOSPlatform : Platform {
     override val name: String =
         UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
 
-    override fun enqueue(worker: WorkerEntity, type: Lorraine.Type, workRequest: WorkRequest) {
-        TODO("Not yet implemented")
+    private val queues: MutableMap<String, NSOperationQueue> = mutableMapOf()
+
+    override fun enqueue(
+        worker: WorkerEntity,
+        type: Lorraine.Type,
+        workRequest: WorkRequest
+    ) {
+        val queue = queues.getOrElse(worker.queueId) { worker.createQueue() }
+
+        queue.addOperation(LorraineWorker(worker.id))
+
+        queues[worker.queueId] = queue
+
+        // TODO Check if constraint match, then run
     }
+
+    private fun WorkerEntity.createQueue(): NSOperationQueue {
+        return NSOperationQueue().apply {
+            setName(queueId)
+            maxConcurrentOperationCount = 1
+            suspended = true
+        }
+    }
+}
+
+fun Lorraine.initialize() {
+    val db = getDatabaseBuilder()
+
+    platform = IOSPlatform()
+
+    initDatabase(db)
 }
 
 actual fun createUUID(): String {
-    val operation = NSOperationQueue()
-    operation.setName("")
-    val nsOperation = NSOperation()
-
-    operation.addOperation(nsOperation)
-
-
-    operation.suspended = true
-    operation.maxConcurrentOperationCount = 3
-
     return CFUUIDCreateString(null, null)?.toString().orEmpty()
-}
-
-class Test : NSOperation() {
-
-    val job = SupervisorJob()
-
-    override fun start() {
-        withContext(Dispatchers.IO + job) {
-            launch {
-                runCatching {
-                    // Code executer
-                }
-                    .onFailure {
-                        // TODO Fail
-                    }
-                    .onSuccess {  }
-            }
-        }
-    }
-
-    override fun main() {
-
-    }
-
 }

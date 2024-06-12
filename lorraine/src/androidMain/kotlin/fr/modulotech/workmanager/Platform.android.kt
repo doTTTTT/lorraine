@@ -2,18 +2,17 @@ package fr.modulotech.workmanager
 
 import android.content.Context
 import androidx.work.Constraints
-import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
-import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import fr.modulotech.workmanager.db.entity.WorkerEntity
 import fr.modulotech.workmanager.db.getDatabaseBuilder
 import fr.modulotech.workmanager.db.initDatabase
 import fr.modulotech.workmanager.dsl.WorkRequest
 import fr.modulotech.workmanager.work.LorraineInfo
+import fr.modulotech.workmanager.work.LorraineWorker
 import fr.modulotech.workmanager.work.toWorkManagerData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,36 +52,6 @@ internal class AndroidPlatform(
                 .setConstraints(Constraints.NONE)
                 .build()
         )
-    }
-}
-
-internal class LorraineWorker(
-    appContext: Context,
-    params: WorkerParameters
-) : CoroutineWorker(appContext, params) {
-
-    override suspend fun doWork(): Result {
-        val identifier = requireNotNull(inputData.getString(IDENTIFIER)) { "Identifier not found" }
-        val workerDefinition = requireNotNull(Lorraine.definitions[identifier]) {
-            "Worker definition not found"
-        }
-        val worker = workerDefinition()
-        val inputData = Lorraine.database
-            .workerDao()
-            .getWorker(id.toString())
-            ?.inputData
-
-        return runCatching {
-            worker.doWork(inputData)
-        }
-            .fold(
-                onSuccess = { Result.success() },
-                onFailure = { Result.failure() }
-            )
-    }
-
-    companion object {
-        const val IDENTIFIER = "identifier"
     }
 }
 

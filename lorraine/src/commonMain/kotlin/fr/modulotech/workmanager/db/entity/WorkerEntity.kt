@@ -17,6 +17,9 @@ internal data class WorkerEntity(
     @ColumnInfo(name = "id")
     val id: String,
 
+    @ColumnInfo(name = "queue_id")
+    val queueId: String,
+
     @ColumnInfo(name = "identifier")
     val identifier: String,
 

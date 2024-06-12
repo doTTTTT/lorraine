@@ -2,12 +2,11 @@ package fr.modulotech.workmanager.work
 
 import kotlinx.coroutines.CompletableJob
 import kotlinx.coroutines.SupervisorJob
-import platform.Foundation.NSOperation
 
-actual abstract class WorkLorraine : NSOperation() {
+actual abstract class WorkLorraine {
 
     internal actual val job: CompletableJob = SupervisorJob()
 
-    actual abstract suspend fun doWork()
+    actual abstract suspend fun doWork(inputData: Data?)
 
 }

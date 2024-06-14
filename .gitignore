@@ -8,6 +8,5 @@ captures
 .cxx
 local.properties
 xcuserdata
-.kotlin/metadata/kotlinTransformedMetadataLibraries/
-
-.kotlin/sessions/
+*.cinteropLibraries
+.kotlin/*

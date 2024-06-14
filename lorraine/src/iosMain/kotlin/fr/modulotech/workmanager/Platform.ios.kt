@@ -13,8 +13,8 @@ import platform.Foundation.NSOperationQueue
 import platform.UIKit.UIDevice
 
 internal class IOSPlatform : Platform {
-    override val name: String =
-        UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
+    override val name: String = "ios"
+//        UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
 
     private val queues: MutableMap<String, NSOperationQueue> = mutableMapOf()
 

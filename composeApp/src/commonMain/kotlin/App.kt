@@ -14,7 +14,7 @@ import ui.TestViewModel
 fun App() {
     MaterialTheme {
         val viewModel = remember { TestViewModel() }
-
+        
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally

@@ -5,4 +5,6 @@ plugins {
     alias(libs.plugins.kotlinAndroid).apply(false)
     alias(libs.plugins.kotlinMultiplatform).apply(false)
     alias(libs.plugins.kotlin.compose.compiler).apply(false)
+
+    kotlin("native.cocoapods") version "2.0.0" apply false
 }

@@ -25,7 +25,7 @@ import kotlin.coroutines.CoroutineContext
 internal class AndroidPlatform(
     private val workManager: WorkManager
 ) : Platform, CoroutineScope {
-    override val name: String = "Android ${android.os.Build.VERSION.SDK_INT}"
+    override val name: String = "android"
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext

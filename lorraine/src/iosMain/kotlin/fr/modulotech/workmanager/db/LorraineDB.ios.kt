@@ -4,6 +4,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import fr.modulotech.workmanager.LORRAINE_DATABASE
 import platform.Foundation.NSHomeDirectory
+import fr.modulotech.workmanager.db.instantiateImpl
 
 internal fun getDatabaseBuilder(): RoomDatabase.Builder<LorraineDB> {
     val dbFilePath = NSHomeDirectory() + "/$LORRAINE_DATABASE"

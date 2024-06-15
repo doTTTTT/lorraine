@@ -1,6 +1,6 @@
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import fr.modulotech.workmanager.LORRAINE_DATABASE
+import io.modulotech.workmanager.LORRAINE_DATABASE
 import platform.Foundation.NSHomeDirectory
 
 internal fun getDatabaseBuilder(): RoomDatabase.Builder<LorraineDB> {

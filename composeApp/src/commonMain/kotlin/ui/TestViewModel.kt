@@ -3,8 +3,8 @@ package ui
 import GET_WORKER
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import fr.modulotech.workmanager.Lorraine
-import fr.modulotech.workmanager.dsl.lorraineRequest
+import io.modulotech.workmanager.Lorraine
+import io.modulotech.workmanager.dsl.lorraineRequest
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow

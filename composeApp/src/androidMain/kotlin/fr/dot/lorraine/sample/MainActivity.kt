@@ -6,8 +6,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import fr.modulotech.workmanager.Lorraine
-import fr.modulotech.workmanager.initialize
+import io.modulotech.workmanager.Lorraine
+import io.modulotech.workmanager.initialize
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,6 +1,6 @@
 import androidx.compose.ui.window.ComposeUIViewController
-import fr.modulotech.workmanager.Lorraine
-import fr.modulotech.workmanager.initialize
+import io.modulotech.workmanager.Lorraine
+import io.modulotech.workmanager.initialize
 import platform.UIKit.UIViewController
 
 fun MainViewController(): UIViewController {

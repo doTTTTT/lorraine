@@ -1,8 +1,8 @@
 package worker
 
 import client
-import fr.modulotech.workmanager.work.Data
-import fr.modulotech.workmanager.work.WorkLorraine
+import io.modulotech.workmanager.work.Data
+import io.modulotech.workmanager.work.WorkLorraine
 import io.ktor.client.request.get
 import io.ktor.http.ContentType
 import io.ktor.http.contentType

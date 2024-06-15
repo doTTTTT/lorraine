@@ -19,6 +19,11 @@ room {
 }
 
 kotlin {
+
+    sourceSets.commonMain {
+        kotlin.srcDir("build/generated/ksp/metadata")
+    }
+
     androidTarget {
         compilations.all {
             kotlinOptions {
@@ -40,7 +45,9 @@ kotlin {
 
     //noinspection UseTomlInstead
     sourceSets {
+        iosMain.dependencies {
 
+        }
         commonMain.dependencies {
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
@@ -62,10 +69,16 @@ kotlin {
 
 dependencies {
     add("kspCommonMainMetadata", "androidx.room:room-compiler:$roomVersion") // Run KSP on [commonMain] code
-    add("kspAndroid", "androidx.room:room-compiler:$roomVersion")
-    add("kspIosX64", "androidx.room:room-compiler:$roomVersion")
-    add("kspIosArm64", "androidx.room:room-compiler:$roomVersion")
-    add("kspIosSimulatorArm64", "androidx.room:room-compiler:$roomVersion")
+//    add("kspAndroid", "androidx.room:room-compiler:$roomVersion")
+//    add("kspIosX64", "androidx.room:room-compiler:$roomVersion")
+//    add("kspIosArm64", "androidx.room:room-compiler:$roomVersion")
+//    add("kspIosSimulatorArm64", "androidx.room:room-compiler:$roomVersion")
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
+    if (name != "kspCommonMainKotlinMetadata" ) {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
 }
 
 android {

@@ -1,6 +1,6 @@
 package fr.modulotech.workmanager
 
-import fr.modulotech.workmanager.db.LorraineDB
+import LorraineDB
 import fr.modulotech.workmanager.db.entity.WorkerEntity
 import fr.modulotech.workmanager.db.entity.toInfo
 import fr.modulotech.workmanager.dsl.Instantiate

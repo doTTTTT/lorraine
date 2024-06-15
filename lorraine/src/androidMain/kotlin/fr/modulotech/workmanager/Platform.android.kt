@@ -6,14 +6,13 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
-import androidx.work.workDataOf
 import fr.modulotech.workmanager.db.entity.WorkerEntity
 import fr.modulotech.workmanager.db.getDatabaseBuilder
-import fr.modulotech.workmanager.db.initDatabase
 import fr.modulotech.workmanager.dsl.WorkRequest
 import fr.modulotech.workmanager.work.LorraineInfo
 import fr.modulotech.workmanager.work.LorraineWorker
 import fr.modulotech.workmanager.work.toWorkManagerData
+import initDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -48,7 +47,7 @@ internal class AndroidPlatform(
     ) {
         workManager.enqueue(
             OneTimeWorkRequestBuilder<LorraineWorker>()
-                .setInputData(workRequest.inputData?.toWorkManagerData() ?: workDataOf())
+                .setInputData(workRequest.toWorkManagerData())
                 .setConstraints(Constraints.NONE)
                 .build()
         )

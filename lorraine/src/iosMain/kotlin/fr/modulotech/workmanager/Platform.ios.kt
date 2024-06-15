@@ -3,14 +3,13 @@
 package fr.modulotech.workmanager
 
 import fr.modulotech.workmanager.db.entity.WorkerEntity
-import fr.modulotech.workmanager.db.getDatabaseBuilder
-import fr.modulotech.workmanager.db.initDatabase
 import fr.modulotech.workmanager.dsl.WorkRequest
 import fr.modulotech.workmanager.work.LorraineWorker
+import getDatabaseBuilder
+import initDatabase
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.CoreFoundation.CFUUIDCreateString
 import platform.Foundation.NSOperationQueue
-import platform.UIKit.UIDevice
 
 internal class IOSPlatform : Platform {
     override val name: String = "ios"

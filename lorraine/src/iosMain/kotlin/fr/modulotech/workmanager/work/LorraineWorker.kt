@@ -11,26 +11,26 @@ import kotlin.coroutines.CoroutineContext
 
 internal class LorraineWorker(
     private val id: String
-) : NSOperation(), CoroutineScope {
+) : NSOperation() {
 
-    private val job = SupervisorJob()
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.IO + job
+//    private val job = SupervisorJob()
+//    override val coroutineContext: CoroutineContext
+//        get() = Dispatchers.IO + job
 
     override fun start() {
-        launch {
-            val workerData = Lorraine.database
-                .workerDao()
-                .getWorker(id)
-                ?: error("TODO Error message")
-            val identifier = requireNotNull(workerData.identifier) { "Identifier not found" }
-            val workerDefinition = requireNotNull(Lorraine.definitions[identifier]) {
-                "Worker definition not found"
-            }
-            val worker = workerDefinition()
-
-            worker.doWork(workerData.inputData)
-        }
+//        launch {
+//            val workerData = Lorraine.database
+//                .workerDao()
+//                .getWorker(id)
+//                ?: error("TODO Error message")
+//            val identifier = requireNotNull(workerData.identifier) { "Identifier not found" }
+//            val workerDefinition = requireNotNull(Lorraine.definitions[identifier]) {
+//                "Worker definition not found"
+//            }
+//            val worker = workerDefinition()
+//
+//            worker.doWork(workerData.inputData)
+//        }
     }
 
     override fun isExecuting(): Boolean {
@@ -40,7 +40,7 @@ internal class LorraineWorker(
 
     override fun cancel() {
         // TODO Update worker state in db
-        job.cancel()
+//        job.cancel()
         super.cancel()
     }
 

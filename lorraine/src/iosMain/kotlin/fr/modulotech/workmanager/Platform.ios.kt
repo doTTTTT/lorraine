@@ -3,14 +3,13 @@
 package fr.modulotech.workmanager
 
 import fr.modulotech.workmanager.db.entity.WorkerEntity
-import fr.modulotech.workmanager.dsl.WorkRequest
+import fr.modulotech.workmanager.dsl.LorraineRequest
 import fr.modulotech.workmanager.work.LorraineWorker
 import getDatabaseBuilder
 import initDatabase
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSOperationQueue
 import platform.Foundation.NSUUID
-import platform.Foundation.addObserver
 
 internal class IOSPlatform : Platform {
     override val name: String = "ios"
@@ -21,7 +20,7 @@ internal class IOSPlatform : Platform {
     override fun enqueue(
         worker: WorkerEntity,
         type: Lorraine.Type,
-        workRequest: WorkRequest
+        lorraineRequest: LorraineRequest
     ) {
         val queue = queues.getOrElse(worker.queueId) { worker.createQueue() }
 

@@ -4,7 +4,7 @@ import GET_WORKER
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fr.modulotech.workmanager.Lorraine
-import fr.modulotech.workmanager.dsl.buildWorkRequest
+import fr.modulotech.workmanager.dsl.lorraineRequest
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -30,7 +30,7 @@ class TestViewModel : ViewModel() {
             Lorraine.enqueueWork(
                 uniqueId = "UNIQUE_ID",
                 type = Lorraine.Type.APPEND,
-                request = buildWorkRequest(GET_WORKER) {
+                request = lorraineRequest(GET_WORKER) {
                     addTag("I'M A TAG")
                 }
             )

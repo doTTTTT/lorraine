@@ -8,7 +8,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkQuery
 import fr.modulotech.workmanager.db.entity.WorkerEntity
 import fr.modulotech.workmanager.db.getDatabaseBuilder
-import fr.modulotech.workmanager.dsl.WorkRequest
+import fr.modulotech.workmanager.dsl.LorraineRequest
 import fr.modulotech.workmanager.work.LorraineInfo
 import fr.modulotech.workmanager.work.LorraineWorker
 import fr.modulotech.workmanager.work.toWorkManagerData
@@ -43,11 +43,11 @@ internal class AndroidPlatform(
     override fun enqueue(
         worker: WorkerEntity,
         type: Lorraine.Type,
-        workRequest: WorkRequest
+        lorraineRequest: LorraineRequest
     ) {
         workManager.enqueue(
             OneTimeWorkRequestBuilder<LorraineWorker>()
-                .setInputData(workRequest.toWorkManagerData())
+                .setInputData(lorraineRequest.toWorkManagerData())
                 .setConstraints(Constraints.NONE)
                 .build()
         )

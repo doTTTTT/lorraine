@@ -1,7 +1,7 @@
 package fr.modulotech.workmanager
 
 import fr.modulotech.workmanager.db.entity.WorkerEntity
-import fr.modulotech.workmanager.dsl.WorkRequest
+import fr.modulotech.workmanager.dsl.LorraineRequest
 
 internal interface Platform {
     val name: String
@@ -9,7 +9,7 @@ internal interface Platform {
     fun enqueue(
         worker: WorkerEntity,
         type: Lorraine.Type,
-        workRequest: WorkRequest
+        lorraineRequest: LorraineRequest
     )
 
 }

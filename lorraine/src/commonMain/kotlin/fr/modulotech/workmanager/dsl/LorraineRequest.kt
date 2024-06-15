@@ -4,14 +4,14 @@ import fr.modulotech.workmanager.work.Data
 import fr.modulotech.workmanager.work.DataDefinition
 import fr.modulotech.workmanager.work.workData
 
-class WorkRequest internal constructor(
+class LorraineRequest internal constructor(
     val identifier: String,
     val constraints: Constraints,
     val tags: Set<String>,
     val inputData: Data?
 )
 
-class WorkDefinition internal constructor(
+class LorraineRequestDefinition internal constructor(
     private var identifier: String
 ) {
     private val tags: MutableSet<String> = mutableSetOf()
@@ -32,7 +32,7 @@ class WorkDefinition internal constructor(
         constraints = definition.build()
     }
 
-    internal fun build() = WorkRequest(
+    internal fun build() = LorraineRequest(
         constraints = constraints,
         tags = tags,
         inputData = inputData,
@@ -41,8 +41,8 @@ class WorkDefinition internal constructor(
 
 }
 
-fun buildWorkRequest(identifier: String, block: WorkDefinition.() -> Unit): WorkRequest {
-    val definition = WorkDefinition(identifier)
+fun lorraineRequest(identifier: String, block: LorraineRequestDefinition.() -> Unit): LorraineRequest {
+    val definition = LorraineRequestDefinition(identifier)
 
     return definition.apply(block)
         .build()

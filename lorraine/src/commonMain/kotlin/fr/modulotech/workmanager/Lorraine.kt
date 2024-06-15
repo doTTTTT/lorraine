@@ -4,7 +4,7 @@ import LorraineDB
 import fr.modulotech.workmanager.db.entity.WorkerEntity
 import fr.modulotech.workmanager.db.entity.toInfo
 import fr.modulotech.workmanager.dsl.Instantiate
-import fr.modulotech.workmanager.dsl.WorkRequest
+import fr.modulotech.workmanager.dsl.LorraineRequest
 import fr.modulotech.workmanager.logger.Logger
 import fr.modulotech.workmanager.work.LorraineInfo
 import fr.modulotech.workmanager.work.WorkLorraine
@@ -32,7 +32,7 @@ object Lorraine {
     suspend fun enqueueWork(
         uniqueId: String,
         type: Type,
-        request: WorkRequest
+        request: LorraineRequest
     ) {
         requireNotNull(definitions[request.identifier]) { "Worker definition not found" }
 

@@ -1,8 +1,8 @@
 package worker
 
 import client
-import io.dot.workmanager.work.Data
-import io.dot.workmanager.work.WorkLorraine
+import io.dot.lorraine.work.Data
+import io.dot.lorraine.work.WorkLorraine
 import io.ktor.client.request.get
 import io.ktor.http.ContentType
 import io.ktor.http.contentType

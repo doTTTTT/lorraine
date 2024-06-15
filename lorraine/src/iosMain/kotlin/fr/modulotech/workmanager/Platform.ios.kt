@@ -8,8 +8,9 @@ import fr.modulotech.workmanager.work.LorraineWorker
 import getDatabaseBuilder
 import initDatabase
 import kotlinx.cinterop.ExperimentalForeignApi
-import platform.CoreFoundation.CFUUIDCreateString
 import platform.Foundation.NSOperationQueue
+import platform.Foundation.NSUUID
+import platform.Foundation.addObserver
 
 internal class IOSPlatform : Platform {
     override val name: String = "ios"
@@ -35,7 +36,7 @@ internal class IOSPlatform : Platform {
         return NSOperationQueue().apply {
             setName(queueId)
             maxConcurrentOperationCount = 1
-            suspended = true
+            suspended = false // TODO suspended it, then check constraints
         }
     }
 }
@@ -49,5 +50,5 @@ fun Lorraine.initialize() {
 }
 
 actual fun createUUID(): String {
-    return CFUUIDCreateString(null, null)?.toString().orEmpty()
+    return NSUUID().UUIDString
 }

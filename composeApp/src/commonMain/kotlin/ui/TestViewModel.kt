@@ -28,9 +28,9 @@ class TestViewModel : ViewModel() {
     private fun send(action: TestAction.Send) {
         viewModelScope.launch {
             Lorraine.enqueueWork(
-                "UNIQUE_ID",
-                Lorraine.Type.APPEND,
-                buildWorkRequest(GET_WORKER) {
+                uniqueId = "UNIQUE_ID",
+                type = Lorraine.Type.APPEND,
+                request = buildWorkRequest(GET_WORKER) {
                     addTag("I'M A TAG")
                 }
             )

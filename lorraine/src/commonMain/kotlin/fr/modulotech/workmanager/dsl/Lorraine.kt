@@ -7,14 +7,14 @@ import fr.modulotech.workmanager.work.WorkLorraine
 
 typealias Instantiate<T> = () -> T
 
-fun lorraine(block: Definition.() -> Unit) {
-    val definition = Definition().apply(block)
+fun lorraine(block: LorraineDefinition.() -> Unit) {
+    val lorraineDefinition = LorraineDefinition().apply(block)
 
     Lorraine.definitions.clear()
-    Lorraine.definitions.putAll(definition.definitions)
+    Lorraine.definitions.putAll(lorraineDefinition.definitions)
 }
 
-class Definition internal constructor() {
+class LorraineDefinition internal constructor() {
 
     internal val definitions = mutableMapOf<String, Instantiate<out WorkLorraine>>()
     internal var loggerDefinition: LoggerDefinition? = null

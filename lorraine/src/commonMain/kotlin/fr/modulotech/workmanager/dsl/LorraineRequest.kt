@@ -6,7 +6,7 @@ import fr.modulotech.workmanager.work.workData
 
 class LorraineRequest internal constructor(
     val identifier: String,
-    val constraints: Constraints,
+    val lorraineConstraints: LorraineConstraints,
     val tags: Set<String>,
     val inputData: Data?
 )
@@ -15,7 +15,7 @@ class LorraineRequestDefinition internal constructor(
     private var identifier: String
 ) {
     private val tags: MutableSet<String> = mutableSetOf()
-    private var constraints: Constraints = Constraints.NONE
+    private var lorraineConstraints: LorraineConstraints = LorraineConstraints.NONE
     private var inputData: Data? = null
 
     fun addTag(tag: String) {
@@ -26,14 +26,14 @@ class LorraineRequestDefinition internal constructor(
         inputData = workData(block)
     }
 
-    fun constraints(block: ConstraintsDefinition.() -> Unit) {
-        val definition = ConstraintsDefinition().apply(block)
+    fun constraints(block: LorraineConstraintsDefinition.() -> Unit) {
+        val definition = LorraineConstraintsDefinition().apply(block)
 
-        constraints = definition.build()
+        lorraineConstraints = definition.build()
     }
 
     internal fun build() = LorraineRequest(
-        constraints = constraints,
+        lorraineConstraints = lorraineConstraints,
         tags = tags,
         inputData = inputData,
         identifier = identifier

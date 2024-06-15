@@ -1,20 +1,20 @@
 package fr.modulotech.workmanager.dsl
 
-data class Constraints internal constructor(
+data class LorraineConstraints internal constructor(
     val requireNetwork: Boolean
 ) {
 
     companion object {
-        val NONE = Constraints(
+        val NONE = LorraineConstraints(
             requireNetwork = false
         )
     }
 }
 
-class ConstraintsDefinition internal constructor() {
+class LorraineConstraintsDefinition internal constructor() {
     var requiredNetwork: Boolean = false
 
-    fun build() = Constraints(
+    fun build() = LorraineConstraints(
         requireNetwork = requiredNetwork
     )
 

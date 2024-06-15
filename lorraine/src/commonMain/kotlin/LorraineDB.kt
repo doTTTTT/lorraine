@@ -2,11 +2,11 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import io.modulotech.workmanager.Lorraine
-import io.modulotech.workmanager.db.converter.DataConverter
-import io.modulotech.workmanager.db.converter.StringSetConverter
-import io.modulotech.workmanager.db.dao.WorkerDao
-import io.modulotech.workmanager.db.entity.WorkerEntity
+import io.dot.workmanager.Lorraine
+import io.dot.workmanager.db.converter.DataConverter
+import io.dot.workmanager.db.converter.StringSetConverter
+import io.dot.workmanager.db.dao.WorkerDao
+import io.dot.workmanager.db.entity.WorkerEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 

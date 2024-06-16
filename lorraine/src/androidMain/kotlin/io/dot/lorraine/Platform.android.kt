@@ -6,6 +6,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
+import androidx.work.WorkRequest
 import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.db.getDatabaseBuilder
 import io.dot.lorraine.dsl.LorraineRequest

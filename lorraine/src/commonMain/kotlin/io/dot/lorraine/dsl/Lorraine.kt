@@ -10,8 +10,7 @@ typealias Instantiate<T> = () -> T
 fun lorraine(block: LorraineDefinition.() -> Unit) {
     val lorraineDefinition = LorraineDefinition().apply(block)
 
-    Lorraine.definitions.clear()
-    Lorraine.definitions.putAll(lorraineDefinition.definitions)
+    Lorraine.initialize(lorraineDefinition)
 }
 
 class LorraineDefinition internal constructor() {

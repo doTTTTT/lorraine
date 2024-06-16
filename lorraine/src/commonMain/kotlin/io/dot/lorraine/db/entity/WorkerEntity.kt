@@ -30,9 +30,17 @@ internal data class WorkerEntity(
     @TypeConverters(StringSetConverter::class)
     val tags: Set<String>,
 
+    @ColumnInfo(name = "worker_dependencies")
+    @TypeConverters(StringSetConverter::class)
+    val workerDependencies: Set<String>,
+
     @ColumnInfo(name = "input_data")
     @TypeConverters(DataConverter::class)
-    val inputData: Data?
+    val inputData: Data?,
+
+    @ColumnInfo(name = "output_data")
+    @TypeConverters(DataConverter::class)
+    val outputData: Data?
 
 ) {
 

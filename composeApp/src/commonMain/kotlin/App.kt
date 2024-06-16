@@ -29,9 +29,17 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.LogBody
 import ui.TestScreen
 import ui.TestViewModel
+import worker.DeleteWorker
 import worker.GetWorker
+import worker.PatchWorker
+import worker.PostWorker
+import worker.PutWorker
 
 const val GET_WORKER = "GET_WORKER"
+const val POST_WORKER = "DELETE_WORKER"
+const val PUT_WORKER = "PUT_WORKER"
+const val PATCH_WORKER = "PATCH_WORKER"
+const val DELETE_WORKER = "DELETE_WORKER"
 
 @Composable
 @Preview
@@ -41,7 +49,12 @@ fun App() {
 
         lorraine {
             work(GET_WORKER) { GetWorker() }
+            work(POST_WORKER) { PostWorker() }
+            work(PATCH_WORKER) { PatchWorker() }
+            work(PUT_WORKER) { PutWorker() }
+            work(DELETE_WORKER) { DeleteWorker() }
         }
+
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally

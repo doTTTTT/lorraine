@@ -1,10 +1,14 @@
 package io.dot.lorraine
 
 import LorraineDB
+import io.dot.lorraine.db.dao.WorkerDao
 import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.db.entity.toInfo
 import io.dot.lorraine.dsl.Instantiate
+import io.dot.lorraine.dsl.LorraineDefinition
+import io.dot.lorraine.dsl.LorraineOperation
 import io.dot.lorraine.dsl.LorraineRequest
+import io.dot.lorraine.logger.DefaultLogger
 import io.dot.lorraine.logger.Logger
 import io.dot.lorraine.work.LorraineInfo
 import io.dot.lorraine.work.WorkLorraine
@@ -14,14 +18,15 @@ import kotlinx.serialization.json.Json
 
 internal const val LORRAINE_DATABASE = "lorraine.db"
 
-// TODO Change to data class
 object Lorraine {
 
-    internal lateinit var database: LorraineDB
+    private lateinit var database: LorraineDB
+
+    internal lateinit var dao: WorkerDao
     internal lateinit var platform: Platform
 
-    internal var loggerEnable: Boolean = false
-    internal lateinit var logger: Logger
+    private var loggerEnable: Boolean = false
+    private lateinit var logger: Logger
 
     internal val definitions = mutableMapOf<String, Instantiate<out WorkLorraine>>()
 
@@ -29,40 +34,88 @@ object Lorraine {
         ignoreUnknownKeys = true
     }
 
-    suspend fun enqueueWork(
+    internal fun initialize(definition: LorraineDefinition) {
+        definitions.clear()
+        definitions.putAll(definition.definitions)
+        loggerEnable = definition.loggerDefinition?.enable ?: false
+        logger = definition.loggerDefinition?.logger ?: DefaultLogger
+    }
+
+    internal fun registerDatabase(db: LorraineDB) {
+        database = db
+        dao = db.workerDao()
+    }
+
+    suspend fun enqueue(
         uniqueId: String,
         type: Type,
         request: LorraineRequest
     ) {
-        requireNotNull(definitions[request.identifier]) { "Worker definition not found" }
+        val worker = request.toWorkerEntity(uniqueId)
 
-        val worker = WorkerEntity(
-            id = createUUID(),
-            queueId = uniqueId,
-            identifier = request.identifier,
-            state = LorraineInfo.State.ENQUEUED,
-            tags = request.tags,
-            inputData = request.inputData
-        )
-
-        database.workerDao()
-            .insert(worker)
-
+        dao.insert(worker)
         platform.enqueue(worker, type, request)
     }
 
-    suspend fun getWorker(identifier: String): WorkLorraine? {
-        val dao = database.workerDao()
+    suspend fun enqueue(
+        uniqueId: String,
+        operation: LorraineOperation
+    ) {
+        val firstOperation = requireNotNull(operation.operations.firstOrNull()) {
+            "List of request cannot be empty"
+        }
+        val firstWorker = firstOperation.request.toWorkerEntity(uniqueId)
+        val dependencies = mutableSetOf(firstWorker.id)
+
+        dao.insert(firstWorker)
+
+        operation.operations
+            .drop(1)
+            .forEach {
+                val worker = it.request.toWorkerEntity(
+                    uniqueId = uniqueId,
+                    workDependencies = dependencies
+                )
+
+                dependencies.add(worker.id)
+
+                dao.insert(worker)
+            }
+
+        platform.enqueue(
+            worker = firstWorker,
+            type = Type.APPEND,
+            lorraineRequest = firstOperation.request
+        )
+    }
+
+    suspend fun getLorraine(identifier: String): WorkLorraine? {
         val worker = dao.getWorker(id = identifier) ?: return null
 
         return worker.toWork()
     }
 
-    fun listenWorkers(): Flow<List<LorraineInfo>> {
-        val dao = database.workerDao()
-
+    fun listenLorrainesInfo(): Flow<List<LorraineInfo>> {
         return dao.getWorkersAsFlow()
             .map { list -> list.map(WorkerEntity::toInfo) }
+    }
+
+    private fun LorraineRequest.toWorkerEntity(
+        uniqueId: String,
+        workDependencies: Set<String> = emptySet()
+    ): WorkerEntity {
+        requireNotNull(definitions[identifier]) { "Worker definition not found" }
+
+        return WorkerEntity(
+            id = createUUID(),
+            queueId = uniqueId,
+            identifier = identifier,
+            state = LorraineInfo.State.ENQUEUED, // TODO Pass to block on the check if constraint are not match
+            tags = tags,
+            inputData = inputData,
+            outputData = null,
+            workerDependencies = workDependencies
+        )
     }
 
     private fun WorkerEntity.toWork(): WorkLorraine? {

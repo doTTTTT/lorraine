@@ -69,7 +69,7 @@ kotlin {
 
 dependencies {
     add("kspCommonMainMetadata", "androidx.room:room-compiler:$roomVersion") // Run KSP on [commonMain] code
-//    add("kspAndroid", "androidx.room:room-compiler:$roomVersion")
+    add("kspAndroid", "androidx.room:room-compiler:$roomVersion")
 //    add("kspIosX64", "androidx.room:room-compiler:$roomVersion")
 //    add("kspIosArm64", "androidx.room:room-compiler:$roomVersion")
 //    add("kspIosSimulatorArm64", "androidx.room:room-compiler:$roomVersion")

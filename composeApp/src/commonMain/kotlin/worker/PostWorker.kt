@@ -5,14 +5,15 @@ import io.dot.lorraine.work.Data
 import io.dot.lorraine.work.LorraineResult
 import io.dot.lorraine.work.WorkLorraine
 import io.ktor.client.request.get
+import io.ktor.client.request.post
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 
-class GetWorker : WorkLorraine() {
+class PostWorker : WorkLorraine() {
 
     override suspend fun doWork(inputData: Data?): LorraineResult {
         return runCatching {
-            client.get("https://dummyjson.com/test") {
+            client.post("https://dummyjson.com/test") {
                 contentType(ContentType.Application.Json)
             }
         }

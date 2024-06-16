@@ -4,19 +4,20 @@ import io.dot.lorraine.work.Data
 import io.dot.lorraine.work.DataDefinition
 import io.dot.lorraine.work.workData
 
-class LorraineRequest internal constructor(
+data class LorraineRequest internal constructor(
     val identifier: String,
-    val lorraineConstraints: LorraineConstraints,
+    val constraints: LorraineConstraints,
     val tags: Set<String>,
     val inputData: Data?
 )
 
-class LorraineRequestDefinition internal constructor(
-    private var identifier: String
-) {
+open class LorraineRequestDefinition internal constructor() {
     private val tags: MutableSet<String> = mutableSetOf()
-    private var lorraineConstraints: LorraineConstraints = LorraineConstraints.NONE
+
+    private var constraints: LorraineConstraints = LorraineConstraints.NONE
     private var inputData: Data? = null
+
+    var identifier: String? = null
 
     fun addTag(tag: String) {
         tags.add(tag)
@@ -29,20 +30,24 @@ class LorraineRequestDefinition internal constructor(
     fun constraints(block: LorraineConstraintsDefinition.() -> Unit) {
         val definition = LorraineConstraintsDefinition().apply(block)
 
-        lorraineConstraints = definition.build()
+        constraints = definition.build()
     }
 
-    internal fun build() = LorraineRequest(
-        lorraineConstraints = lorraineConstraints,
-        tags = tags,
-        inputData = inputData,
-        identifier = identifier
-    )
+    internal fun build(): LorraineRequest {
+        val identifier = requireNotNull(identifier)
+
+        return LorraineRequest(
+            constraints = constraints,
+            tags = tags,
+            inputData = inputData,
+            identifier = identifier
+        )
+    }
 
 }
 
-fun lorraineRequest(identifier: String, block: LorraineRequestDefinition.() -> Unit): LorraineRequest {
-    val definition = LorraineRequestDefinition(identifier)
+fun lorraineRequest(block: LorraineRequestDefinition.() -> Unit): LorraineRequest {
+    val definition = LorraineRequestDefinition()
 
     return definition.apply(block)
         .build()

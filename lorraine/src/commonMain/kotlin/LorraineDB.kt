@@ -27,8 +27,10 @@ internal abstract class LorraineDB : RoomDatabase() {
 }
 
 internal fun initDatabase(db: RoomDatabase.Builder<LorraineDB>) {
-    Lorraine.database = db.fallbackToDestructiveMigration(dropAllTables = true)
+    val database = db.fallbackToDestructiveMigration(dropAllTables = true)
         .setDriver(BundledSQLiteDriver())
         .setQueryCoroutineContext(Dispatchers.IO)
         .build()
+
+    Lorraine.registerDatabase(database)
 }

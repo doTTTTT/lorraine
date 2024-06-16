@@ -8,6 +8,6 @@ actual abstract class WorkLorraine {
 
     internal actual val job: CompletableJob = SupervisorJob()
 
-    actual abstract suspend fun doWork(inputData: Data?)
+    actual abstract suspend fun doWork(inputData: Data?): LorraineResult
 
 }

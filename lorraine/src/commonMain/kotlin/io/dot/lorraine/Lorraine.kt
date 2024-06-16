@@ -1,6 +1,6 @@
 package io.dot.lorraine
 
-import LorraineDB
+import io.dot.lorraine.db.LorraineDB
 import io.dot.lorraine.db.dao.WorkerDao
 import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.db.entity.toInfo

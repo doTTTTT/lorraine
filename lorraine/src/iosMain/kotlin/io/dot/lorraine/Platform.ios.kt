@@ -5,10 +5,8 @@ package io.dot.lorraine
 import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.dsl.LorraineRequest
 import io.dot.lorraine.work.LorraineWorker
-import getDatabaseBuilder
-import initDatabase
-import io.dot.lorraine.Lorraine
-import io.dot.lorraine.Platform
+import io.dot.lorraine.db.getDatabaseBuilder
+import io.dot.lorraine.db.initDatabase
 import kotlinx.cinterop.ExperimentalForeignApi
 import platform.Foundation.NSOperationQueue
 import platform.Foundation.NSUUID

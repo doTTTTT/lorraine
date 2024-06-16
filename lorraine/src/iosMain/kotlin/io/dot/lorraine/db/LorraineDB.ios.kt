@@ -1,3 +1,5 @@
+package io.dot.lorraine.db
+
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import io.dot.lorraine.LORRAINE_DATABASE

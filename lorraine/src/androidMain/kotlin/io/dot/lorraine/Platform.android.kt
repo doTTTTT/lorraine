@@ -6,14 +6,13 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
-import androidx.work.WorkRequest
 import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.db.getDatabaseBuilder
 import io.dot.lorraine.dsl.LorraineRequest
 import io.dot.lorraine.work.LorraineInfo
 import io.dot.lorraine.work.LorraineWorker
 import io.dot.lorraine.work.toWorkManagerData
-import initDatabase
+import io.dot.lorraine.db.initDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

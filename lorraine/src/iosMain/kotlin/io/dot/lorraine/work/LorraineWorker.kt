@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalForeignApi::class)
-
 package io.dot.lorraine.work
 
 import io.dot.lorraine.Lorraine
@@ -7,23 +5,20 @@ import io.dot.lorraine.Lorraine.constraintChecks
 import io.dot.lorraine.constraint.match
 import io.dot.lorraine.db.entity.toDomain
 import kotlinx.cinterop.ExperimentalForeignApi
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import platform.Foundation.NSOperation
+import kotlinx.coroutines.runBlocking
+import platform.Foundation.NSBlockOperation
 import kotlin.time.Duration.Companion.seconds
 
 internal class LorraineWorker(
     private val workerId: String
-) : NSOperation() {
+) : NSBlockOperation() {
 
-    private val scope = CoroutineScope(Dispatchers.IO)
+//    override fun isAsynchronous(): Boolean = true
 
     override fun main() {
-        scope.launch {
+        runBlocking {
             val dao = Lorraine.dao
             val workerData = dao.getWorker(workerId) ?: error("WorkLorraine not found")
             val identifier = requireNotNull(workerData.identifier) { "Identifier not found" }
@@ -34,7 +29,7 @@ internal class LorraineWorker(
             // TODO Check dependencies
             if (!constraintChecks.match(workerData.constraints.toDomain())) {
                 dao.update(workerData.copy(state = LorraineInfo.State.BLOCKED))
-                return@launch
+                return@runBlocking
             }
 
             val worker = workerDefinition.invoke()
@@ -72,7 +67,7 @@ internal class LorraineWorker(
 
     override fun cancel() {
         // TODO Update worker state in db
-        scope.launch {
+        runBlocking {
             val dao = Lorraine.dao
             val workerData = dao.getWorker(workerId) ?: error("WorkLorraine not found")
 

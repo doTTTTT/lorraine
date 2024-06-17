@@ -11,9 +11,11 @@ import io.dot.lorraine.work.LorraineWorker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
+import platform.Foundation.NSOperation
 import platform.Foundation.NSOperationQueue
 import platform.Foundation.NSOperationQueueDefaultMaxConcurrentOperationCount
 import platform.Foundation.NSUUID
+import platform.Foundation.operations
 
 internal class IOSPlatform : Platform {
     override val name: String = "ios"
@@ -47,9 +49,14 @@ internal class IOSPlatform : Platform {
             "Workers shoud not be empty"
         }
         val queue = queues.getOrElse(uniqueId) { createQueue(uniqueId) }
+        var previous: NSOperation? = null
 
         workers.map { LorraineWorker(it.id) }
-            .forEach(queue::addOperation)
+            .forEach { worker ->
+                previous?.let { previous -> worker.addDependency(previous) }
+                previous = worker
+                queue.addOperation(worker)
+            }
 
         queue.suspended = !Lorraine.constraintChecks
             .match(firstWorker.constraints.toDomain())

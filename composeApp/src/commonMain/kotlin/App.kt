@@ -36,7 +36,7 @@ import worker.PostWorker
 import worker.PutWorker
 
 const val GET_WORKER = "GET_WORKER"
-const val POST_WORKER = "DELETE_WORKER"
+const val POST_WORKER = "POST_WORKER"
 const val PUT_WORKER = "PUT_WORKER"
 const val PATCH_WORKER = "PATCH_WORKER"
 const val DELETE_WORKER = "DELETE_WORKER"

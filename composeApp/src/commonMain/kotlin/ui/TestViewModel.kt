@@ -50,7 +50,13 @@ class TestViewModel : ViewModel() {
                 uniqueId = "UNIQUE_ID",
                 type = ExistingLorrainePolicy.APPEND,
                 request = lorraineRequest {
-                    identifier = GET_WORKER
+                    identifier = when (action.methodType) {
+                        MethodType.GET -> GET_WORKER
+                        MethodType.POST -> POST_WORKER
+                        MethodType.PUT -> PUT_WORKER
+                        MethodType.PATCH -> PATCH_WORKER
+                        MethodType.DELETE -> DELETE_WORKER
+                    }
                     addTag("I'M A TAG")
                 }
             )

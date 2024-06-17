@@ -11,26 +11,30 @@ internal class LorraineWorker(
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
-        val identifier = requireNotNull(inputData.getString(IDENTIFIER)) { "Identifier not found" }
-        val workerDefinition = requireNotNull(Lorraine.definitions[identifier]) {
+        val id = requireNotNull(inputData.getString(ID)) { "Identifier not found" }
+        val dao = Lorraine.dao
+        val worker = requireNotNull(dao.getWorker(id)) { "Worker not found" }
+        val workerDefinition = requireNotNull(Lorraine.definitions[worker.identifier]) {
             "Worker definition not found"
         }
-        val worker = workerDefinition()
-        val inputData = Lorraine.dao
-            .getWorker(id.toString())
-            ?.inputData
 
         return runCatching {
-            worker.doWork(inputData)
+            dao.update(worker.copy(state = LorraineInfo.State.RUNNING))
+            workerDefinition().doWork(worker.inputData)
         }
             .fold(
-                onSuccess = { Result.success() },
-                onFailure = { Result.failure() }
+                onSuccess = {
+                    dao.update(worker.copy(state = LorraineInfo.State.SUCCEEDED))
+                    Result.success()
+                },
+                onFailure = {
+                    dao.update(worker.copy(state = LorraineInfo.State.FAILED))
+                    Result.failure()
+                }
             )
     }
 
     companion object {
-        // TODO Pass id instead
-        const val IDENTIFIER = "identifier"
+        const val ID = "id"
     }
 }

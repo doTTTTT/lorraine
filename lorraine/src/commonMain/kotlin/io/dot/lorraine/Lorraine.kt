@@ -1,8 +1,10 @@
 package io.dot.lorraine
 
+import io.dot.lorraine.constraint.ConnectivityCheck
 import io.dot.lorraine.db.LorraineDB
 import io.dot.lorraine.db.dao.WorkerDao
 import io.dot.lorraine.db.entity.WorkerEntity
+import io.dot.lorraine.db.entity.toEntity
 import io.dot.lorraine.db.entity.toInfo
 import io.dot.lorraine.dsl.Instantiate
 import io.dot.lorraine.dsl.LorraineDefinition
@@ -32,6 +34,9 @@ object Lorraine {
     private lateinit var logger: Logger
 
     internal val definitions = mutableMapOf<String, Instantiate<out WorkLorraine>>()
+    internal val constraintChecks = listOf(
+        ConnectivityCheck
+    )
 
     internal val json = Json {
         ignoreUnknownKeys = true
@@ -71,32 +76,29 @@ object Lorraine {
         uniqueId: String,
         operation: LorraineOperation
     ) {
-        val firstOperation = requireNotNull(operation.operations.firstOrNull()) {
-            "List of request cannot be empty"
-        }
-        val firstWorker = firstOperation.request.toWorkerEntity(uniqueId)
-        val dependencies = mutableSetOf(firstWorker.id)
-
-        dao.insert(firstWorker)
-
-        operation.operations
-            .drop(1)
-            .forEach {
-                val worker = it.request.toWorkerEntity(
-                    uniqueId = uniqueId,
-                    workDependencies = dependencies
-                )
-
-                dependencies.add(worker.id)
-
-                dao.insert(worker)
+        val dependencies = mutableSetOf<String>()
+        val workers = operation.operations
+            .map {
+                it.request
+                    .toWorkerEntity(
+                        uniqueId = uniqueId,
+                        workDependencies = dependencies
+                    )
+                    .also { worker -> dependencies.add(worker.id) }
             }
 
+        dao.insert(workers)
+
         platform.enqueue(
-            worker = firstWorker,
-            type = ExistingLorrainePolicy.APPEND,
-            lorraineRequest = firstOperation.request
+            uniqueId = uniqueId,
+            workers = workers,
+            operation = operation
         )
+    }
+
+    suspend fun clearAll() {
+        platform.clearAll()
+        dao.getWorkers().forEach { dao.delete(it) }
     }
 
     suspend fun getLorraine(identifier: String): WorkLorraine? {
@@ -124,7 +126,8 @@ object Lorraine {
             tags = tags,
             inputData = inputData,
             outputData = null,
-            workerDependencies = workDependencies
+            workerDependencies = workDependencies,
+            constraints = constraints.toEntity()
         )
     }
 

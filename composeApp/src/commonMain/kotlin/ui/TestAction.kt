@@ -6,4 +6,6 @@ sealed interface TestAction {
 
     data object Operation : TestAction
 
+    data object Clear : TestAction
+
 }

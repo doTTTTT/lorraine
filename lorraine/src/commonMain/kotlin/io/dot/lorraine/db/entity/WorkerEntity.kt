@@ -1,6 +1,7 @@
 package io.dot.lorraine.db.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.TypeConverters
 import io.dot.lorraine.db.converter.DataConverter
@@ -40,7 +41,10 @@ internal data class WorkerEntity(
 
     @ColumnInfo(name = "output_data")
     @TypeConverters(DataConverter::class)
-    val outputData: Data?
+    val outputData: Data?,
+
+    @Embedded(prefix = "constraints_")
+    val constraints: ConstraintEntity
 
 ) {
 

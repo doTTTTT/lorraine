@@ -22,6 +22,7 @@ compose-material3 = { module = "androidx.compose.material3:material3", version.r
 
 connectivity-core = { module = "dev.jordond.connectivity:connectivity-core", version.ref = "connectivity" }
 connectivity-device = { module = "dev.jordond.connectivity:connectivity-device", version.ref = "connectivity" }
+connectivity-apple = { module = "dev.jordond.connectivity:connectivity-apple", version.ref = "connectivity" }
 
 ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-serializarion = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor"}

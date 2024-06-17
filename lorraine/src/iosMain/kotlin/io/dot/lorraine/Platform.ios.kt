@@ -1,41 +1,76 @@
 package io.dot.lorraine
 
+import io.dot.lorraine.constraint.match
 import io.dot.lorraine.db.entity.WorkerEntity
+import io.dot.lorraine.db.entity.toDomain
 import io.dot.lorraine.db.getDatabaseBuilder
 import io.dot.lorraine.db.initDatabase
+import io.dot.lorraine.dsl.LorraineOperation
 import io.dot.lorraine.dsl.LorraineRequest
 import io.dot.lorraine.work.LorraineWorker
-import platform.CFNetwork.CFHostGetReachability
-import platform.CoreFoundation.CFNotificationCenterAddObserver
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.withContext
 import platform.Foundation.NSOperationQueue
+import platform.Foundation.NSOperationQueueDefaultMaxConcurrentOperationCount
 import platform.Foundation.NSUUID
-import platform.SystemConfiguration.SCNetworkReachabilityCallBack
-import platform.SystemConfiguration.SCNetworkReachabilitySetCallback
 
 internal class IOSPlatform : Platform {
     override val name: String = "ios"
-//        UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
 
     private val queues: MutableMap<String, NSOperationQueue> = mutableMapOf()
 
-    override fun enqueue(
+    init {
+        println("IOSPlatform INIT")
+    }
+
+    override suspend fun enqueue(
         worker: WorkerEntity,
         type: ExistingLorrainePolicy,
         lorraineRequest: LorraineRequest
     ) {
-        val queue = queues.getOrElse(worker.queueId) { worker.createQueue() }
+        val queue = queues.getOrElse(worker.queueId) { createQueue(worker.queueId) }
 
         queue.addOperation(LorraineWorker(worker.id))
-
         queues[worker.queueId] = queue
-        // TODO Check if constraint match, then run
+
+        queue.suspended = !Lorraine.constraintChecks
+            .match(worker.constraints.toDomain())
     }
 
-    private fun WorkerEntity.createQueue(): NSOperationQueue {
+    override suspend fun enqueue(
+        uniqueId: String,
+        workers: List<WorkerEntity>,
+        operation: LorraineOperation
+    ) {
+        val firstWorker = requireNotNull(workers.firstOrNull()) {
+            "Workers shoud not be empty"
+        }
+        val queue = queues.getOrElse(uniqueId) { createQueue(uniqueId) }
+
+        workers.map { LorraineWorker(it.id) }
+            .forEach(queue::addOperation)
+
+        queue.suspended = !Lorraine.constraintChecks
+            .match(firstWorker.constraints.toDomain())
+    }
+
+    override fun clearAll() {
+        queues.forEach { it.value.cancelAllOperations() }
+        queues.clear()
+    }
+
+    internal fun suspend(uniqueId: String, suspended: Boolean) {
+        val queue = queues[uniqueId] ?: return
+
+        queue.suspended = suspended
+    }
+
+    private fun createQueue(uniqueId: String): NSOperationQueue {
         return NSOperationQueue().apply {
-            setName(queueId)
-            maxConcurrentOperationCount = 1
-            suspended = false // TODO suspended it, then check constraints
+            setName(uniqueId)
+            setMaxConcurrentOperationCount(1)
+            setSuspended(true)
         }
     }
 }

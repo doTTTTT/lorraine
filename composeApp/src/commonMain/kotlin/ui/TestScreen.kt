@@ -102,8 +102,12 @@ private fun Content(
                     onClick = { onAction(TestAction.Send(MethodType.PATCH)) }
                 )
                 SuggestionChip(
-                    label = { Text("Operation") },
+                    label = { Text("OPERATION") },
                     onClick = { onAction(TestAction.Operation) }
+                )
+                SuggestionChip(
+                    label = { Text("CLEAR ALL") },
+                    onClick = { onAction(TestAction.Clear) }
                 )
             }
             Text(

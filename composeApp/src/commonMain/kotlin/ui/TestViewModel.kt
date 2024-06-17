@@ -40,6 +40,7 @@ class TestViewModel : ViewModel() {
         when (action) {
             is TestAction.Send -> send(action)
             TestAction.Operation -> operation()
+            TestAction.Clear -> clear()
         }
     }
 
@@ -82,6 +83,12 @@ class TestViewModel : ViewModel() {
                     }
                 }
             )
+        }
+    }
+
+    private fun clear() {
+        viewModelScope.launch {
+            Lorraine.clearAll()
         }
     }
 

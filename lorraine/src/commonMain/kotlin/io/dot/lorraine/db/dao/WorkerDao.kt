@@ -16,6 +16,9 @@ internal interface WorkerDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(worker: WorkerEntity)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(workers: List<WorkerEntity>)
+
     @Upsert
     suspend fun upsert(worker: WorkerEntity)
 
@@ -31,10 +34,16 @@ internal interface WorkerDao {
     @Query("SELECT * FROM worker")
     suspend fun getWorkers(): List<WorkerEntity>
 
+    @Query("SELECT * FROM worker WHERE queue_id = (:queueId)")
+    suspend fun getWorkersForQueueId(queueId: String): List<WorkerEntity>
+
     @Query("SELECT * FROM worker WHERE id = (:id)")
     fun getWorkerAsFlow(id: String): Flow<WorkerEntity?>
 
     @Query("SELECT * FROM worker")
     fun getWorkersAsFlow(): Flow<List<WorkerEntity>>
+
+    @Query("SELECT * FROM worker WHERE queue_id = (:queueId)")
+    fun getWorkersForQueueIdAsFlow(queueId: String): Flow<List<WorkerEntity>>
 
 }

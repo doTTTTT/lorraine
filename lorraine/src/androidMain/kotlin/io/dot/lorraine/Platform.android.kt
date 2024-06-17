@@ -1,7 +1,9 @@
 package io.dot.lorraine
 
+import android.annotation.SuppressLint
 import android.content.Context
-import androidx.work.Constraints
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
@@ -9,9 +11,11 @@ import androidx.work.WorkQuery
 import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.db.getDatabaseBuilder
 import io.dot.lorraine.db.initDatabase
+import io.dot.lorraine.dsl.LorraineOperation
 import io.dot.lorraine.dsl.LorraineRequest
 import io.dot.lorraine.work.LorraineWorker
 import io.dot.lorraine.work.toLorraineInfo
+import io.dot.lorraine.work.toWorkManagerConstraints
 import io.dot.lorraine.work.toWorkManagerData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,23 +39,64 @@ internal class AndroidPlatform(
             workManager.getWorkInfosFlow(WorkQuery.fromStates(WorkInfo.State.entries))
                 .map { list -> list.map(WorkInfo::toLorraineInfo) }
                 .collect { info ->
+                    info.forEach {
+
+                    }
                     // TODO Update LorrainDB
                 }
         }
     }
 
-    override fun enqueue(
+    override suspend fun enqueue(
         worker: WorkerEntity,
         type: ExistingLorrainePolicy,
         lorraineRequest: LorraineRequest
     ) {
-        workManager.enqueue(
-            OneTimeWorkRequestBuilder<LorraineWorker>()
-                .setInputData(lorraineRequest.toWorkManagerData())
-                .setConstraints(Constraints.NONE)
-                .build()
+        workManager.enqueueUniqueWork(
+            /* uniqueWorkName = */ worker.queueId,
+            /* existingWorkPolicy = */ type.toWorkManagerExistingPolicy(),
+            /* work = */ lorraineRequest.toWorkManagerWorker(worker.id)
         )
     }
+
+    @SuppressLint("EnqueueWork")
+    override suspend fun enqueue(
+        uniqueId: String,
+        workers: List<WorkerEntity>,
+        operation: LorraineOperation
+    ) {
+        // TODO Rework
+        val workWorkers = operation.operations
+            .mapIndexed { index, operation ->
+                operation.request.toWorkManagerWorker(workers[index].id)
+            }
+        var workOperation = workManager.beginUniqueWork(
+            /* uniqueWorkName = */ uniqueId,
+            /* existingWorkPolicy = */ ExistingWorkPolicy.APPEND,
+            /* work = */ workWorkers.first()
+        )
+
+        workOperation = workWorkers
+            .drop(1)
+            .fold(workOperation) { tmp, workWorker ->
+                tmp.then(workWorker)
+            }
+
+        workOperation.enqueue()
+    }
+
+    override fun clearAll() {
+        workManager.cancelAllWork()
+        workManager.pruneWork()
+    }
+
+    private fun LorraineRequest.toWorkManagerWorker(workerId: String): OneTimeWorkRequest {
+        return OneTimeWorkRequestBuilder<LorraineWorker>()
+            .setInputData(toWorkManagerData(workerId))
+            .setConstraints(constraints.toWorkManagerConstraints())
+            .build()
+    }
+
 }
 
 fun Lorraine.initialize(context: Context) {

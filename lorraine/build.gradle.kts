@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+
 val coroutineVersion = "1.9.0-RC"
 val roomVersion = "2.7.0-alpha04"
 val workVersion = "2.9.0"
@@ -12,6 +14,8 @@ plugins {
     id("com.android.library") version "8.4.1"
 
     id("androidx.room") version "2.7.0-alpha04"
+
+    kotlin("native.cocoapods").version("2.0.0")
 }
 
 room {
@@ -43,6 +47,25 @@ kotlin {
         }
     }
 
+    cocoapods {
+        // Required properties
+        // Specify the required Pod version here. Otherwise, the Gradle project version is used.
+        version = "1.0"
+        summary = "Some description for a Kotlin/Native module"
+        homepage = "Link to a Kotlin/Native module homepage"
+        ios.deploymentTarget = "15.0"
+
+        framework {
+            baseName = "Lorraine"
+            isStatic = true
+        }
+
+        pod("Reachability")
+
+        xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = NativeBuildType.DEBUG
+        xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = NativeBuildType.RELEASE
+    }
+
     //noinspection UseTomlInstead
     sourceSets {
         commonMain.dependencies {
@@ -64,15 +87,15 @@ kotlin {
         androidMain.dependencies {
             implementation("androidx.work:work-runtime-ktx:$workVersion")
         }
+        iosMain.dependencies {
+            implementation(libs.connectivity.apple)
+        }
     }
 }
 
 dependencies {
     add("kspCommonMainMetadata", "androidx.room:room-compiler:$roomVersion") // Run KSP on [commonMain] code
     add("kspAndroid", "androidx.room:room-compiler:$roomVersion")
-//    add("kspIosX64", "androidx.room:room-compiler:$roomVersion")
-//    add("kspIosArm64", "androidx.room:room-compiler:$roomVersion")
-//    add("kspIosSimulatorArm64", "androidx.room:room-compiler:$roomVersion")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {

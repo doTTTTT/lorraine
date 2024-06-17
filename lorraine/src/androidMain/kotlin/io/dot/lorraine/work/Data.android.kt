@@ -1,13 +1,10 @@
 package io.dot.lorraine.work
 
+import androidx.work.Data
 import androidx.work.workDataOf
 import io.dot.lorraine.dsl.LorraineRequest
 
-fun Data.toWorkManagerData() = workDataOf(
-    *map.toList().toTypedArray()
-)
-
-fun LorraineRequest.toWorkManagerData() = workDataOf(
-    LorraineWorker.IDENTIFIER to identifier,
+fun LorraineRequest.toWorkManagerData(workerId: String): Data = workDataOf(
+    LorraineWorker.ID to workerId,
     *(inputData?.map?.toList().orEmpty().toTypedArray())
 )

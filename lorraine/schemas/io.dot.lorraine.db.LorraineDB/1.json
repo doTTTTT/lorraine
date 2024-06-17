@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3469a5ccc9480f5134dfce5b28df7d28",
+    "identityHash": "d447f11e0eed94c4458051f14476ccac",
     "entities": [
       {
         "tableName": "worker",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `queue_id` TEXT NOT NULL, `identifier` TEXT NOT NULL, `state` TEXT NOT NULL, `tags` TEXT NOT NULL, `worker_dependencies` TEXT NOT NULL, `input_data` TEXT, `output_data` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `queue_id` TEXT NOT NULL, `identifier` TEXT NOT NULL, `state` TEXT NOT NULL, `tags` TEXT NOT NULL, `worker_dependencies` TEXT NOT NULL, `input_data` TEXT, `output_data` TEXT, `constraints_require_network` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -53,6 +53,12 @@
             "fieldPath": "outputData",
             "columnName": "output_data",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "constraints.requireNetwork",
+            "columnName": "constraints_require_network",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -65,7 +71,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3469a5ccc9480f5134dfce5b28df7d28')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd447f11e0eed94c4458051f14476ccac')"
     ]
   }
 }

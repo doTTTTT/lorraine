@@ -18,6 +18,9 @@ import kotlinx.serialization.json.Json
 
 internal const val LORRAINE_DATABASE = "lorraine.db"
 
+/**
+ * Instance of [Lorraine], to enqueue lorraine's workers
+ */
 object Lorraine {
 
     private lateinit var database: LorraineDB
@@ -46,9 +49,16 @@ object Lorraine {
         dao = db.workerDao()
     }
 
+    /**
+     * Enqueue a [LorraineRequest]
+     *
+     * @param uniqueId of the request
+     * @param type to enqueue
+     * @param request, actual request
+     */
     suspend fun enqueue(
         uniqueId: String,
-        type: Type,
+        type: ExistingLorrainePolicy,
         request: LorraineRequest
     ) {
         val worker = request.toWorkerEntity(uniqueId)
@@ -84,7 +94,7 @@ object Lorraine {
 
         platform.enqueue(
             worker = firstWorker,
-            type = Type.APPEND,
+            type = ExistingLorrainePolicy.APPEND,
             lorraineRequest = firstOperation.request
         )
     }
@@ -120,12 +130,6 @@ object Lorraine {
 
     private fun WorkerEntity.toWork(): WorkLorraine? {
         return definitions[identifier]?.invoke()
-    }
-
-    enum class Type {
-        APPEND,
-        APPEND_OR_REPLACE,
-        REPLACE
     }
 
 }

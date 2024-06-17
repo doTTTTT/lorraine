@@ -1,5 +1,6 @@
 package io.dot.lorraine.dsl
 
+import io.dot.lorraine.ExistingLorrainePolicy
 import io.dot.lorraine.Lorraine
 
 data class LorraineOperation internal constructor(
@@ -7,7 +8,7 @@ data class LorraineOperation internal constructor(
 ) {
 
     data class Operation(
-        val type: Lorraine.Type,
+        val type: ExistingLorrainePolicy,
         val request: LorraineRequest
     )
 
@@ -18,7 +19,7 @@ class LorraineOperationDefinition internal constructor() {
     private val operations: MutableList<LorraineOperation.Operation> = mutableListOf()
     private var constraints: LorraineConstraints? = null
 
-    fun startWith(request: LorraineRequest, type: Lorraine.Type = Lorraine.Type.APPEND) {
+    fun startWith(request: LorraineRequest, type: ExistingLorrainePolicy = ExistingLorrainePolicy.APPEND) {
         operations.add(0, LorraineOperation.Operation(type = type, request = request))
     }
 
@@ -29,7 +30,7 @@ class LorraineOperationDefinition internal constructor() {
         operations.add(0, request)
     }
 
-    fun then(request: LorraineRequest, type: Lorraine.Type = Lorraine.Type.APPEND) {
+    fun then(request: LorraineRequest, type: ExistingLorrainePolicy = ExistingLorrainePolicy.APPEND) {
         operations.add(LorraineOperation.Operation(type = type, request = request))
     }
 
@@ -65,7 +66,7 @@ class LorraineOperationDefinition internal constructor() {
  */
 class LorraineRequestOperationDefinition internal constructor() : LorraineRequestDefinition() {
 
-    var type: Lorraine.Type = Lorraine.Type.APPEND
+    var type: ExistingLorrainePolicy = ExistingLorrainePolicy.APPEND
 
     fun buildOperation(): LorraineOperation.Operation {
         return LorraineOperation.Operation(

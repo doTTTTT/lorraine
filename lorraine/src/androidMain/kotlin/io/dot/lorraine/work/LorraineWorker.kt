@@ -16,8 +16,7 @@ internal class LorraineWorker(
             "Worker definition not found"
         }
         val worker = workerDefinition()
-        val inputData = Lorraine.database
-            .workerDao()
+        val inputData = Lorraine.dao
             .getWorker(id.toString())
             ?.inputData
 

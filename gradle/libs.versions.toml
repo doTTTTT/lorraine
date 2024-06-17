@@ -2,9 +2,10 @@
 agp = "8.4.1"
 kotlin = "2.0.0"
 ktor = "2.3.11"
-compose = "1.6.7"
+compose = "1.6.8"
 compose-compiler = "1.5.4"
 compose-material3 = "1.2.1"
+connectivity = "1.1.0"
 androidx-activityCompose = "1.9.0"
 android-compileSdk = "34"
 android-minSdk = "24"
@@ -19,6 +20,8 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 
+connectivity-core = { module = "dev.jordond.connectivity:connectivity-core", version.ref = "connectivity" }
+connectivity-device = { module = "dev.jordond.connectivity:connectivity-device", version.ref = "connectivity" }
 
 ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-serializarion = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor"}

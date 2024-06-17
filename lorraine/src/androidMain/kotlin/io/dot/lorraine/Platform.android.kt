@@ -8,11 +8,11 @@ import androidx.work.WorkManager
 import androidx.work.WorkQuery
 import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.db.getDatabaseBuilder
-import io.dot.lorraine.dsl.LorraineRequest
-import io.dot.lorraine.work.LorraineInfo
-import io.dot.lorraine.work.LorraineWorker
-import io.dot.lorraine.work.toWorkManagerData
 import io.dot.lorraine.db.initDatabase
+import io.dot.lorraine.dsl.LorraineRequest
+import io.dot.lorraine.work.LorraineWorker
+import io.dot.lorraine.work.toLorraineInfo
+import io.dot.lorraine.work.toWorkManagerData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -42,7 +42,7 @@ internal class AndroidPlatform(
 
     override fun enqueue(
         worker: WorkerEntity,
-        type: Lorraine.Type,
+        type: ExistingLorrainePolicy,
         lorraineRequest: LorraineRequest
     ) {
         workManager.enqueue(
@@ -62,19 +62,6 @@ fun Lorraine.initialize(context: Context) {
     initDatabase(db)
 }
 
-actual fun createUUID(): String {
+internal actual fun createUUID(): String {
     return UUID.randomUUID().toString()
 }
-
-internal fun WorkInfo.toLorraineInfo() = LorraineInfo(
-    id = id.toString(),
-    state = when (state) {
-        WorkInfo.State.ENQUEUED -> LorraineInfo.State.ENQUEUED
-        WorkInfo.State.RUNNING -> LorraineInfo.State.RUNNING
-        WorkInfo.State.SUCCEEDED -> LorraineInfo.State.SUCCEEDED
-        WorkInfo.State.FAILED -> LorraineInfo.State.FAILED
-        WorkInfo.State.BLOCKED -> LorraineInfo.State.BLOCKED
-        WorkInfo.State.CANCELLED -> LorraineInfo.State.CANCELLED
-    },
-    tags = tags
-)

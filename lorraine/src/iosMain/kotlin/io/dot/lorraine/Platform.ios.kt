@@ -1,15 +1,16 @@
-@file:OptIn(ExperimentalForeignApi::class)
-
 package io.dot.lorraine
 
 import io.dot.lorraine.db.entity.WorkerEntity
-import io.dot.lorraine.dsl.LorraineRequest
-import io.dot.lorraine.work.LorraineWorker
 import io.dot.lorraine.db.getDatabaseBuilder
 import io.dot.lorraine.db.initDatabase
-import kotlinx.cinterop.ExperimentalForeignApi
+import io.dot.lorraine.dsl.LorraineRequest
+import io.dot.lorraine.work.LorraineWorker
+import platform.CFNetwork.CFHostGetReachability
+import platform.CoreFoundation.CFNotificationCenterAddObserver
 import platform.Foundation.NSOperationQueue
 import platform.Foundation.NSUUID
+import platform.SystemConfiguration.SCNetworkReachabilityCallBack
+import platform.SystemConfiguration.SCNetworkReachabilitySetCallback
 
 internal class IOSPlatform : Platform {
     override val name: String = "ios"
@@ -19,7 +20,7 @@ internal class IOSPlatform : Platform {
 
     override fun enqueue(
         worker: WorkerEntity,
-        type: Lorraine.Type,
+        type: ExistingLorrainePolicy,
         lorraineRequest: LorraineRequest
     ) {
         val queue = queues.getOrElse(worker.queueId) { worker.createQueue() }
@@ -27,7 +28,6 @@ internal class IOSPlatform : Platform {
         queue.addOperation(LorraineWorker(worker.id))
 
         queues[worker.queueId] = queue
-
         // TODO Check if constraint match, then run
     }
 
@@ -48,6 +48,6 @@ fun Lorraine.initialize() {
     initDatabase(db)
 }
 
-actual fun createUUID(): String {
+internal actual fun createUUID(): String {
     return NSUUID().UUIDString
 }

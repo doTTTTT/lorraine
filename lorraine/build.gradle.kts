@@ -56,6 +56,9 @@ kotlin {
 
             implementation("androidx.sqlite:sqlite-bundled:$sqliteVersion")
 
+            implementation(libs.connectivity.core)
+            implementation(libs.connectivity.device)
+
             implementation(kotlin("reflect"))
         }
         commonTest.dependencies {

@@ -7,6 +7,7 @@ import POST_WORKER
 import PUT_WORKER
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.dot.lorraine.ExistingLorrainePolicy
 import io.dot.lorraine.Lorraine
 import io.dot.lorraine.dsl.lorraineOperation
 import io.dot.lorraine.dsl.lorraineRequest
@@ -46,7 +47,7 @@ class TestViewModel : ViewModel() {
         viewModelScope.launch {
             Lorraine.enqueue(
                 uniqueId = "UNIQUE_ID",
-                type = Lorraine.Type.APPEND,
+                type = ExistingLorrainePolicy.APPEND,
                 request = lorraineRequest {
                     identifier = GET_WORKER
                     addTag("I'M A TAG")

@@ -22,9 +22,13 @@ import kotlinx.coroutines.IO
     StringSetConverter::class,
     DataConverter::class
 )
-internal abstract class LorraineDB : RoomDatabase() {
+internal abstract class LorraineDB : RoomDatabase(), DB {
 
     abstract fun workerDao(): WorkerDao
+
+    override fun clearAllTables() {
+        super.clearAllTables()
+    }
 
 }
 
@@ -35,4 +39,10 @@ internal fun initDatabase(db: RoomDatabase.Builder<LorraineDB>) {
         .build()
 
     Lorraine.registerDatabase(database)
+}
+
+// FIXME: Added a hack to resolve below issue:
+// Class 'AppDatabase_Impl' is not abstract and does not implement abstract base class member 'clearAllTables'.
+interface DB {
+    fun clearAllTables() {}
 }

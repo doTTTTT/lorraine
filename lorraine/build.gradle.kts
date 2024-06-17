@@ -20,7 +20,7 @@ room {
 
 kotlin {
 
-    sourceSets.commonMain {
+    sourceSets.iosMain {
         kotlin.srcDir("build/generated/ksp/metadata")
     }
 
@@ -45,9 +45,6 @@ kotlin {
 
     //noinspection UseTomlInstead
     sourceSets {
-        iosMain.dependencies {
-
-        }
         commonMain.dependencies {
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")

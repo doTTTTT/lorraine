@@ -98,10 +98,9 @@ internal class IOSPlatform : Platform {
     }
 
     internal fun constraintChanged() {
-        println("ConstraintChanged")
         scope.launch {
             val workers = Lorraine.dao.getWorkers()
-            
+
             workers.filter {
                 when (it.state) {
                     LorraineInfo.State.BLOCKED,

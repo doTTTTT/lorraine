@@ -1,7 +1,6 @@
 package io.dot.lorraine
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
@@ -9,8 +8,6 @@ import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
 import io.dot.lorraine.db.entity.WorkerEntity
-import io.dot.lorraine.db.getDatabaseBuilder
-import io.dot.lorraine.db.initDatabase
 import io.dot.lorraine.dsl.LorraineOperation
 import io.dot.lorraine.dsl.LorraineRequest
 import io.dot.lorraine.work.LorraineWorker
@@ -101,14 +98,6 @@ internal class AndroidPlatform(
             .build()
     }
 
-}
-
-fun Lorraine.initialize(context: Context) {
-    val db = getDatabaseBuilder(context)
-
-    platform = AndroidPlatform(WorkManager.getInstance(context))
-
-    initDatabase(db)
 }
 
 internal actual fun createUUID(): String {

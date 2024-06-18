@@ -1,5 +1,7 @@
 package io.dot.lorraine
 
+import androidx.room.RoomDatabase
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import io.dot.lorraine.constraint.ConnectivityCheck
 import io.dot.lorraine.db.LorraineDB
 import io.dot.lorraine.db.dao.WorkerDao
@@ -32,7 +34,7 @@ object Lorraine {
     private lateinit var database: LorraineDB
 
     internal lateinit var dao: WorkerDao
-    internal lateinit var platform: Platform
+    private lateinit var platform: Platform
 
     private var loggerEnable: Boolean = false
     private lateinit var logger: Logger
@@ -53,13 +55,20 @@ object Lorraine {
         logger = definition.loggerDefinition?.logger ?: DefaultLogger
         // TODO Find better way
         CoroutineScope(Dispatchers.IO).launch {
-            platform.initialized()
+            platform.initialized() // TODO Find better name
         }
     }
 
-    internal fun registerDatabase(db: LorraineDB) {
-        database = db
-        dao = db.workerDao()
+    internal fun registerPlatform(
+        platform: Platform,
+        db: RoomDatabase.Builder<LorraineDB>
+    ) {
+        this.platform = platform
+        this.database = db.fallbackToDestructiveMigration(dropAllTables = true)
+            .setDriver(BundledSQLiteDriver())
+            .setQueryCoroutineContext(Dispatchers.IO)
+            .build()
+        this.dao = database.workerDao()
     }
 
     /**

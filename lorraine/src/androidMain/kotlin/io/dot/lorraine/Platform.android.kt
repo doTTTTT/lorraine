@@ -47,6 +47,10 @@ internal class AndroidPlatform(
         }
     }
 
+    override suspend fun initialized() {
+
+    }
+
     override suspend fun enqueue(
         worker: WorkerEntity,
         type: ExistingLorrainePolicy,

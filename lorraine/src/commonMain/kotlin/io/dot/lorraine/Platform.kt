@@ -7,6 +7,8 @@ import io.dot.lorraine.dsl.LorraineRequest
 internal interface Platform {
     val name: String
 
+    suspend fun initialized()
+
     suspend fun enqueue(
         worker: WorkerEntity,
         type: ExistingLorrainePolicy,

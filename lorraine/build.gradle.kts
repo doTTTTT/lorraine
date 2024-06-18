@@ -5,6 +5,7 @@ val roomVersion = "2.7.0-alpha04"
 val workVersion = "2.9.0"
 val serializationVersion = "1.7.0"
 val sqliteVersion = "2.5.0-alpha04"
+val okioVersion = "3.8.0"
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform") version "2.0.0"
@@ -75,6 +76,7 @@ kotlin {
             api("androidx.room:room-runtime:$roomVersion")
 
             implementation("androidx.sqlite:sqlite-bundled:$sqliteVersion")
+            implementation("com.squareup.okio:okio:$okioVersion")
 
             implementation(libs.connectivity.core)
             implementation(libs.connectivity.device)

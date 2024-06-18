@@ -14,8 +14,12 @@ import io.dot.lorraine.logger.DefaultLogger
 import io.dot.lorraine.logger.Logger
 import io.dot.lorraine.work.LorraineInfo
 import io.dot.lorraine.work.WorkLorraine
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 
 internal const val LORRAINE_DATABASE = "lorraine.db"
@@ -47,6 +51,10 @@ object Lorraine {
         definitions.putAll(definition.definitions)
         loggerEnable = definition.loggerDefinition?.enable ?: false
         logger = definition.loggerDefinition?.logger ?: DefaultLogger
+        // TODO Find better way
+        CoroutineScope(Dispatchers.IO).launch {
+            platform.initialized()
+        }
     }
 
     internal fun registerDatabase(db: LorraineDB) {
@@ -76,15 +84,14 @@ object Lorraine {
         uniqueId: String,
         operation: LorraineOperation
     ) {
-        val dependencies = mutableSetOf<String>()
         val workers = operation.operations
-            .map {
-                it.request
-                    .toWorkerEntity(
-                        uniqueId = uniqueId,
-                        workDependencies = dependencies
-                    )
-                    .also { worker -> dependencies.add(worker.id) }
+            .fold(mutableListOf<WorkerEntity>()) { list, workOperation ->
+                list += workOperation.request.toWorkerEntity(
+                    uniqueId = uniqueId,
+                    workDependencies = list.map(WorkerEntity::id)
+                        .toSet()
+                )
+                list
             }
 
         dao.insert(workers)

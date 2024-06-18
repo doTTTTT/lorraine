@@ -34,7 +34,7 @@ open class LorraineRequestDefinition internal constructor() {
     }
 
     internal fun build(): LorraineRequest {
-        val identifier = requireNotNull(identifier)
+        val identifier = requireNotNull(identifier) { "Identifier must not be null" }
 
         return LorraineRequest(
             constraints = constraints,

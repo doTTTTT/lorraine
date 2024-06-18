@@ -23,6 +23,8 @@ internal interface Platform {
 
     fun clearAll()
 
+    fun createUUID(): String
+
 }
 
-internal expect fun createUUID(): String
+internal expect fun registerPlatform()

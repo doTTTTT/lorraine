@@ -44,16 +44,16 @@ const val DELETE_WORKER = "DELETE_WORKER"
 @Composable
 @Preview
 fun App() {
+    lorraine {
+        work(GET_WORKER) { GetWorker() }
+        work(POST_WORKER) { PostWorker() }
+        work(PATCH_WORKER) { PatchWorker() }
+        work(PUT_WORKER) { PutWorker() }
+        work(DELETE_WORKER) { DeleteWorker() }
+    }
+
     MaterialTheme {
         val viewModel = remember { TestViewModel() }
-
-        lorraine {
-            work(GET_WORKER) { GetWorker() }
-            work(POST_WORKER) { PostWorker() }
-            work(PATCH_WORKER) { PatchWorker() }
-            work(PUT_WORKER) { PutWorker() }
-            work(DELETE_WORKER) { DeleteWorker() }
-        }
 
         Column(
             modifier = Modifier.fillMaxWidth(),

@@ -34,7 +34,7 @@ object Lorraine {
     private lateinit var database: LorraineDB
 
     internal lateinit var dao: WorkerDao
-    private lateinit var platform: Platform
+    internal lateinit var platform: Platform
 
     private var loggerEnable: Boolean = false
     private lateinit var logger: Logger
@@ -63,12 +63,14 @@ object Lorraine {
         platform: Platform,
         db: RoomDatabase.Builder<LorraineDB>
     ) {
+        println("RegisterPlatform 1")
         this.platform = platform
         this.database = db.fallbackToDestructiveMigration(dropAllTables = true)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
             .build()
         this.dao = database.workerDao()
+        println("RegisterPlatform 2")
     }
 
     /**
@@ -135,7 +137,7 @@ object Lorraine {
         requireNotNull(definitions[identifier]) { "Worker definition not found" }
 
         return WorkerEntity(
-            id = createUUID(),
+            id = platform.createUUID(),
             queueId = uniqueId,
             identifier = identifier,
             state = LorraineInfo.State.ENQUEUED, // TODO Pass to block on the check if constraint are not match

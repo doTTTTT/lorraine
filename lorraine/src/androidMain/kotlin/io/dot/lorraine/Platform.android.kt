@@ -10,6 +10,7 @@ import androidx.work.WorkQuery
 import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.dsl.LorraineOperation
 import io.dot.lorraine.dsl.LorraineRequest
+import io.dot.lorraine.initializer.LorraineInitializer
 import io.dot.lorraine.work.LorraineWorker
 import io.dot.lorraine.work.toLorraineInfo
 import io.dot.lorraine.work.toWorkManagerConstraints
@@ -98,8 +99,13 @@ internal class AndroidPlatform(
             .build()
     }
 
+    override fun createUUID(): String {
+        return UUID.randomUUID().toString()
+    }
+
 }
 
-internal actual fun createUUID(): String {
-    return UUID.randomUUID().toString()
-}
+/**
+ * Stub because, it is initialized by [LorraineInitializer]
+ */
+internal actual fun registerPlatform() {}

@@ -3,6 +3,7 @@ package io.dot.lorraine
 import io.dot.lorraine.constraint.match
 import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.db.entity.toDomain
+import io.dot.lorraine.db.getDatabaseBuilder
 import io.dot.lorraine.dsl.LorraineOperation
 import io.dot.lorraine.dsl.LorraineRequest
 import io.dot.lorraine.dsl.lorraineOperation
@@ -31,13 +32,15 @@ internal class IOSPlatform : Platform {
                     enqueue(
                         worker = workers.first(),
                         type = ExistingLorrainePolicy.APPEND,
-                        lorraineRequest = lorraineRequest {  }
+                        lorraineRequest = lorraineRequest { // TODO Remove
+                            identifier = ""
+                        }
                     )
                 } else {
                     enqueue(
                         uniqueId = queueId,
                         workers = workers.sortedBy { it.workerDependencies.size },
-                        operation = lorraineOperation {  } // TODO Remove
+                        operation = lorraineOperation { } // TODO Remove
                     )
                 }
             }
@@ -98,9 +101,7 @@ internal class IOSPlatform : Platform {
         println("ConstraintChanged")
         scope.launch {
             val workers = Lorraine.dao.getWorkers()
-
-            println("ConstraintChanged workers: ${workers.size}")
-
+            
             workers.filter {
                 when (it.state) {
                     LorraineInfo.State.BLOCKED,
@@ -109,26 +110,26 @@ internal class IOSPlatform : Platform {
                     else -> false
                 }
             }
-                .also { println("ConstraintChanged filtered: ${it.size}") }
                 .forEach { worker ->
-                    println("ConstraintChanged dependencies of ${worker.id}: ${worker.workerDependencies}")
                     if (!worker.workerDependencies.all { id ->
                             workers.find { it.id == id }?.let {
                                 it.state == LorraineInfo.State.SUCCEEDED
                             } != false
-                    }) {
-                        println("ConstraintChanged dependencies not match")
+                        }) {
                         return@forEach
                     }
 
                     if (Lorraine.constraintChecks
                             .match(worker.constraints.toDomain())
                     ) {
-                        println("ConstraintChanged constraint match")
                         (Lorraine.platform as IOSPlatform).suspend(worker.queueId, false)
                     }
                 }
         }
+    }
+
+    override fun createUUID(): String {
+        return NSUUID().UUIDString
     }
 
     private fun createQueue(uniqueId: String): NSOperationQueue {
@@ -140,6 +141,10 @@ internal class IOSPlatform : Platform {
     }
 }
 
-internal actual fun createUUID(): String {
-    return NSUUID().UUIDString
+internal actual fun registerPlatform() {
+    println("RegisterPlatform: ios")
+    Lorraine.registerPlatform(
+        platform = IOSPlatform(),
+        db = getDatabaseBuilder()
+    )
 }

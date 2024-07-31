@@ -34,7 +34,7 @@ internal actual object ConnectivityCheck : ConstraintCheck {
         )
     }
 
-    override suspend fun match(constraints: LorraineConstraints): Boolean {
+    actual override suspend fun match(constraints: LorraineConstraints): Boolean {
         if (!constraints.requireNetwork)
             return true
 

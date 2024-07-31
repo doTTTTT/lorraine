@@ -17,4 +17,8 @@ interface Logger {
 
 }
 
-expect object DefaultLogger : Logger
+expect object DefaultLogger : Logger {
+
+    override fun log(type: Logger.Type, message: String)
+
+}

@@ -19,6 +19,8 @@
 [//]: # ([![GitHub License]&#40;https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat&#41;]&#40;http://www.apache.org/licenses/LICENSE-2.0&#41;)
 [//]: # ([![Contribute with Gitpod]&#40;https://img.shields.io/badge/Contribute%20with-Gitpod-908a85?logo=gitpod&#41;]&#40;https://gitpod.io/#https://github.com/ktorio/ktor&#41;)
 
+TLDR; THIS IS A WORK IN PROGRESS
+
 Lorraine is a work management framework for tasks.
 
 First add the dependency to your project:

@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 val coroutineVersion = "1.9.0-RC"
-val roomVersion = "2.7.0-alpha04"
+val roomVersion = "2.7.0-alpha05"
 val workVersion = "2.9.0"
 val serializationVersion = "1.7.0"
 val sqliteVersion = "2.5.0-alpha04"
@@ -9,12 +9,13 @@ val okioVersion = "3.8.0"
 
 plugins {
     id("org.jetbrains.kotlin.multiplatform") version "2.0.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
 
     id("com.google.devtools.ksp") version "2.0.0-1.0.22"
 
     id("com.android.library") version "8.4.2"
 
-    id("androidx.room") version "2.7.0-alpha04"
+    id("androidx.room") version "2.7.0-alpha05"
 
     kotlin("native.cocoapods").version("2.0.0")
 }

@@ -2,7 +2,10 @@ package io.dot.lorraine.work
 
 import kotlinx.coroutines.CompletableJob
 
-expect abstract class WorkLorraine {
+/**
+ * DO NOT REMOVE default constructor
+ */
+expect abstract class WorkLorraine() {
 
     internal val job: CompletableJob
 

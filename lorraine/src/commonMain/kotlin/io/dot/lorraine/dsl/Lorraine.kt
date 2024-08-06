@@ -9,12 +9,10 @@ import io.dot.lorraine.work.WorkLorraine
 typealias Instantiate<T> = () -> T
 
 fun lorraine(block: LorraineDefinition.() -> Unit) {
-    println("RegisterPlatform: lorraine")
     val lorraineDefinition = LorraineDefinition().apply(block)
 
     registerPlatform()
     Lorraine.initialize(lorraineDefinition)
-    println("RegisterPlatform finished")
 }
 
 class LorraineDefinition internal constructor() {

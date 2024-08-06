@@ -16,7 +16,6 @@ class PostWorker : WorkLorraine() {
 
     override suspend fun doWork(inputData: Data?): LorraineResult {
         return runCatching {
-            println("POST WORKER ?")
             client.post("https://dummyjson.com/test") {
                 contentType(ContentType.Application.Json)
                 setBody(JsonObject(mapOf("test" to JsonPrimitive("value"))))

@@ -63,14 +63,12 @@ object Lorraine {
         platform: Platform,
         db: RoomDatabase.Builder<LorraineDB>
     ) {
-        println("RegisterPlatform 1")
         this.platform = platform
         this.database = db.fallbackToDestructiveMigration(dropAllTables = true)
             .setDriver(BundledSQLiteDriver())
             .setQueryCoroutineContext(Dispatchers.IO)
             .build()
         this.dao = database.workerDao()
-        println("RegisterPlatform 2")
     }
 
     /**

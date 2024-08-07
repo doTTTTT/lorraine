@@ -96,6 +96,7 @@ internal class AndroidPlatform(
         return OneTimeWorkRequestBuilder<LorraineWorker>()
             .setInputData(toWorkManagerData(workerId))
             .setConstraints(constraints.toWorkManagerConstraints())
+            .addTag(workerId)
             .build()
     }
 

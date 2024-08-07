@@ -28,6 +28,7 @@ internal class LorraineWorker(
                     Result.success()
                 },
                 onFailure = {
+                    it.printStackTrace()
                     dao.update(worker.copy(state = LorraineInfo.State.FAILED))
                     Result.failure()
                 }

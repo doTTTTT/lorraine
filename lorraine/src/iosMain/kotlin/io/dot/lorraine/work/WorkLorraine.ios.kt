@@ -1,6 +1,5 @@
 package io.dot.lorraine.work
 
-import io.dot.lorraine.work.Data
 import kotlinx.coroutines.CompletableJob
 import kotlinx.coroutines.SupervisorJob
 

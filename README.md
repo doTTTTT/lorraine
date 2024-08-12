@@ -20,6 +20,8 @@ lorraine = { module = "io.github.dottttt.lorraine:lorraine", version.ref = "lorr
 
 #### Initialization
 
+Initialize Lorraine with workers.
+
 ```kotlin
 const val GET_WORKER = "GET_WORKER"
 
@@ -28,6 +30,8 @@ lorraine {
     ...
 }
 ```
+
+Create workers by extending `WorkLorraine`
 
 ```kotlin
 class GetWorker : WorkLorraine() {
@@ -39,6 +43,8 @@ class GetWorker : WorkLorraine() {
     
 }
 ```
+
+Launch your worker
 
 ```kotlin
 Lorraine.enqueue(

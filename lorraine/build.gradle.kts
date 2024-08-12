@@ -1,10 +1,12 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 val coroutineVersion = "1.9.0-RC"
-val roomVersion = "2.7.0-alpha05"
+val roomVersion = "2.7.0-alpha06"
 val workVersion = "2.9.0"
 val serializationVersion = "1.7.0"
-val sqliteVersion = "2.5.0-alpha04"
+val sqliteVersion = "2.5.0-alpha06"
 val okioVersion = "3.8.0"
 
 plugins {
@@ -15,26 +17,31 @@ plugins {
 
     id("com.android.library") version "8.4.2"
 
-    id("androidx.room") version "2.7.0-alpha05"
+    id("androidx.room") version "2.7.0-alpha06"
+
+    `maven-publish`
 
     kotlin("native.cocoapods").version("2.0.0")
 }
 
-room {
-    schemaDirectory("$projectDir/schemas")
-}
+group = "fr.dot.lorraine"
+version = "0.0.1"
 
 kotlin {
 
-    sourceSets.iosMain {
-        kotlin.srcDir("build/generated/ksp/metadata")
+//    sourceSets.iosMain {
+//        kotlin.srcDir("build/generated/ksp/metadata")
+//    }
+
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
         }
     }
 
@@ -96,16 +103,20 @@ kotlin {
     }
 }
 
-dependencies {
-    add("kspCommonMainMetadata", "androidx.room:room-compiler:$roomVersion") // Run KSP on [commonMain] code
-    add("kspAndroid", "androidx.room:room-compiler:$roomVersion")
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
-    if (name != "kspCommonMainKotlinMetadata" ) {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-}
+//dependencies {
+//    add("kspCommonMainMetadata", "androidx.room:room-compiler:$roomVersion") // Run KSP on [commonMain] code
+//    add("kspAndroid", "androidx.room:room-compiler:$roomVersion")
+//}
+
+//tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
+//    if (name != "kspCommonMainKotlinMetadata" ) {
+//        dependsOn("kspCommonMainKotlinMetadata")
+//    }
+//}
 
 android {
     namespace = "fr.modulotech.workmanager"
@@ -116,5 +127,13 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+
+        }
     }
 }

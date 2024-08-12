@@ -22,4 +22,5 @@ class GetWorker : WorkLorraine() {
                 onFailure = { LorraineResult.failure() }
             )
     }
+    
 }

@@ -1,5 +1,6 @@
 package io.dot.lorraine.db
 
+import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
@@ -18,9 +19,10 @@ import io.dot.lorraine.db.entity.WorkerEntity
     StringSetConverter::class,
     DataConverter::class
 )
-internal abstract class LorraineDB : RoomDatabase(), DB {
+@ConstructedBy(LorraineContrustor::class)
+abstract class LorraineDB : RoomDatabase(), DB {
 
-    abstract fun workerDao(): WorkerDao
+    internal abstract fun workerDao(): WorkerDao
 
 }
 

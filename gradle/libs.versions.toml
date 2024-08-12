@@ -7,6 +7,7 @@ compose-compiler = "1.5.4"
 compose-material3 = "1.2.1"
 connectivity = "1.1.0"
 androidx-activityCompose = "1.9.0"
+lorraine = "0.0.1"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
@@ -30,6 +31,8 @@ ktor-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = 
 ktor-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktor-contentnegociation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor"}
+
+#lorraine = { module = "fr.dot.lorraine:lorraine", version.ref = "lorraine" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

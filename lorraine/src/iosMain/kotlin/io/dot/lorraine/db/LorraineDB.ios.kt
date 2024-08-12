@@ -8,9 +8,6 @@ import platform.Foundation.NSHomeDirectory
 internal fun getDatabaseBuilder(): RoomDatabase.Builder<LorraineDB> {
     val dbFilePath = NSHomeDirectory() + "/$LORRAINE_DATABASE"
 
-    return Room.databaseBuilder<LorraineDB>(
-        name = dbFilePath,
-        factory =  { LorraineDB::class.instantiateImpl() }
-    )
+    return Room.databaseBuilder<LorraineDB>(name = dbFilePath)
 }
 

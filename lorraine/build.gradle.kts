@@ -93,10 +93,10 @@ room {
 }
 
 dependencies {
-    add(
-        "kspCommonMainMetadata",
-        libs.androidx.room.compiler
-    ) // Run KSP on [commonMain] code
+//    add(
+//        "kspCommonMainMetadata",
+//        libs.androidx.room.compiler
+//    ) // Run KSP on [commonMain] code
     add("kspAndroid", libs.androidx.room.compiler)
 }
 
@@ -110,38 +110,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-}
-
-tasks.named("sourcesJar") {
-    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
-}
-
-tasks.named("iosArm64SourcesJar") {
-    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
-}
-
-tasks.named("iosX64SourcesJar") {
-    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
-}
-
-tasks.named("iosSimulatorArm64SourcesJar") {
-    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
-}
-
-tasks.named("iosSimulatorArm64SourcesJar") {
-    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
-}
-
-tasks.named("compileKotlinIosArm64") {
-    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
-}
-
-tasks.named("compileKotlinIosSimulatorArm64") {
-    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
-}
-
-tasks.named("compileKotlinIosX64") {
-    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
 }
 
 mavenPublishing {

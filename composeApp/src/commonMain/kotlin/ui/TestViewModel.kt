@@ -50,6 +50,9 @@ class TestViewModel : ViewModel() {
                 uniqueId = "UNIQUE_ID",
                 type = ExistingLorrainePolicy.APPEND,
                 request = lorraineRequest {
+                    constraints {
+                        requiredNetwork = true
+                    }
                     identifier = when (action.methodType) {
                         MethodType.GET -> GET_WORKER
                         MethodType.POST -> POST_WORKER

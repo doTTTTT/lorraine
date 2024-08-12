@@ -71,10 +71,9 @@ Report any issue on this GitHub repository.
 
 ## Inspirations
 
-- Koin: https://github.com/InsertKoinIO/koin
-
-- Android: WorkManager
-- iOS: NSOperation
+- Koin (for dsl): https://github.com/InsertKoinIO/koin
+- WorkManager (for Android): https://developer.android.com/develop/background-work/background-tasks/persistent/getting-started
+- NSOperation (for iOS): https://developer.apple.com/documentation/foundation/nsoperation
 
 ## Contributing
 

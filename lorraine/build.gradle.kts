@@ -15,7 +15,7 @@ plugins {
 
     id("com.google.devtools.ksp") version "2.0.0-1.0.24"
 
-    id("com.android.library") version "8.4.2"
+    id("com.android.library") version "8.4.1"
 
     id("androidx.room") version "2.7.0-alpha06"
 
@@ -29,9 +29,9 @@ version = "0.0.1"
 
 kotlin {
 
-//    sourceSets.iosMain {
-//        kotlin.srcDir("build/generated/ksp/metadata")
-//    }
+    sourceSets.nativeMain {
+        kotlin.srcDir("build/generated/ksp/metadata")
+    }
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     compilerOptions {
@@ -57,8 +57,6 @@ kotlin {
     }
 
     cocoapods {
-        // Required properties
-        // Specify the required Pod version here. Otherwise, the Gradle project version is used.
         version = "1.0"
         summary = "Some description for a Kotlin/Native module"
         homepage = "Link to a Kotlin/Native module homepage"
@@ -107,16 +105,13 @@ room {
     schemaDirectory("$projectDir/schemas")
 }
 
-//dependencies {
-//    add("kspCommonMainMetadata", "androidx.room:room-compiler:$roomVersion") // Run KSP on [commonMain] code
-//    add("kspAndroid", "androidx.room:room-compiler:$roomVersion")
-//}
-
-//tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
-//    if (name != "kspCommonMainKotlinMetadata" ) {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//}
+dependencies {
+    add(
+        "kspCommonMainMetadata",
+        "androidx.room:room-compiler:$roomVersion"
+    ) // Run KSP on [commonMain] code
+    add("kspAndroid", "androidx.room:room-compiler:$roomVersion")
+}
 
 android {
     namespace = "fr.modulotech.workmanager"
@@ -128,6 +123,38 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+}
+
+tasks.named("sourcesJar") {
+    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
+}
+
+tasks.named("iosArm64SourcesJar") {
+    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
+}
+
+tasks.named("iosX64SourcesJar") {
+    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
+}
+
+tasks.named("iosSimulatorArm64SourcesJar") {
+    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
+}
+
+tasks.named("iosSimulatorArm64SourcesJar") {
+    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
+}
+
+tasks.named("compileKotlinIosArm64") {
+    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
+}
+
+tasks.named("compileKotlinIosSimulatorArm64") {
+    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
+}
+
+tasks.named("compileKotlinIosX64") {
+    dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
 }
 
 publishing {

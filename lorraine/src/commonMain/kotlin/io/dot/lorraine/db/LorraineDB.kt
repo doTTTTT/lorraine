@@ -19,7 +19,7 @@ import io.dot.lorraine.db.entity.WorkerEntity
     StringSetConverter::class,
     DataConverter::class
 )
-@ConstructedBy(LorraineContrustor::class)
+@ConstructedBy(LorraineConstructor::class)
 abstract class LorraineDB : RoomDatabase(), DB {
 
     internal abstract fun workerDao(): WorkerDao

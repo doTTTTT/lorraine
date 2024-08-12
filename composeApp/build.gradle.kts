@@ -3,13 +3,13 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
+    alias(libs.plugins.android.application)
+
+    alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.compose.core)
     alias(libs.plugins.kotlin.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
-
-    kotlin("native.cocoapods") version "2.0.0"
+    alias(libs.plugins.kotlin.cocoapods)
 }
 
 kotlin {
@@ -56,7 +56,7 @@ kotlin {
         }
         commonMain.dependencies {
 
-            implementation(libs.lorraine)
+            implementation(projects.lorraine)
 
             implementation(compose.runtime)
             implementation(compose.foundation)

@@ -3,28 +3,18 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
-val coroutineVersion = "1.9.0-RC"
-val roomVersion = "2.7.0-alpha05"
-val workVersion = "2.9.0"
-val serializationVersion = "1.7.0"
-val sqliteVersion = "2.5.0-alpha05"
-val okioVersion = "3.8.0"
-
 plugins {
-    id("org.jetbrains.kotlin.multiplatform") version "2.0.0"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
+    alias(libs.plugins.android.library)
 
-    id("com.google.devtools.ksp") version "2.0.0-1.0.24"
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.cocoapods)
 
-    id("com.android.library") version "8.4.1"
+    alias(libs.plugins.ksp)
 
-    id("androidx.room") version "2.7.0-alpha05"
+    alias(libs.plugins.androidx.room)
 
-    kotlin("native.cocoapods").version("2.0.0")
-
-    id("com.vanniktech.maven.publish") version "0.28.0"
-
-    `maven-publish`
+    alias(libs.plugins.publish)
 }
 
 group = "io.github.dottttt.lorraine"
@@ -54,15 +44,15 @@ kotlin {
         iosSimulatorArm64()
     ).forEach {
         it.binaries.framework {
-            baseName = "kmp-workmanager"
+            baseName = "lorraine"
             isStatic = true
         }
     }
 
     cocoapods {
-        version = "1.0"
-        summary = "Some description for a Kotlin/Native module"
-        homepage = "Link to a Kotlin/Native module homepage"
+        version = "0.0.1"
+        summary = "NO_DESCRIPTION"
+        homepage = "NO_HOMEPAGE"
         ios.deploymentTarget = "15.0"
 
         framework {
@@ -76,30 +66,24 @@ kotlin {
         xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = NativeBuildType.RELEASE
     }
 
-    //noinspection UseTomlInstead
     sourceSets {
         commonMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
-            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+            implementation(libs.kotlin.coroutine.core)
+            implementation(libs.kotlin.serialization.core)
 
-            api("androidx.room:room-runtime:$roomVersion")
+            implementation(libs.androidx.room.runtime)
 
-            implementation("androidx.sqlite:sqlite-bundled:$sqliteVersion")
-            implementation("com.squareup.okio:okio:$okioVersion")
+            implementation(libs.androidx.sqlite)
 
-//            implementation(libs.connectivity.core)
-//            implementation(libs.connectivity.device)
-
-            implementation(kotlin("reflect"))
+            implementation(libs.squareup.okio)
         }
+
         commonTest.dependencies {
-//            implementation(libs.kotlin.test)
+            implementation(libs.bundles.test.unit)
         }
+
         androidMain.dependencies {
-            implementation("androidx.work:work-runtime-ktx:$workVersion")
-        }
-        iosMain.dependencies {
-//            implementation(libs.connectivity.apple)
+            implementation(libs.androidx.work.runtime)
         }
     }
 }
@@ -111,9 +95,9 @@ room {
 dependencies {
     add(
         "kspCommonMainMetadata",
-        "androidx.room:room-compiler:$roomVersion"
+        libs.androidx.room.compiler
     ) // Run KSP on [commonMain] code
-    add("kspAndroid", "androidx.room:room-compiler:$roomVersion")
+    add("kspAndroid", libs.androidx.room.compiler)
 }
 
 android {
@@ -195,12 +179,4 @@ mavenPublishing {
 
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
-}
-
-publishing {
-    repositories {
-        maven {
-
-        }
-    }
 }

@@ -16,9 +16,42 @@ lorraine = "0.0.1"
 lorraine = { module = "io.github.dottttt.lorraine:lorraine", version.ref = "lorraine" }
 ```
 
-## Start using Lorraine
+## Using it
 
+#### Initialization
 
+```kotlin
+const val GET_WORKER = "GET_WORKER"
+
+lorraine {
+    work(GET_WORKER) { GetWorker() }
+    ...
+}
+```
+
+```kotlin
+class GetWorker : WorkLorraine() {
+
+    override suspend fun doWork(inputData: Data?): LorraineResult {
+        ...
+        return LorraineResult.success() / LorraineResult.retry() / LorraineResult.failure()
+    }
+    
+}
+```
+
+```kotlin
+Lorraine.enqueue(
+    uniqueId = "UNIQUE_ID",
+    type = ExistingLorrainePolicy.APPEND,
+    request = lorraineRequest {
+        identifier = GET_WORKER
+        constraints { 
+            requiredNetwork = true
+        }
+    }
+)
+```
 
 ## Principles
 
@@ -31,6 +64,8 @@ lorraine = { module = "io.github.dottttt.lorraine:lorraine", version.ref = "lorr
 Report any issue on this GitHub repository.
 
 ## Inspirations
+
+- Koin: https://github.com/InsertKoinIO/koin
 
 - Android: WorkManager
 - iOS: NSOperation

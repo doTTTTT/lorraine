@@ -1,11 +1,11 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'lorraine'
-    spec.version                  = '1.0'
-    spec.homepage                 = 'Link to a Kotlin/Native module homepage'
+    spec.version                  = '0.0.1'
+    spec.homepage                 = 'NO_HOMEPAGE'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'Some description for a Kotlin/Native module'
+    spec.summary                  = 'NO_DESCRIPTION'
     spec.vendored_frameworks      = 'build/cocoapods/framework/Lorraine.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target    = '15.0'

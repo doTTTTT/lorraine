@@ -14,37 +14,18 @@ plugins {
 
 kotlin {
     cocoapods {
-        // Required properties
-        // Specify the required Pod version here. Otherwise, the Gradle project version is used.
-        version = "1.0"
+        version = "0.0.1"
         summary = "Some description for a Kotlin/Native module"
         homepage = "Link to a Kotlin/Native module homepage"
-
-        // Optional properties
-        // Configure the Pod name here instead of changing the Gradle project name
-        name = "MyCocoaPod"
+        name = "Lorraine"
 
         framework {
-            // Required properties
-            // Framework name configuration. Use this property instead of deprecated 'frameworkName'
-            baseName = "MyFramework"
+            baseName = "Lorraine"
             ios.deploymentTarget = "15.0"
-            // Optional properties
-            // Specify the framework linking type. It's dynamic by default.
             isStatic = false
-            // Dependency export
-//            export(project(":anotherKMMModule"))
-            transitiveExport = false // This is default.
-            // Bitcode embedding
+            transitiveExport = false
         }
 
-//        pod("DatadogSDKBridge") {
-//            version = "0.5.5"
-//            extraOpts += listOf("-compiler-option", "-fmodules")
-//        }
-//        pod("DatadogLogs")
-
-        // Maps custom Xcode configuration to NativeBuildType
         xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = NativeBuildType.DEBUG
         xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = NativeBuildType.RELEASE
     }
@@ -94,7 +75,7 @@ kotlin {
             implementation(libs.kotlin.lifecycle.viewmodel)
             implementation(libs.kotlin.navigation.compose)
         }
-        
+
         iosMain.dependencies {
             implementation(libs.ktor.darwin)
         }

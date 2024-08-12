@@ -39,7 +39,7 @@ ktor-contentnegociation = { group = "io.ktor", name = "ktor-client-content-negot
 kotlin-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycleViewmodel" }
 kotlin-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 
-lorraine = { module = "fr.dot.lorraine:lorraine", version.ref = "lorraine" }
+lorraine = { module = "io.github.dottttt.lorraine:lorraine", version.ref = "lorraine" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

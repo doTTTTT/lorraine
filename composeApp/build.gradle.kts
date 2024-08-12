@@ -91,9 +91,10 @@ kotlin {
             implementation(libs.ktor.contentnegociation)
             implementation(libs.ktor.logging)
 
-            implementation("org.jetbrains.androidx.lifecycle:lifecycle-viewmodel:2.8.0")
-            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.7.0-alpha07")
+            implementation(libs.kotlin.lifecycle.viewmodel)
+            implementation(libs.kotlin.navigation.compose)
         }
+        
         iosMain.dependencies {
             implementation(libs.ktor.darwin)
         }

@@ -7,14 +7,16 @@ compose-compiler = "1.5.4"
 compose-material3 = "1.2.1"
 connectivity = "1.1.0"
 androidx-activityCompose = "1.9.0"
+lifecycleViewmodel = "2.8.0"
 lorraine = "0.0.1"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
+navigationCompose = "2.7.0-alpha07"
 
 [libraries]
-kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }
@@ -25,12 +27,17 @@ connectivity-core = { module = "dev.jordond.connectivity:connectivity-core", ver
 connectivity-device = { module = "dev.jordond.connectivity:connectivity-device", version.ref = "connectivity" }
 connectivity-apple = { module = "dev.jordond.connectivity:connectivity-apple", version.ref = "connectivity" }
 
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+
 ktor-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-serializarion = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor"}
 ktor-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
 ktor-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "ktor" }
 ktor-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktor-contentnegociation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor"}
+
+kotlin-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "lifecycleViewmodel" }
+kotlin-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 
 lorraine = { module = "fr.dot.lorraine:lorraine", version.ref = "lorraine" }
 

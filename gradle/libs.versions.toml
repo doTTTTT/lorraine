@@ -32,7 +32,7 @@ ktor-okhttp = { group = "io.ktor", name = "ktor-client-okhttp", version.ref = "k
 ktor-darwin = { group = "io.ktor", name = "ktor-client-darwin", version.ref = "ktor" }
 ktor-contentnegociation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor"}
 
-#lorraine = { module = "fr.dot.lorraine:lorraine", version.ref = "lorraine" }
+lorraine = { module = "fr.dot.lorraine:lorraine", version.ref = "lorraine" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

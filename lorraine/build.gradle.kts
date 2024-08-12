@@ -1,12 +1,13 @@
+import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
 val coroutineVersion = "1.9.0-RC"
-val roomVersion = "2.7.0-alpha06"
+val roomVersion = "2.7.0-alpha05"
 val workVersion = "2.9.0"
 val serializationVersion = "1.7.0"
-val sqliteVersion = "2.5.0-alpha06"
+val sqliteVersion = "2.5.0-alpha05"
 val okioVersion = "3.8.0"
 
 plugins {
@@ -17,14 +18,16 @@ plugins {
 
     id("com.android.library") version "8.4.1"
 
-    id("androidx.room") version "2.7.0-alpha06"
-
-    `maven-publish`
+    id("androidx.room") version "2.7.0-alpha05"
 
     kotlin("native.cocoapods").version("2.0.0")
+
+    id("com.vanniktech.maven.publish") version "0.28.0"
+
+    `maven-publish`
 }
 
-group = "fr.dot.lorraine"
+group = "io.github.dottttt.lorraine"
 version = "0.0.1"
 
 kotlin {
@@ -155,6 +158,43 @@ tasks.named("compileKotlinIosSimulatorArm64") {
 
 tasks.named("compileKotlinIosX64") {
     dependsOn(tasks.named("kspCommonMainKotlinMetadata"))
+}
+
+mavenPublishing {
+    coordinates(
+        groupId = "io.github.dottttt.lorraine",
+        artifactId = "lorraine",
+        version = "0.0.1"
+    )
+
+    pom {
+        name.set("KMP Library for work management")
+        description.set("Target Android & iOS")
+        inceptionYear.set("2024")
+        url.set("https://github.com/doTTTTT/lorraine")
+
+        licenses {
+            license {
+                name.set("MIT")
+                url.set("https://opensource.org/licenses/MIT")
+            }
+        }
+
+        developers {
+            developer {
+                id.set("dot")
+                name.set("Raphael Teyssandier")
+                email.set("raphael.teyssandier@gmail.com")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/doTTTTT/lorraine")
+        }
+    }
+
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
 }
 
 publishing {

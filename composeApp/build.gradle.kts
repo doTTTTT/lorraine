@@ -74,13 +74,15 @@ kotlin {
             implementation(libs.ktor.okhttp)
         }
         commonMain.dependencies {
+
+            implementation(libs.lorraine)
+
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
-            implementation(projects.lorraine)
 
             implementation(compose.material3)
 

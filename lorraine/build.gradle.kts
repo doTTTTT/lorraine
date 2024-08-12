@@ -3,13 +3,6 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
 
-val coroutineVersion = "1.9.0-RC"
-val roomVersion = "2.7.0-alpha06"
-val workVersion = "2.9.1"
-val serializationVersion = "1.7.0"
-val sqliteVersion = "2.5.0-alpha06"
-val okioVersion = "3.8.0"
-
 plugins {
     alias(libs.plugins.android.library)
 
@@ -102,9 +95,9 @@ room {
 dependencies {
     add(
         "kspCommonMainMetadata",
-        "androidx.room:room-compiler:$roomVersion"
+        libs.androidx.room.compiler
     ) // Run KSP on [commonMain] code
-    add("kspAndroid", "androidx.room:room-compiler:$roomVersion")
+    add("kspAndroid", libs.androidx.room.compiler)
 }
 
 android {

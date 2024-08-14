@@ -8,9 +8,11 @@ Lorraine is a work management framework for tasks.
 
 First add the dependency to your project:
 
+Lastest vesion: https://mvnrepository.com/artifact/io.github.dottttt.lorraine/lorraine
+
 ```toml
 [versions]
-lorraine = "0.0.1"
+lorraine = "$lastestversion"
 
 [libraries]
 lorraine = { module = "io.github.dottttt.lorraine:lorraine", version.ref = "lorraine" }

@@ -2,6 +2,8 @@
 
 # Lorraine
 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.dottttt.lorraine/lorraine/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.dottttt.lorraine/lorraine)
+
 Lorraine is a work management framework for tasks.
 
 ### Get started

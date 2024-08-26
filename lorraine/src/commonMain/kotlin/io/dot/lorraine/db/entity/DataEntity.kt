@@ -2,6 +2,7 @@ package io.dot.lorraine.db.entity
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 private const val KEY = "key"
 private const val VALUE = "value"
@@ -50,7 +51,9 @@ internal data class StringData(
 
 @Serializable
 internal data object UnknownData : DataEntity<Any> {
-    override val key: String
-        get() = ""
+    @Transient
+    override val key: String = ""
+
+    @Transient
     override val value: Any = Any()
 }

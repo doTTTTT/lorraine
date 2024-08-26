@@ -1,5 +1,7 @@
 ### THIS IS A WORK IN PROGRESS
 
+Subject to change.
+
 # Lorraine
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.dottttt.lorraine/lorraine/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.dottttt.lorraine/lorraine)

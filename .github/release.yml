@@ -5,7 +5,7 @@ changelog:
         - 'feature'
     - title: 🛠 Fixes
       labels:
-        - 'fix'
+        - 'bug'
     - title: 👒 Dependencies
       labels:
         - dependencies

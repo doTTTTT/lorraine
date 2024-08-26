@@ -1,7 +1,8 @@
 name: Publish Artifacts
 on:
-  push:
-    branches: [ "main" ]
+  pull_request:
+    branches:
+      - 'releases/**'
 jobs:
   build:
     name: Build

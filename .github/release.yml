@@ -2,7 +2,7 @@ changelog:
   categories:
     - title: 🏕 Features
       labels:
-        - 'feature'
+        - 'enhancement'
     - title: 🛠 Fixes
       labels:
         - 'bug'

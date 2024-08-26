@@ -60,6 +60,9 @@ class TestViewModel : ViewModel() {
                         MethodType.PATCH -> PATCH_WORKER
                         MethodType.DELETE -> DELETE_WORKER
                     }
+                    data {
+                        put("key", "balue")
+                    }
                     addTag("I'M A TAG")
                 }
             )

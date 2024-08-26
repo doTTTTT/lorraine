@@ -14,15 +14,12 @@ import io.dot.lorraine.work.Data
 import io.dot.lorraine.work.workData
 import kotlinx.serialization.encodeToString
 
-/**
- * Rethink way to store data
- */
 @TypeConverters
 internal class DataConverter {
 
     @TypeConverter
     fun typeFromJson(value: String): Data {
-        val list = Lorraine.json.decodeFromString<List<DataEntity<*>>>(value)
+        val list = Lorraine.json.decodeFromString<List<DataEntity>>(value)
 
         return workData {
             list.forEach { entity ->
@@ -40,40 +37,39 @@ internal class DataConverter {
 
     @TypeConverter
     fun typeToJson(data: Data): String {
-        return Lorraine.json.encodeToString(
-            data.map
-                .mapValues { entry ->
-                    when (val value = entry.value) {
-                        is Int -> IntData(
-                            key = entry.key,
-                            value = value
-                        )
+        val mapped: List<DataEntity> = data.map
+            .mapNotNull { entry ->
+                when (val value = entry.value) {
+                    is Int -> IntData(
+                        key = entry.key,
+                        value = value
+                    )
 
-                        is Long -> LongData(
-                            key = entry.key,
-                            value = value
-                        )
+                    is Long -> LongData(
+                        key = entry.key,
+                        value = value
+                    )
 
-                        is Float -> FloatData(
-                            key = entry.key,
-                            value = value
-                        )
+                    is Float -> FloatData(
+                        key = entry.key,
+                        value = value
+                    )
 
-                        is Double -> DoubleData(
-                            key = entry.key,
-                            value = value
-                        )
+                    is Double -> DoubleData(
+                        key = entry.key,
+                        value = value
+                    )
 
-                        is String -> StringData(
-                            key = entry.key,
-                            value = value
-                        )
+                    is String -> StringData(
+                        key = entry.key,
+                        value = value
+                    )
 
-                        else -> null
-                    }
+                    else -> null
                 }
-                .filterValues { it?.value != null }
-        )
+            }
+
+        return Lorraine.json.encodeToString(mapped)
     }
 
 }

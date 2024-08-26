@@ -17,8 +17,10 @@ plugins {
     alias(libs.plugins.publish)
 }
 
+val lorraineVersion = "0.1.0"
+
 group = "io.github.dottttt.lorraine"
-version = "0.0.3"
+version = lorraineVersion
 
 kotlin {
 
@@ -50,7 +52,7 @@ kotlin {
     }
 
     cocoapods {
-        version = "0.0.3"
+        version = lorraineVersion
         summary = "NO_DESCRIPTION"
         homepage = "NO_HOMEPAGE"
         ios.deploymentTarget = "15.0"
@@ -151,7 +153,7 @@ mavenPublishing {
     coordinates(
         groupId = "io.github.dottttt.lorraine",
         artifactId = "lorraine",
-        version = "0.0.3"
+        version = lorraineVersion
     )
 
     pom {

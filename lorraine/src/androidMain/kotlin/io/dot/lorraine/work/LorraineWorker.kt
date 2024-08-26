@@ -23,9 +23,23 @@ internal class LorraineWorker(
             workerDefinition().doWork(worker.inputData)
         }
             .fold(
-                onSuccess = {
-                    dao.update(worker.copy(state = LorraineInfo.State.SUCCEEDED))
-                    Result.success()
+                onSuccess = { result ->
+                    when (result) {
+                        is LorraineResult.Failure -> {
+                            dao.update(worker.copy(state = LorraineInfo.State.FAILED))
+                            Result.failure()
+                        }
+
+                        is LorraineResult.Retry -> {
+                            dao.update(worker.copy(state = LorraineInfo.State.ENQUEUED))
+                            Result.retry()
+                        }
+
+                        is LorraineResult.Success -> {
+                            dao.update(worker.copy(state = LorraineInfo.State.SUCCEEDED))
+                            Result.success()
+                        }
+                    }
                 },
                 onFailure = {
                     it.printStackTrace()

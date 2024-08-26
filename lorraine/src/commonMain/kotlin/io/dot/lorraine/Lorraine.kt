@@ -5,6 +5,13 @@ import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import io.dot.lorraine.constraint.ConnectivityCheck
 import io.dot.lorraine.db.LorraineDB
 import io.dot.lorraine.db.dao.WorkerDao
+import io.dot.lorraine.db.entity.DataEntity
+import io.dot.lorraine.db.entity.DoubleData
+import io.dot.lorraine.db.entity.FloatData
+import io.dot.lorraine.db.entity.IntData
+import io.dot.lorraine.db.entity.LongData
+import io.dot.lorraine.db.entity.StringData
+import io.dot.lorraine.db.entity.UnknownData
 import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.db.entity.toEntity
 import io.dot.lorraine.db.entity.toInfo
@@ -23,6 +30,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 
 internal const val LORRAINE_DATABASE = "lorraine.db"
 
@@ -46,6 +56,17 @@ object Lorraine {
 
     internal val json = Json {
         ignoreUnknownKeys = true
+        serializersModule = SerializersModule {
+            polymorphic(DataEntity::class) {
+                subclass(IntData::class)
+                subclass(LongData::class)
+                subclass(DoubleData::class)
+                subclass(FloatData::class)
+                subclass(StringData::class)
+
+                defaultDeserializer { UnknownData.serializer() }
+            }
+        }
     }
 
     internal fun initialize(definition: LorraineDefinition) {

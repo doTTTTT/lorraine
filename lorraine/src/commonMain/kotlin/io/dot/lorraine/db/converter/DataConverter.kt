@@ -3,10 +3,16 @@ package io.dot.lorraine.db.converter
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import io.dot.lorraine.Lorraine
+import io.dot.lorraine.db.entity.DataEntity
+import io.dot.lorraine.db.entity.DoubleData
+import io.dot.lorraine.db.entity.FloatData
+import io.dot.lorraine.db.entity.IntData
+import io.dot.lorraine.db.entity.LongData
+import io.dot.lorraine.db.entity.StringData
+import io.dot.lorraine.db.entity.UnknownData
 import io.dot.lorraine.work.Data
+import io.dot.lorraine.work.workData
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.contentOrNull
 
 /**
  * Rethink way to store data
@@ -16,9 +22,20 @@ internal class DataConverter {
 
     @TypeConverter
     fun typeFromJson(value: String): Data {
-        val map = Lorraine.json.decodeFromString<Map<String, JsonPrimitive?>>(value)
+        val list = Lorraine.json.decodeFromString<List<DataEntity<*>>>(value)
 
-        return Data(map.mapValues { entry -> entry.value?.contentOrNull })
+        return workData {
+            list.forEach { entity ->
+                when (entity) {
+                    is DoubleData -> put(entity.key, entity.value)
+                    is FloatData -> put(entity.key, entity.value)
+                    is IntData -> put(entity.key, entity.value)
+                    is LongData -> put(entity.key, entity.value)
+                    is StringData -> put(entity.key, entity.value)
+                    UnknownData -> Unit
+                }
+            }
+        }
     }
 
     @TypeConverter
@@ -27,13 +44,35 @@ internal class DataConverter {
             data.map
                 .mapValues { entry ->
                     when (val value = entry.value) {
-                        is Int -> JsonPrimitive(value)
-                        is String -> JsonPrimitive(value)
-                        is Double -> JsonPrimitive(value)
+                        is Int -> IntData(
+                            key = entry.key,
+                            value = value
+                        )
+
+                        is Long -> LongData(
+                            key = entry.key,
+                            value = value
+                        )
+
+                        is Float -> FloatData(
+                            key = entry.key,
+                            value = value
+                        )
+
+                        is Double -> DoubleData(
+                            key = entry.key,
+                            value = value
+                        )
+
+                        is String -> StringData(
+                            key = entry.key,
+                            value = value
+                        )
 
                         else -> null
                     }
                 }
+                .filterValues { it?.value != null }
         )
     }
 

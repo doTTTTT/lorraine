@@ -37,11 +37,11 @@ internal data class WorkerEntity(
 
     @ColumnInfo(name = "input_data")
     @TypeConverters(DataConverter::class)
-    val inputData: Data?,
+    val inputData: Data? = null,
 
     @ColumnInfo(name = "output_data")
     @TypeConverters(DataConverter::class)
-    val outputData: Data?,
+    val outputData: Data? = null,
 
     @Embedded(prefix = "constraints_")
     val constraints: ConstraintEntity

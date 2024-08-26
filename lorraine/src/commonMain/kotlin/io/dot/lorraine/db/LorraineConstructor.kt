@@ -1,5 +1,5 @@
 package io.dot.lorraine.db
 
-import androidx.room.RoomDatabaseConstructor
+//import androidx.room.RoomDatabaseConstructor
 
-expect object LorraineConstructor : RoomDatabaseConstructor<LorraineDB>
+//expect object LorraineConstructor : RoomDatabaseConstructor<LorraineDB>

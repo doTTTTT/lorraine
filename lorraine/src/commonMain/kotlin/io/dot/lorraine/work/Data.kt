@@ -1,8 +1,24 @@
 package io.dot.lorraine.work
 
 data class Data internal constructor(
-    val map: Map<String, Any?>
-)
+    internal val map: Map<String, Any?>
+) {
+
+    fun getInt(key: String) = map[key]?.toString()
+        ?.toIntOrNull()
+
+    fun getLong(key: String) = map[key]?.toString()
+        ?.toLongOrNull()
+
+    fun getFloat(key: String) = map[key]?.toString()
+        ?.toFloatOrNull()
+
+    fun getDouble(key: String) = map[key]?.toString()
+        ?.toDoubleOrNull()
+
+    fun getString(key: String) = map[key]?.toString()
+
+}
 
 fun dataOf(vararg arg: Pair<String, Any?>): Data {
     val definition = DataDefinition()

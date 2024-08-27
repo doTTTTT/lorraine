@@ -65,12 +65,6 @@ Lorraine.enqueue(
 )
 ```
 
-## Principles
-
-## Documentation
-
-
-
 ## Reporting Issues / Support
 
 Report any issue on this GitHub repository.
@@ -83,4 +77,4 @@ Report any issue on this GitHub repository.
 
 ## Contributing
 
-[//]: # (Please see [the contribution guide]&#40;CONTRIBUTING.md&#41; and the [Code of conduct]&#40;CODE_OF_CONDUCT.md&#41; before contributing.)
+Feel free to open pull request

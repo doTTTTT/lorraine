@@ -4,6 +4,9 @@ import io.dot.lorraine.work.Data
 import io.dot.lorraine.work.DataDefinition
 import io.dot.lorraine.work.workData
 
+/**
+ * Class to make a request to work
+ */
 data class LorraineRequest internal constructor(
     val identifier: String,
     val constraints: LorraineConstraints,
@@ -46,6 +49,9 @@ open class LorraineRequestDefinition internal constructor() {
 
 }
 
+/**
+ *
+ */
 fun lorraineRequest(block: LorraineRequestDefinition.() -> Unit): LorraineRequest {
     val definition = LorraineRequestDefinition()
 

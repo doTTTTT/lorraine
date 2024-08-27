@@ -110,6 +110,12 @@ object Lorraine {
         platform.enqueue(worker, type, request)
     }
 
+    /**
+     * Enqueue a [LorraineOperation] that contains multiple [LorraineRequest]
+     *
+     * @param uniqueId for the queue
+     * @param operation to enqueue
+     */
     suspend fun enqueue(
         uniqueId: String,
         operation: LorraineOperation
@@ -133,18 +139,32 @@ object Lorraine {
         )
     }
 
+    /**
+     * Delete all workers and stop them
+     */
     suspend fun clearAll() {
         platform.clearAll()
         dao.getWorkers().forEach { dao.delete(it) }
     }
 
+    /**
+     * Get a [WorkLorraine] for the specified id
+     *
+     * @param identifier of the worker
+     * @return a [WorkLorraine] if found, null if not
+     */
     suspend fun getLorraine(identifier: String): WorkLorraine? {
         val worker = dao.getWorker(id = identifier) ?: return null
 
         return worker.toWork()
     }
 
-    fun listenLorrainesInfo(): Flow<List<LorraineInfo>> {
+    /**
+     * Observe info of workers
+     *
+     * @return a [Flow] of [List] of [LorraineInfo]
+     */
+    fun observeInfo(): Flow<List<LorraineInfo>> {
         return dao.getWorkersAsFlow()
             .map { list -> list.map(WorkerEntity::toInfo) }
     }

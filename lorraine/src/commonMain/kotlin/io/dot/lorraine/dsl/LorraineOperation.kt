@@ -1,7 +1,6 @@
 package io.dot.lorraine.dsl
 
 import io.dot.lorraine.ExistingLorrainePolicy
-import io.dot.lorraine.Lorraine
 
 data class LorraineOperation internal constructor(
     val operations: List<Operation>
@@ -19,7 +18,10 @@ class LorraineOperationDefinition internal constructor() {
     private val operations: MutableList<LorraineOperation.Operation> = mutableListOf()
     private var constraints: LorraineConstraints? = null
 
-    fun startWith(request: LorraineRequest, type: ExistingLorrainePolicy = ExistingLorrainePolicy.APPEND) {
+    fun startWith(
+        request: LorraineRequest,
+        type: ExistingLorrainePolicy = ExistingLorrainePolicy.APPEND
+    ) {
         operations.add(0, LorraineOperation.Operation(type = type, request = request))
     }
 
@@ -30,7 +32,10 @@ class LorraineOperationDefinition internal constructor() {
         operations.add(0, request)
     }
 
-    fun then(request: LorraineRequest, type: ExistingLorrainePolicy = ExistingLorrainePolicy.APPEND) {
+    fun then(
+        request: LorraineRequest,
+        type: ExistingLorrainePolicy = ExistingLorrainePolicy.APPEND
+    ) {
         operations.add(LorraineOperation.Operation(type = type, request = request))
     }
 
@@ -77,6 +82,9 @@ class LorraineRequestOperationDefinition internal constructor() : LorraineReques
 
 }
 
+/**
+ * Dsl method to create a [LorraineOperation]
+ */
 fun lorraineOperation(
     block: LorraineOperationDefinition.() -> Unit
 ): LorraineOperation {
@@ -85,6 +93,9 @@ fun lorraineOperation(
     return definition.build()
 }
 
+/**
+ * Method to create a [LorraineOperation] from a [LorraineRequest]
+ */
 infix fun LorraineRequest.then(block: LorraineOperationDefinition.() -> Unit): LorraineOperation {
     val definition = LorraineOperationDefinition()
 

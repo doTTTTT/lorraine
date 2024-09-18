@@ -77,7 +77,7 @@ class DataDefinition internal constructor() {
 
     fun put(key: String, value: Any?) {
         if (value == null) {
-            put(key, null)
+            map[key] = null
         } else {
             when (value) {
                 is String,

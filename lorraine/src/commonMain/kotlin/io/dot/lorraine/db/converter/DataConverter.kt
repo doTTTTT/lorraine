@@ -3,6 +3,7 @@ package io.dot.lorraine.db.converter
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import io.dot.lorraine.Lorraine
+import io.dot.lorraine.db.entity.BooleanData
 import io.dot.lorraine.db.entity.DataEntity
 import io.dot.lorraine.db.entity.DoubleData
 import io.dot.lorraine.db.entity.FloatData
@@ -29,6 +30,7 @@ internal class DataConverter {
                     is IntData -> put(entity.key, entity.value)
                     is LongData -> put(entity.key, entity.value)
                     is StringData -> put(entity.key, entity.value)
+                    is BooleanData -> put(entity.key, entity.value)
                     UnknownData -> Unit
                 }
             }
@@ -61,6 +63,11 @@ internal class DataConverter {
                     )
 
                     is String -> StringData(
+                        key = entry.key,
+                        value = value
+                    )
+
+                    is Boolean -> BooleanData(
                         key = entry.key,
                         value = value
                     )

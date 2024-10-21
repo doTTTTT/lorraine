@@ -17,7 +17,7 @@ plugins {
     alias(libs.plugins.publish)
 }
 
-val lorraineVersion = "0.1.6"
+val lorraineVersion = "0.1.7"
 
 group = "io.github.dottttt.lorraine"
 version = lorraineVersion

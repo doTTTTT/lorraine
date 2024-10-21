@@ -5,6 +5,7 @@ import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import io.dot.lorraine.constraint.ConnectivityCheck
 import io.dot.lorraine.db.LorraineDB
 import io.dot.lorraine.db.dao.WorkerDao
+import io.dot.lorraine.db.entity.BooleanData
 import io.dot.lorraine.db.entity.DataEntity
 import io.dot.lorraine.db.entity.DoubleData
 import io.dot.lorraine.db.entity.FloatData
@@ -63,6 +64,7 @@ object Lorraine {
                 subclass(DoubleData::class)
                 subclass(FloatData::class)
                 subclass(StringData::class)
+                subclass(BooleanData::class)
 
                 defaultDeserializer { UnknownData.serializer() }
             }

@@ -50,6 +50,13 @@ internal data class StringData(
 ) : DataEntity
 
 @Serializable
+@SerialName("boolean")
+internal data class BooleanData(
+    @SerialName(KEY) override val key: String,
+    @SerialName(VALUE) override val value: Boolean
+) : DataEntity
+
+@Serializable
 internal data object UnknownData : DataEntity {
     @Transient
     override val key: String = ""

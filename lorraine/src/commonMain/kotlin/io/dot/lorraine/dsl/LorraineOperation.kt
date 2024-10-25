@@ -79,6 +79,9 @@ class LorraineRequestOperationDefinition internal constructor() : LorraineReques
 
 }
 
+/**
+ * Dsl method to create a [LorraineOperation]
+ */
 fun lorraineOperation(
     block: LorraineOperationDefinition.() -> Unit
 ): LorraineOperation {
@@ -87,6 +90,9 @@ fun lorraineOperation(
     return definition.build()
 }
 
+/**
+ * Method to create a [LorraineOperation] from a [LorraineRequest]
+ */
 infix fun LorraineRequest.then(block: LorraineOperationDefinition.() -> Unit): LorraineOperation {
     val definition = LorraineOperationDefinition()
 

@@ -118,10 +118,10 @@ object Lorraine {
     }
 
     /**
-     * Enqueue a [LorraineOperation]
+     * Enqueue a [LorraineOperation] that contains multiple [LorraineRequest]
      *
-     * @param queueId of the request
-     * @param operation, combine multiple request in a specific order
+     * @param uniqueId for the queue
+     * @param operation to enqueue
      */
     suspend fun enqueue(
         queueId: String,

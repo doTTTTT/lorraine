@@ -6,6 +6,9 @@ import io.dot.lorraine.work.LorraineData
 import io.dot.lorraine.work.workData
 import kotlin.time.Duration
 
+/**
+ * Class to make a request to work
+ */
 data class LorraineRequest internal constructor(
     val identifier: String,
     val constraints: LorraineConstraints,
@@ -58,6 +61,9 @@ open class LorraineRequestDefinition internal constructor() {
 
 }
 
+/**
+ *
+ */
 fun lorraineRequest(block: LorraineRequestDefinition.() -> Unit): LorraineRequest {
     val definition = LorraineRequestDefinition()
 

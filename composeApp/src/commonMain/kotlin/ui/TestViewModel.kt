@@ -25,7 +25,7 @@ class TestViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(TestUIState())
     val uiState = combine(
         _uiState.asStateFlow(),
-        Lorraine.listenLorrainesInfo()
+        Lorraine.observeInfo()
     ) { uiState, workers ->
         uiState.copy(
             info = workers

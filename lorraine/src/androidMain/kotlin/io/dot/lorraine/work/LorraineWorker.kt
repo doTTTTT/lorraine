@@ -6,6 +6,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import io.dot.lorraine.Lorraine
+import io.dot.lorraine.models.LorraineInfo
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.toKotlinUuid
 

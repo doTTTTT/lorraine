@@ -23,7 +23,8 @@ import io.dot.lorraine.dsl.LorraineOperation
 import io.dot.lorraine.dsl.LorraineRequest
 import io.dot.lorraine.logger.DefaultLogger
 import io.dot.lorraine.logger.Logger
-import io.dot.lorraine.work.LorraineInfo
+import io.dot.lorraine.models.ExistingLorrainePolicy
+import io.dot.lorraine.models.LorraineInfo
 import io.dot.lorraine.work.WorkLorraine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,6 +37,7 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
 import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 internal const val LORRAINE_DATABASE = "lorraine.db"
 
@@ -131,9 +133,25 @@ object Lorraine {
         )
     }
 
-    suspend fun clearAll() {
-        platform.clearAll()
+    suspend fun cancelWorkById(uuid: Uuid) {
+        platform.cancelWorkById(uuid)
+    }
+
+    suspend fun cancelUniqueWork(queueId: String) {
+        platform.cancelUniqueWork(queueId)
+    }
+
+    suspend fun cancelAllWorkByTag(tag: String) {
+        platform.cancelAllWorkByTag(tag)
+    }
+
+    suspend fun cancelAllWork() {
+        platform.cancelAllWork()
         dao.getWorkers().forEach { dao.delete(it) }
+    }
+
+    suspend fun pruneWork() {
+        platform.pruneWork()
     }
 
     fun listenLorrainesInfo(): Flow<List<LorraineInfo>> {

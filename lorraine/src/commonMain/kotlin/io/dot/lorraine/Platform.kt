@@ -4,6 +4,7 @@ package io.dot.lorraine
 
 import io.dot.lorraine.dsl.LorraineOperation
 import io.dot.lorraine.dsl.LorraineRequest
+import io.dot.lorraine.models.ExistingLorrainePolicy
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -23,9 +24,15 @@ internal interface Platform {
         operation: LorraineOperation
     )
 
-    fun clearAll()
+    suspend fun cancelWorkById(uuid: Uuid)
 
-    fun createUUID(): Uuid
+    suspend fun cancelUniqueWork(queueId: String)
+
+    suspend fun cancelAllWorkByTag(tag: String)
+
+    suspend fun cancelAllWork()
+
+    suspend fun pruneWork()
 
 }
 

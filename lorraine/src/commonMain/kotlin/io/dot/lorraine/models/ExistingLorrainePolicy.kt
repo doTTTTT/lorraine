@@ -1,4 +1,4 @@
-package io.dot.lorraine
+package io.dot.lorraine.models
 
 /**
  * An enumeration of the conflict resolution policies available for LorraineRequest

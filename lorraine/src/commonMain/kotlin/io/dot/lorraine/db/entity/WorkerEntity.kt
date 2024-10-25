@@ -8,8 +8,9 @@ import androidx.room.Entity
 import androidx.room.TypeConverters
 import io.dot.lorraine.db.converter.DataConverter
 import io.dot.lorraine.db.converter.StringSetConverter
+import io.dot.lorraine.dsl.LorraineRequest
+import io.dot.lorraine.models.LorraineInfo
 import io.dot.lorraine.work.LorraineData
-import io.dot.lorraine.work.LorraineInfo
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
@@ -57,6 +58,25 @@ internal data class WorkerEntity(
         const val TABLE_NAME = "worker"
     }
 
+}
+
+internal fun createWorkerEntity(
+    uuid: Uuid,
+    queueId: String,
+    request: LorraineRequest,
+    state: LorraineInfo.State = LorraineInfo.State.ENQUEUED
+): WorkerEntity {
+    return WorkerEntity(
+        uuid = uuid.toString(),
+        queueId = queueId,
+        identifier = request.identifier,
+        state = state,
+        tags = request.tags,
+        inputData = request.inputData,
+        outputData = null,
+        workerDependencies = emptySet(),
+        constraints = request.constraints.toEntity()
+    )
 }
 
 internal fun WorkerEntity.toInfo() = LorraineInfo(

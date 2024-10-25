@@ -7,7 +7,7 @@ import POST_WORKER
 import PUT_WORKER
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.dot.lorraine.ExistingLorrainePolicy
+import io.dot.lorraine.models.ExistingLorrainePolicy
 import io.dot.lorraine.Lorraine
 import io.dot.lorraine.dsl.lorraineOperation
 import io.dot.lorraine.dsl.lorraineRequest
@@ -101,7 +101,7 @@ class TestViewModel : ViewModel() {
 
     private fun clear() {
         viewModelScope.launch {
-            Lorraine.clearAll()
+            Lorraine.cancelAllWork()
         }
     }
 

@@ -1,6 +1,6 @@
 package io.dot.lorraine.dsl
 
-import io.dot.lorraine.ExistingLorrainePolicy
+import io.dot.lorraine.models.ExistingLorrainePolicy
 
 data class LorraineOperation internal constructor(
     val operations: List<Operation>,

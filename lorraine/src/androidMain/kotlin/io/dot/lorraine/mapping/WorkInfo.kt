@@ -3,7 +3,7 @@
 package io.dot.lorraine.mapping
 
 import androidx.work.WorkInfo
-import io.dot.lorraine.work.LorraineInfo
+import io.dot.lorraine.models.LorraineInfo
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.toKotlinUuid
 

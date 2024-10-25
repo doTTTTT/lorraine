@@ -8,6 +8,7 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkInfo
 import androidx.work.WorkManager
 import androidx.work.WorkQuery
+import androidx.work.await
 import androidx.work.workDataOf
 import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.db.entity.toEntity
@@ -19,16 +20,19 @@ import io.dot.lorraine.mapping.asLorraineInfoState
 import io.dot.lorraine.mapping.asWorkManagerConstraints
 import io.dot.lorraine.mapping.asWorkManagerData
 import io.dot.lorraine.mapping.asWorkManagerExistingPolicy
-import io.dot.lorraine.work.LorraineInfo
+import io.dot.lorraine.mapping.asWorkManagerPolicy
+import io.dot.lorraine.models.ExistingLorrainePolicy
+import io.dot.lorraine.models.LorraineInfo
 import io.dot.lorraine.work.LorraineWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import java.util.UUID
 import kotlin.coroutines.CoroutineContext
+import kotlin.time.toJavaDuration
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
+import kotlin.uuid.toJavaUuid
 import kotlin.uuid.toKotlinUuid
 
 internal class AndroidPlatform(
@@ -145,20 +149,39 @@ internal class AndroidPlatform(
         workOperation.enqueue()
     }
 
-    override fun clearAll() {
-        workManager.cancelAllWork()
-        workManager.pruneWork()
+    override suspend fun cancelWorkById(uuid: Uuid) {
+        workManager.cancelWorkById(uuid.toJavaUuid()).await()
+    }
+
+    override suspend fun cancelUniqueWork(queueId: String) {
+        workManager.cancelUniqueWork(queueId).await()
+    }
+
+    override suspend fun cancelAllWorkByTag(tag: String) {
+        workManager.cancelAllWorkByTag(tag).await()
+    }
+
+    override suspend fun cancelAllWork() {
+        workManager.cancelAllWork().await()
+    }
+
+    override suspend fun pruneWork() {
+        workManager.pruneWork().await()
     }
 
     private fun LorraineRequest.toWorkManagerWorker(): OneTimeWorkRequest {
         return OneTimeWorkRequestBuilder<LorraineWorker>()
             .setInputData(inputData?.asWorkManagerData() ?: workDataOf())
             .setConstraints(constraints.asWorkManagerConstraints())
+            .apply {
+                if (backOffPolicy != null) {
+                    setBackoffCriteria(
+                        backOffPolicy.policy.asWorkManagerPolicy(),
+                        backOffPolicy.duration.toJavaDuration()
+                    )
+                }
+            }
             .build()
-    }
-
-    override fun createUUID(): Uuid {
-        return UUID.randomUUID().toKotlinUuid()
     }
 
 }

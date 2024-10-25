@@ -1,7 +1,8 @@
 @file:OptIn(ExperimentalUuidApi::class)
 
-package io.dot.lorraine.work
+package io.dot.lorraine.models
 
+import io.dot.lorraine.work.LorraineData
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 

@@ -34,7 +34,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import common.LaunchedEffectFlowWithLifecycle
-import io.dot.lorraine.work.LorraineInfo
+import io.dot.lorraine.models.LorraineInfo
 import kotlin.uuid.ExperimentalUuidApi
 
 @Composable

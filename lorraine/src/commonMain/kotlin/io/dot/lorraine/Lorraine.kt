@@ -50,7 +50,7 @@ object Lorraine {
     private var loggerEnable: Boolean = false
     private lateinit var logger: Logger
 
-    internal val definitions = mutableMapOf<String, Instantiate<out WorkLorraine>>()
+    internal val definitions = mutableMapOf<String, Instantiate<WorkLorraine>>()
     internal val constraintChecks = listOf(
         ConnectivityCheck
     )
@@ -74,7 +74,7 @@ object Lorraine {
     internal fun initialize(definition: LorraineDefinition) {
         definitions.clear()
         definitions.putAll(definition.definitions)
-        loggerEnable = definition.loggerDefinition?.enable ?: false
+        loggerEnable = definition.loggerDefinition?.enable == true
         logger = definition.loggerDefinition?.logger ?: DefaultLogger
         // TODO Find better way
         CoroutineScope(Dispatchers.IO).launch {
@@ -127,7 +127,6 @@ object Lorraine {
             }
 
         dao.insert(workers)
-
         platform.enqueue(
             uniqueId = uniqueId,
             workers = workers,

@@ -57,5 +57,8 @@ internal data class WorkerEntity(
 internal fun WorkerEntity.toInfo() = LorraineInfo(
     id = id,
     state = state,
+    identifier = identifier,
+    inputData = inputData,
+    outputData = outputData,
     tags = tags
 )

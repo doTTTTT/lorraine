@@ -141,7 +141,6 @@ internal class IOSPlatform : Platform {
 }
 
 internal actual fun registerPlatform() {
-    println("RegisterPlatform: ios")
     Lorraine.registerPlatform(
         platform = IOSPlatform(),
         db = getDatabaseBuilder()

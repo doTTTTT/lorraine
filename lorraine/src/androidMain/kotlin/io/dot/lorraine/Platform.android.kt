@@ -4,22 +4,17 @@ import android.annotation.SuppressLint
 import androidx.work.ExistingWorkPolicy
 import androidx.work.OneTimeWorkRequest
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkInfo
 import androidx.work.WorkManager
-import androidx.work.WorkQuery
 import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.dsl.LorraineOperation
 import io.dot.lorraine.dsl.LorraineRequest
 import io.dot.lorraine.initializer.LorraineInitializer
 import io.dot.lorraine.work.LorraineWorker
-import io.dot.lorraine.work.toLorraineInfo
 import io.dot.lorraine.work.toWorkManagerConstraints
 import io.dot.lorraine.work.toWorkManagerData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.launch
 import java.util.UUID
 import kotlin.coroutines.CoroutineContext
 
@@ -32,22 +27,7 @@ internal class AndroidPlatform(
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO + job
 
-    init {
-        launch {
-            workManager.getWorkInfosFlow(WorkQuery.fromStates(WorkInfo.State.entries))
-                .map { list -> list.map(WorkInfo::toLorraineInfo) }
-                .collect { info ->
-                    info.forEach {
-
-                    }
-                    // TODO Update LorrainDB
-                }
-        }
-    }
-
-    override suspend fun initialized() {
-
-    }
+    override suspend fun initialized() = Unit
 
     override suspend fun enqueue(
         worker: WorkerEntity,

@@ -12,5 +12,7 @@ fun WorkInfo.toLorraineInfo() = LorraineInfo(
         WorkInfo.State.BLOCKED -> LorraineInfo.State.BLOCKED
         WorkInfo.State.CANCELLED -> LorraineInfo.State.CANCELLED
     },
+    outputData = outputData,
+    inputData = null,
     tags = tags
 )

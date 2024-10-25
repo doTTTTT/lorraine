@@ -8,3 +8,7 @@ fun LorraineRequest.toWorkManagerData(workerId: String): Data = workDataOf(
     LorraineWorker.ID to workerId,
     *(inputData?.map?.toList().orEmpty().toTypedArray())
 )
+
+fun io.dot.lorraine.work.Data.toWorkManagerData(): Data = workDataOf(
+    *(map.toList().toTypedArray())
+)

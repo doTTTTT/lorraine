@@ -2,7 +2,10 @@ package io.dot.lorraine.work
 
 data class LorraineInfo internal constructor(
     val id: String,
+    val identifier: String,
     val state: State,
+    val inputData: Data?,
+    val outputData: Data?,
     val tags: Set<String>
 ) {
 

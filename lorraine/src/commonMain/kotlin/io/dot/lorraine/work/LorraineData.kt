@@ -3,7 +3,7 @@ package io.dot.lorraine.work
 /**
  * Class use to store input or output data work for [WorkLorraine]
  */
-data class Data internal constructor(
+data class LorraineData internal constructor(
     internal val map: Map<String, Any?>
 ) {
 
@@ -56,7 +56,7 @@ data class Data internal constructor(
 
 }
 
-fun dataOf(vararg arg: Pair<String, Any?>): Data {
+fun dataOf(vararg arg: Pair<String, Any?>): LorraineData {
     val definition = DataDefinition()
 
     arg.forEach {
@@ -66,7 +66,7 @@ fun dataOf(vararg arg: Pair<String, Any?>): Data {
     return definition.build()
 }
 
-fun workData(block: DataDefinition.() -> Unit): Data {
+fun workData(block: DataDefinition.() -> Unit): LorraineData {
     return DataDefinition().apply(block)
         .build()
 }
@@ -92,8 +92,8 @@ class DataDefinition internal constructor() {
         }
     }
 
-    internal fun build(): Data {
-        return Data(map)
+    internal fun build(): LorraineData {
+        return LorraineData(map)
     }
 
 }

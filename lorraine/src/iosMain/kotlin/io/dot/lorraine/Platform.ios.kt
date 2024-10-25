@@ -1,14 +1,16 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package io.dot.lorraine
 
 import io.dot.lorraine.constraint.match
 import io.dot.lorraine.db.entity.WorkerEntity
+import io.dot.lorraine.db.entity.createWorkerEntity
 import io.dot.lorraine.db.entity.toDomain
 import io.dot.lorraine.db.getDatabaseBuilder
 import io.dot.lorraine.dsl.LorraineOperation
 import io.dot.lorraine.dsl.LorraineRequest
-import io.dot.lorraine.dsl.lorraineOperation
-import io.dot.lorraine.dsl.lorraineRequest
-import io.dot.lorraine.work.LorraineInfo
+import io.dot.lorraine.models.ExistingLorrainePolicy
+import io.dot.lorraine.models.LorraineInfo
 import io.dot.lorraine.work.LorraineWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +18,8 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import platform.Foundation.NSOperation
 import platform.Foundation.NSOperationQueue
-import platform.Foundation.NSUUID
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 internal class IOSPlatform : Platform {
     override val name: String = "ios"
@@ -28,67 +31,77 @@ internal class IOSPlatform : Platform {
         Lorraine.dao.getWorkers()
             .groupBy(WorkerEntity::queueId)
             .forEach { (queueId, workers) ->
-                if (workers.size == 1) {
-                    enqueue(
-                        worker = workers.first(),
-                        type = ExistingLorrainePolicy.APPEND,
-                        lorraineRequest = lorraineRequest { // TODO Remove
-                            identifier = ""
-                        }
-                    )
-                } else {
-                    enqueue(
-                        uniqueId = queueId,
-                        workers = workers.sortedBy { it.workerDependencies.size },
-                        operation = lorraineOperation { } // TODO Remove
-                    )
-                }
+                val nsOperation = NSOperationQueue()
+                var previous: NSOperation? = null
+
+                workers.map { LorraineWorker(Uuid.parse(it.uuid)) }
+                    .forEach { worker ->
+                        previous?.let { previous -> worker.addDependency(previous) }
+                        previous = worker
+                        nsOperation.addOperation(worker)
+                    }
+
+                queues.put(queueId, nsOperation)
             }
 
         constraintChanged()
     }
 
-    // TODO Get queue
     override suspend fun enqueue(
-        worker: WorkerEntity,
+        queueId: String,
         type: ExistingLorrainePolicy,
         lorraineRequest: LorraineRequest
     ) {
-        val queue = queues.getOrElse(worker.queueId) { createQueue(worker.queueId) }
+        val queue = queues.getOrElse(queueId) { createQueue(queueId) }
+        val uuid = Uuid.random()
+        val worker = createWorkerEntity(
+            uuid = uuid,
+            queueId = queueId,
+            request = lorraineRequest
+        )
 
-        queue.addOperation(LorraineWorker(worker.id))
+        Lorraine.dao.insert(worker)
+
+        queue.addOperation(LorraineWorker(uuid))
         queues[worker.queueId] = queue
 
         queue.suspended = !Lorraine.constraintChecks
             .match(worker.constraints.toDomain())
     }
 
-    // TODO Get queue
+    // TODO Add dependency between workers
     override suspend fun enqueue(
-        uniqueId: String,
-        workers: List<WorkerEntity>,
+        queueId: String,
         operation: LorraineOperation
     ) {
-        val firstWorker = requireNotNull(workers.firstOrNull()) {
-            "Workers shoud not be empty"
+        requireNotNull(operation.operations.firstOrNull()) {
+            "Operations shoud not be empty"
         }
-        val queue = queues.getOrElse(uniqueId) { createQueue(uniqueId) }
+        val queue = queues.getOrElse(queueId) { createQueue(queueId) }
         var previous: NSOperation? = null
 
-        workers.map { LorraineWorker(it.id) }
+        val workers = operation.operations
+            .map { operation ->
+                val uuid = Uuid.random()
+
+                createWorkerEntity(
+                    uuid = uuid,
+                    queueId = queueId,
+                    request = operation.request
+                )
+            }
+
+        workers.map { LorraineWorker(Uuid.parse(it.uuid)) }
             .forEach { worker ->
                 previous?.let { previous -> worker.addDependency(previous) }
                 previous = worker
                 queue.addOperation(worker)
             }
 
-        queue.suspended = !Lorraine.constraintChecks
-            .match(firstWorker.constraints.toDomain())
-    }
+        Lorraine.dao.insert(workers)
 
-    override fun clearAll() {
-        queues.forEach { it.value.cancelAllOperations() }
-        queues.clear()
+        queue.suspended = !Lorraine.constraintChecks
+            .match(workers.first().constraints.toDomain())
     }
 
     internal fun suspend(uniqueId: String, suspended: Boolean) {
@@ -111,7 +124,7 @@ internal class IOSPlatform : Platform {
             }
                 .forEach { worker ->
                     if (!worker.workerDependencies.all { id ->
-                            workers.find { it.id == id }?.let {
+                            workers.find { it.uuid == id }?.let {
                                 it.state == LorraineInfo.State.SUCCEEDED
                             } != false
                         }) {
@@ -127,8 +140,25 @@ internal class IOSPlatform : Platform {
         }
     }
 
-    override fun createUUID(): String {
-        return NSUUID().UUIDString
+    override suspend fun cancelWorkById(uuid: Uuid) {
+        // TODO("Not yet implemented")
+    }
+
+    override suspend fun cancelUniqueWork(queueId: String) {
+        // TODO("Not yet implemented")
+    }
+
+    override suspend fun cancelAllWorkByTag(tag: String) {
+        // TODO("Not yet implemented")
+    }
+
+    override suspend fun cancelAllWork() {
+        queues.forEach { it.value.cancelAllOperations() }
+        queues.clear()
+    }
+
+    override suspend fun pruneWork() {
+        // TODO("Not yet implemented")
     }
 
     private fun createQueue(uniqueId: String): NSOperationQueue {
@@ -141,7 +171,6 @@ internal class IOSPlatform : Platform {
 }
 
 internal actual fun registerPlatform() {
-    println("RegisterPlatform: ios")
     Lorraine.registerPlatform(
         platform = IOSPlatform(),
         db = getDatabaseBuilder()

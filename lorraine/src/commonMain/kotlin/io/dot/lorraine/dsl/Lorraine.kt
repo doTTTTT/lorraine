@@ -8,6 +8,9 @@ import io.dot.lorraine.work.WorkLorraine
 
 typealias Instantiate<T> = () -> T
 
+/**
+ * Dsl method to initialize [Lorraine]
+ */
 fun lorraine(block: LorraineDefinition.() -> Unit) {
     val lorraineDefinition = LorraineDefinition().apply(block)
 

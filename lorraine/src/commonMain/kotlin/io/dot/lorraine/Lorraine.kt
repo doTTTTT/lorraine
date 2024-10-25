@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package io.dot.lorraine
 
 import androidx.room.RoomDatabase
@@ -14,7 +16,6 @@ import io.dot.lorraine.db.entity.LongData
 import io.dot.lorraine.db.entity.StringData
 import io.dot.lorraine.db.entity.UnknownData
 import io.dot.lorraine.db.entity.WorkerEntity
-import io.dot.lorraine.db.entity.toEntity
 import io.dot.lorraine.db.entity.toInfo
 import io.dot.lorraine.dsl.Instantiate
 import io.dot.lorraine.dsl.LorraineDefinition
@@ -22,7 +23,8 @@ import io.dot.lorraine.dsl.LorraineOperation
 import io.dot.lorraine.dsl.LorraineRequest
 import io.dot.lorraine.logger.DefaultLogger
 import io.dot.lorraine.logger.Logger
-import io.dot.lorraine.work.LorraineInfo
+import io.dot.lorraine.models.ExistingLorrainePolicy
+import io.dot.lorraine.models.LorraineInfo
 import io.dot.lorraine.work.WorkLorraine
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +36,8 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 internal const val LORRAINE_DATABASE = "lorraine.db"
 
@@ -50,7 +54,7 @@ object Lorraine {
     private var loggerEnable: Boolean = false
     private lateinit var logger: Logger
 
-    internal val definitions = mutableMapOf<String, Instantiate<out WorkLorraine>>()
+    internal val definitions = mutableMapOf<String, Instantiate<WorkLorraine>>()
     internal val constraintChecks = listOf(
         ConnectivityCheck
     )
@@ -74,7 +78,7 @@ object Lorraine {
     internal fun initialize(definition: LorraineDefinition) {
         definitions.clear()
         definitions.putAll(definition.definitions)
-        loggerEnable = definition.loggerDefinition?.enable ?: false
+        loggerEnable = definition.loggerDefinition?.enable == true
         logger = definition.loggerDefinition?.logger ?: DefaultLogger
         // TODO Find better way
         CoroutineScope(Dispatchers.IO).launch {
@@ -97,81 +101,62 @@ object Lorraine {
     /**
      * Enqueue a [LorraineRequest]
      *
-     * @param uniqueId of the request
+     * @param queueId of the request
      * @param type to enqueue
      * @param request, actual request
      */
     suspend fun enqueue(
-        uniqueId: String,
+        queueId: String,
         type: ExistingLorrainePolicy,
         request: LorraineRequest
     ) {
-        val worker = request.toWorkerEntity(uniqueId)
-
-        dao.insert(worker)
-        platform.enqueue(worker, type, request)
+        platform.enqueue(
+            queueId = queueId,
+            type = type,
+            lorraineRequest = request
+        )
     }
 
+    /**
+     * Enqueue a [LorraineOperation] that contains multiple [LorraineRequest]
+     *
+     * @param uniqueId for the queue
+     * @param operation to enqueue
+     */
     suspend fun enqueue(
-        uniqueId: String,
+        queueId: String,
         operation: LorraineOperation
     ) {
-        val workers = operation.operations
-            .fold(mutableListOf<WorkerEntity>()) { list, workOperation ->
-                list += workOperation.request.toWorkerEntity(
-                    uniqueId = uniqueId,
-                    workDependencies = list.map(WorkerEntity::id)
-                        .toSet()
-                )
-                list
-            }
-
-        dao.insert(workers)
-
         platform.enqueue(
-            uniqueId = uniqueId,
-            workers = workers,
+            queueId = queueId,
             operation = operation
         )
     }
 
-    suspend fun clearAll() {
-        platform.clearAll()
+    suspend fun cancelWorkById(uuid: Uuid) {
+        platform.cancelWorkById(uuid)
+    }
+
+    suspend fun cancelUniqueWork(queueId: String) {
+        platform.cancelUniqueWork(queueId)
+    }
+
+    suspend fun cancelAllWorkByTag(tag: String) {
+        platform.cancelAllWorkByTag(tag)
+    }
+
+    suspend fun cancelAllWork() {
+        platform.cancelAllWork()
         dao.getWorkers().forEach { dao.delete(it) }
     }
 
-    suspend fun getLorraine(identifier: String): WorkLorraine? {
-        val worker = dao.getWorker(id = identifier) ?: return null
-
-        return worker.toWork()
+    suspend fun pruneWork() {
+        platform.pruneWork()
     }
 
     fun listenLorrainesInfo(): Flow<List<LorraineInfo>> {
         return dao.getWorkersAsFlow()
             .map { list -> list.map(WorkerEntity::toInfo) }
-    }
-
-    private fun LorraineRequest.toWorkerEntity(
-        uniqueId: String,
-        workDependencies: Set<String> = emptySet()
-    ): WorkerEntity {
-        requireNotNull(definitions[identifier]) { "Worker definition not found" }
-
-        return WorkerEntity(
-            id = platform.createUUID(),
-            queueId = uniqueId,
-            identifier = identifier,
-            state = LorraineInfo.State.ENQUEUED, // TODO Pass to block on the check if constraint are not match
-            tags = tags,
-            inputData = inputData,
-            outputData = null,
-            workerDependencies = workDependencies,
-            constraints = constraints.toEntity()
-        )
-    }
-
-    private fun WorkerEntity.toWork(): WorkLorraine? {
-        return definitions[identifier]?.invoke()
     }
 
 }

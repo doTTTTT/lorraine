@@ -1,14 +1,13 @@
 package io.dot.lorraine.dsl
 
-import io.dot.lorraine.ExistingLorrainePolicy
-import io.dot.lorraine.Lorraine
+import io.dot.lorraine.models.ExistingLorrainePolicy
 
 data class LorraineOperation internal constructor(
-    val operations: List<Operation>
+    val operations: List<Operation>,
+    val existingPolicy: ExistingLorrainePolicy
 ) {
 
     data class Operation(
-        val type: ExistingLorrainePolicy,
         val request: LorraineRequest
     )
 
@@ -19,8 +18,10 @@ class LorraineOperationDefinition internal constructor() {
     private val operations: MutableList<LorraineOperation.Operation> = mutableListOf()
     private var constraints: LorraineConstraints? = null
 
-    fun startWith(request: LorraineRequest, type: ExistingLorrainePolicy = ExistingLorrainePolicy.APPEND) {
-        operations.add(0, LorraineOperation.Operation(type = type, request = request))
+    var existingPolicy: ExistingLorrainePolicy? = null
+
+    fun startWith(request: LorraineRequest) {
+        operations.add(0, LorraineOperation.Operation(request = request))
     }
 
     fun startWith(block: LorraineRequestOperationDefinition.() -> Unit) {
@@ -30,8 +31,8 @@ class LorraineOperationDefinition internal constructor() {
         operations.add(0, request)
     }
 
-    fun then(request: LorraineRequest, type: ExistingLorrainePolicy = ExistingLorrainePolicy.APPEND) {
-        operations.add(LorraineOperation.Operation(type = type, request = request))
+    fun then(request: LorraineRequest) {
+        operations.add(LorraineOperation.Operation(request = request))
     }
 
     fun then(block: LorraineRequestOperationDefinition.() -> Unit) {
@@ -47,6 +48,7 @@ class LorraineOperationDefinition internal constructor() {
     }
 
     fun build(): LorraineOperation {
+        val policy = requireNotNull(existingPolicy) { "Existing policy must no be null" }
         val operations = constraints?.let { constraints ->
             operations.map { operation ->
                 operation.copy(
@@ -56,7 +58,10 @@ class LorraineOperationDefinition internal constructor() {
             }
         } ?: operations
 
-        return LorraineOperation(operations)
+        return LorraineOperation(
+            operations = operations,
+            existingPolicy = policy
+        )
     }
 
 }
@@ -69,14 +74,14 @@ class LorraineRequestOperationDefinition internal constructor() : LorraineReques
     var type: ExistingLorrainePolicy = ExistingLorrainePolicy.APPEND
 
     fun buildOperation(): LorraineOperation.Operation {
-        return LorraineOperation.Operation(
-            request = build(),
-            type = type
-        )
+        return LorraineOperation.Operation(request = build())
     }
 
 }
 
+/**
+ * Dsl method to create a [LorraineOperation]
+ */
 fun lorraineOperation(
     block: LorraineOperationDefinition.() -> Unit
 ): LorraineOperation {
@@ -85,6 +90,9 @@ fun lorraineOperation(
     return definition.build()
 }
 
+/**
+ * Method to create a [LorraineOperation] from a [LorraineRequest]
+ */
 infix fun LorraineRequest.then(block: LorraineOperationDefinition.() -> Unit): LorraineOperation {
     val definition = LorraineOperationDefinition()
 

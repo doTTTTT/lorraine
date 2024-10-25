@@ -9,8 +9,10 @@ import androidx.room.Update
 import androidx.room.Upsert
 import io.dot.lorraine.db.entity.WorkerEntity
 import kotlinx.coroutines.flow.Flow
+import kotlin.uuid.ExperimentalUuidApi
 
 @Dao
+@OptIn(ExperimentalUuidApi::class)
 internal interface WorkerDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
@@ -28,8 +30,8 @@ internal interface WorkerDao {
     @Delete
     suspend fun delete(worker: WorkerEntity)
 
-    @Query("SELECT * FROM worker WHERE id = (:id)")
-    suspend fun getWorker(id: String): WorkerEntity?
+    @Query("SELECT * FROM worker WHERE uuid = (:uuidString)")
+    suspend fun getWorker(uuidString: String): WorkerEntity?
 
     @Query("SELECT * FROM worker")
     suspend fun getWorkers(): List<WorkerEntity>
@@ -37,8 +39,8 @@ internal interface WorkerDao {
     @Query("SELECT * FROM worker WHERE queue_id = (:queueId)")
     suspend fun getWorkersForQueueId(queueId: String): List<WorkerEntity>
 
-    @Query("SELECT * FROM worker WHERE id = (:id)")
-    fun getWorkerAsFlow(id: String): Flow<WorkerEntity?>
+    @Query("SELECT * FROM worker WHERE uuid = (:uuidString)")
+    fun getWorkerAsFlow(uuidString: String): Flow<WorkerEntity?>
 
     @Query("SELECT * FROM worker")
     fun getWorkersAsFlow(): Flow<List<WorkerEntity>>

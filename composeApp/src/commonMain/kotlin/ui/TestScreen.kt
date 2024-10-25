@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalLayoutApi::class)
+@file:OptIn(ExperimentalLayoutApi::class, ExperimentalUuidApi::class)
 
 package ui
 
@@ -34,7 +34,8 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import common.LaunchedEffectFlowWithLifecycle
-import io.dot.lorraine.work.LorraineInfo
+import io.dot.lorraine.models.LorraineInfo
+import kotlin.uuid.ExperimentalUuidApi
 
 @Composable
 fun TestScreen(
@@ -145,13 +146,19 @@ private fun ItemUI(item: LorraineInfo) {
             modifier = Modifier.weight(1f)
         ) {
             Text(
-                "Id: ${item.id}",
-                style = MaterialTheme.typography.labelMedium
+                text = "Id: ${item.uuid}",
+                style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Text(
+                text = "Identifier: ${item.identifier}",
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
             item.tags.forEach {
                 Text(
-                    it,
+                    text = it,
                     style = MaterialTheme.typography.bodySmall
                 )
             }
@@ -159,7 +166,7 @@ private fun ItemUI(item: LorraineInfo) {
         Text(
             text = item.state.name,
             style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(4.dp)
         )
     }
 }

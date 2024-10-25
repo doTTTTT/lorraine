@@ -1,9 +1,14 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package io.dot.lorraine.work
 
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import io.dot.lorraine.Lorraine
+import io.dot.lorraine.models.LorraineInfo
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.toKotlinUuid
 
 internal class LorraineWorker(
     appContext: Context,
@@ -11,9 +16,11 @@ internal class LorraineWorker(
 ) : CoroutineWorker(appContext, params) {
 
     override suspend fun doWork(): Result {
-        val id = requireNotNull(inputData.getString(ID)) { "Identifier not found" }
+        val uuid = id.toKotlinUuid()
         val dao = Lorraine.dao
-        val worker = requireNotNull(dao.getWorker(id)) { "Worker not found" }
+        val worker = requireNotNull(dao.getWorker(uuidString = uuid.toString())) {
+            "Worker not found"
+        }
         val workerDefinition = requireNotNull(Lorraine.definitions[worker.identifier]) {
             "Worker definition not found"
         }

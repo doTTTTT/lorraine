@@ -1,31 +1,31 @@
 package io.dot.lorraine.work
 
 sealed interface LorraineResult {
-    val outputData: Data?
+    val outputData: LorraineData?
 
     data class Success(
-        override val outputData: Data?
+        override val outputData: LorraineData?
     ) : LorraineResult
 
     data class Failure(
-        override val outputData: Data?
+        override val outputData: LorraineData?
     ) : LorraineResult
 
     data class Retry(
-        override val outputData: Data?
+        override val outputData: LorraineData?
     ) : LorraineResult
 
     companion object {
 
-        fun success(outputData: Data? = null): Success {
+        fun success(outputData: LorraineData? = null): Success {
             return Success(outputData)
         }
 
-        fun failure(outputData: Data? = null): Failure {
+        fun failure(outputData: LorraineData? = null): Failure {
             return Failure(outputData)
         }
 
-        fun retry(outputData: Data? = null): Retry {
+        fun retry(outputData: LorraineData? = null): Retry {
             return Retry(outputData)
         }
 

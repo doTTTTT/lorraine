@@ -2,6 +2,7 @@ import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 
 plugins {
     alias(libs.plugins.android.library)
@@ -17,7 +18,7 @@ plugins {
     alias(libs.plugins.publish)
 }
 
-val lorraineVersion = "0.1.7"
+val lorraineVersion = "0.2.0"
 
 group = "io.github.dottttt.lorraine"
 version = lorraineVersion

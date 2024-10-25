@@ -11,7 +11,7 @@ import io.dot.lorraine.db.entity.IntData
 import io.dot.lorraine.db.entity.LongData
 import io.dot.lorraine.db.entity.StringData
 import io.dot.lorraine.db.entity.UnknownData
-import io.dot.lorraine.work.Data
+import io.dot.lorraine.work.LorraineData
 import io.dot.lorraine.work.workData
 import kotlinx.serialization.encodeToString
 
@@ -19,7 +19,7 @@ import kotlinx.serialization.encodeToString
 internal class DataConverter {
 
     @TypeConverter
-    fun typeFromJson(value: String): Data {
+    fun typeFromJson(value: String): LorraineData {
         val list = Lorraine.json.decodeFromString<List<DataEntity>>(value)
 
         return workData {
@@ -38,7 +38,7 @@ internal class DataConverter {
     }
 
     @TypeConverter
-    fun typeToJson(data: Data): String {
+    fun typeToJson(data: LorraineData): String {
         val mapped: List<DataEntity> = data.map
             .mapNotNull { entry ->
                 when (val value = entry.value) {

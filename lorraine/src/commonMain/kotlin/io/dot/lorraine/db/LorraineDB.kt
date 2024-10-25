@@ -1,32 +1,29 @@
 package io.dot.lorraine.db
 
+import androidx.room.ConstructedBy
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import io.dot.lorraine.db.converter.DataConverter
 import io.dot.lorraine.db.converter.StringSetConverter
+import io.dot.lorraine.db.converter.UuidConverter
 import io.dot.lorraine.db.dao.WorkerDao
 import io.dot.lorraine.db.entity.WorkerEntity
 
 @Database(
-    version = 1,
+    version = 2,
     entities = [
         WorkerEntity::class
     ]
 )
 @TypeConverters(
     StringSetConverter::class,
-    DataConverter::class
+    DataConverter::class,
+    UuidConverter::class
 )
-//@ConstructedBy(LorraineConstructor::class)
-abstract class LorraineDB : RoomDatabase(), DB {
+@ConstructedBy(LorraineConstructor::class)
+abstract class LorraineDB : RoomDatabase() {
 
     internal abstract fun workerDao(): WorkerDao
 
-}
-
-// FIXME: Added a hack to resolve below issue:
-// Class 'AppDatabase_Impl' is not abstract and does not implement abstract base class member 'clearAllTables'.
-interface DB {
-    fun clearAllTables() {}
 }

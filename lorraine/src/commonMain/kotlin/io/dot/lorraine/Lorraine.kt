@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package io.dot.lorraine
 
 import androidx.room.RoomDatabase
@@ -34,6 +36,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
 import kotlinx.serialization.modules.subclass
+import kotlin.uuid.ExperimentalUuidApi
 
 internal const val LORRAINE_DATABASE = "lorraine.db"
 
@@ -97,52 +100,47 @@ object Lorraine {
     /**
      * Enqueue a [LorraineRequest]
      *
-     * @param uniqueId of the request
+     * @param queueId of the request
      * @param type to enqueue
      * @param request, actual request
      */
     suspend fun enqueue(
-        uniqueId: String,
+        queueId: String,
         type: ExistingLorrainePolicy,
         request: LorraineRequest
     ) {
-        val worker = request.toWorkerEntity(uniqueId)
-
-        dao.insert(worker)
-        platform.enqueue(worker, type, request)
+        platform.enqueue(
+            queueId = queueId,
+            type = type,
+            lorraineRequest = request
+        )
     }
 
     suspend fun enqueue(
         uniqueId: String,
         operation: LorraineOperation
     ) {
-        val workers = operation.operations
-            .fold(mutableListOf<WorkerEntity>()) { list, workOperation ->
-                list += workOperation.request.toWorkerEntity(
-                    uniqueId = uniqueId,
-                    workDependencies = list.map(WorkerEntity::id)
-                        .toSet()
-                )
-                list
-            }
-
-        dao.insert(workers)
-        platform.enqueue(
-            uniqueId = uniqueId,
-            workers = workers,
-            operation = operation
-        )
+//        val workers = operation.operations
+//            .fold(mutableListOf<WorkerEntity>()) { list, workOperation ->
+//                list += workOperation.request.toWorkerEntity(
+//                    queueId = uniqueId,
+//                    workDependencies = list.map(WorkerEntity::id)
+//                        .toSet()
+//                )
+//                list
+//            }
+//
+//        dao.insert(workers)
+//        platform.enqueue(
+//            uniqueId = uniqueId,
+//            workers = workers,
+//            operation = operation
+//        )
     }
 
     suspend fun clearAll() {
         platform.clearAll()
         dao.getWorkers().forEach { dao.delete(it) }
-    }
-
-    suspend fun getLorraine(identifier: String): WorkLorraine? {
-        val worker = dao.getWorker(id = identifier) ?: return null
-
-        return worker.toWork()
     }
 
     fun listenLorrainesInfo(): Flow<List<LorraineInfo>> {
@@ -151,14 +149,14 @@ object Lorraine {
     }
 
     private fun LorraineRequest.toWorkerEntity(
-        uniqueId: String,
+        queueId: String,
         workDependencies: Set<String> = emptySet()
     ): WorkerEntity {
         requireNotNull(definitions[identifier]) { "Worker definition not found" }
 
         return WorkerEntity(
-            id = platform.createUUID(),
-            queueId = uniqueId,
+            uuid = platform.createUUID().toString(),
+            queueId = queueId,
             identifier = identifier,
             state = LorraineInfo.State.ENQUEUED, // TODO Pass to block on the check if constraint are not match
             tags = tags,

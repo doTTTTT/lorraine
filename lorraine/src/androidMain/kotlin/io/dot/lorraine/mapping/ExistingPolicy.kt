@@ -1,8 +1,9 @@
-package io.dot.lorraine
+package io.dot.lorraine.mapping
 
 import androidx.work.ExistingWorkPolicy
+import io.dot.lorraine.ExistingLorrainePolicy
 
-internal fun ExistingLorrainePolicy.toWorkManagerExistingPolicy(): ExistingWorkPolicy {
+internal fun ExistingLorrainePolicy.asWorkManagerExistingPolicy(): ExistingWorkPolicy {
     return when (this) {
         ExistingLorrainePolicy.APPEND -> ExistingWorkPolicy.APPEND
         ExistingLorrainePolicy.APPEND_OR_REPLACE -> ExistingWorkPolicy.APPEND_OR_REPLACE

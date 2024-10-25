@@ -9,6 +9,6 @@ expect abstract class WorkLorraine() {
 
     internal val job: CompletableJob
 
-    abstract suspend fun doWork(inputData: Data?): LorraineResult
+    abstract suspend fun doWork(inputData: LorraineData?): LorraineResult
 
 }

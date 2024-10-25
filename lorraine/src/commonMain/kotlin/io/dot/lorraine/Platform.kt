@@ -1,8 +1,11 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package io.dot.lorraine
 
-import io.dot.lorraine.db.entity.WorkerEntity
 import io.dot.lorraine.dsl.LorraineOperation
 import io.dot.lorraine.dsl.LorraineRequest
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
 
 internal interface Platform {
     val name: String
@@ -10,20 +13,19 @@ internal interface Platform {
     suspend fun initialized()
 
     suspend fun enqueue(
-        worker: WorkerEntity,
+        queueId: String,
         type: ExistingLorrainePolicy,
         lorraineRequest: LorraineRequest
     )
 
     suspend fun enqueue(
-        uniqueId: String,
-        workers: List<WorkerEntity>,
+        queueId: String,
         operation: LorraineOperation
     )
 
     fun clearAll()
 
-    fun createUUID(): String
+    fun createUUID(): Uuid
 
 }
 

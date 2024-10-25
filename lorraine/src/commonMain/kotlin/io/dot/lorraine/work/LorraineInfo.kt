@@ -1,11 +1,16 @@
+@file:OptIn(ExperimentalUuidApi::class)
+
 package io.dot.lorraine.work
 
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid
+
 data class LorraineInfo internal constructor(
-    val id: String,
+    val uuid: Uuid,
     val identifier: String,
     val state: State,
-    val inputData: Data?,
-    val outputData: Data?,
+    val inputData: LorraineData?,
+    val outputData: LorraineData?,
     val tags: Set<String>
 ) {
 

@@ -47,7 +47,7 @@ class TestViewModel : ViewModel() {
     private fun send(action: TestAction.Send) {
         viewModelScope.launch {
             Lorraine.enqueue(
-                uniqueId = "UNIQUE_ID",
+                queueId = "UNIQUE_ID",
                 type = ExistingLorrainePolicy.APPEND,
                 request = lorraineRequest {
                     constraints {

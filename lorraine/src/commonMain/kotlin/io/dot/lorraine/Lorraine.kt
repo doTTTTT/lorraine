@@ -16,7 +16,6 @@ import io.dot.lorraine.db.entity.LongData
 import io.dot.lorraine.db.entity.StringData
 import io.dot.lorraine.db.entity.UnknownData
 import io.dot.lorraine.db.entity.WorkerEntity
-import io.dot.lorraine.db.entity.toEntity
 import io.dot.lorraine.db.entity.toInfo
 import io.dot.lorraine.dsl.Instantiate
 import io.dot.lorraine.dsl.LorraineDefinition
@@ -116,26 +115,20 @@ object Lorraine {
         )
     }
 
+    /**
+     * Enqueue a [LorraineOperation]
+     *
+     * @param queueId of the request
+     * @param operation, combine multiple request in a specific order
+     */
     suspend fun enqueue(
-        uniqueId: String,
+        queueId: String,
         operation: LorraineOperation
     ) {
-//        val workers = operation.operations
-//            .fold(mutableListOf<WorkerEntity>()) { list, workOperation ->
-//                list += workOperation.request.toWorkerEntity(
-//                    queueId = uniqueId,
-//                    workDependencies = list.map(WorkerEntity::id)
-//                        .toSet()
-//                )
-//                list
-//            }
-//
-//        dao.insert(workers)
-//        platform.enqueue(
-//            uniqueId = uniqueId,
-//            workers = workers,
-//            operation = operation
-//        )
+        platform.enqueue(
+            queueId = queueId,
+            operation = operation
+        )
     }
 
     suspend fun clearAll() {
@@ -146,29 +139,6 @@ object Lorraine {
     fun listenLorrainesInfo(): Flow<List<LorraineInfo>> {
         return dao.getWorkersAsFlow()
             .map { list -> list.map(WorkerEntity::toInfo) }
-    }
-
-    private fun LorraineRequest.toWorkerEntity(
-        queueId: String,
-        workDependencies: Set<String> = emptySet()
-    ): WorkerEntity {
-        requireNotNull(definitions[identifier]) { "Worker definition not found" }
-
-        return WorkerEntity(
-            uuid = platform.createUUID().toString(),
-            queueId = queueId,
-            identifier = identifier,
-            state = LorraineInfo.State.ENQUEUED, // TODO Pass to block on the check if constraint are not match
-            tags = tags,
-            inputData = inputData,
-            outputData = null,
-            workerDependencies = workDependencies,
-            constraints = constraints.toEntity()
-        )
-    }
-
-    private fun WorkerEntity.toWork(): WorkLorraine? {
-        return definitions[identifier]?.invoke()
     }
 
 }

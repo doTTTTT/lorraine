@@ -92,27 +92,57 @@ internal class AndroidPlatform(
 
     @SuppressLint("EnqueueWork")
     override suspend fun enqueue(
-        uniqueId: String,
+        queueId: String,
         operation: LorraineOperation
     ) {
-//        // TODO Rework
-//        val workWorkers = operation.operations
-//            .mapIndexed { index, operation ->
-//                operation.request.toWorkManagerWorker(workers[index].id)
-//            }
-//        var workOperation = workManager.beginUniqueWork(
-//            /* uniqueWorkName = */ uniqueId,
-//            /* existingWorkPolicy = */ ExistingWorkPolicy.APPEND,
-//            /* work = */ workWorkers.first()
-//        )
-//
-//        workOperation = workWorkers
-//            .drop(1)
-//            .fold(workOperation) { tmp, workWorker ->
-//                tmp.then(workWorker)
-//            }
-//
-//        workOperation.enqueue()
+        val firstOperation = operation.operations
+            .first()
+        val firstWorkManagerWorker = firstOperation.request
+            .toWorkManagerWorker()
+        var workOperation = workManager.beginUniqueWork(
+            /* uniqueWorkName = */ queueId,
+            /* existingWorkPolicy = */ operation.existingPolicy.asWorkManagerExistingPolicy(),
+            /* work = */ firstWorkManagerWorker
+        )
+
+        workOperation = operation.operations
+            .drop(1)
+            .fold(workOperation) { currentWorkOperation, operation ->
+                val workManagerWorker = operation.request
+                    .toWorkManagerWorker()
+
+                Lorraine.dao.insert(
+                    WorkerEntity(
+                        uuid = workManagerWorker.id.toKotlinUuid().toString(),
+                        queueId = queueId,
+                        identifier = operation.request.identifier,
+                        state = LorraineInfo.State.ENQUEUED,
+                        tags = operation.request.tags,
+                        inputData = operation.request.inputData,
+                        outputData = null,
+                        workerDependencies = emptySet(),
+                        constraints = operation.request.constraints.toEntity()
+                    )
+                )
+
+                currentWorkOperation.then(workManagerWorker)
+            }
+
+        Lorraine.dao.insert(
+            WorkerEntity(
+                uuid = firstWorkManagerWorker.id.toKotlinUuid().toString(),
+                queueId = queueId,
+                identifier = firstOperation.request.identifier,
+                state = LorraineInfo.State.ENQUEUED,
+                tags = firstOperation.request.tags,
+                inputData = firstOperation.request.inputData,
+                outputData = null,
+                workerDependencies = emptySet(),
+                constraints = firstOperation.request.constraints.toEntity()
+            )
+        )
+
+        workOperation.enqueue()
     }
 
     override fun clearAll() {

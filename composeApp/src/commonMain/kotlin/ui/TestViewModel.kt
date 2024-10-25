@@ -73,8 +73,9 @@ class TestViewModel : ViewModel() {
     private fun operation() {
         viewModelScope.launch {
             Lorraine.enqueue(
-                uniqueId = "UNIQUE_OPERATION_ID",
+                queueId = "UNIQUE_OPERATION_ID",
                 operation = lorraineOperation {
+                    existingPolicy = ExistingLorrainePolicy.APPEND_OR_REPLACE
                     constrainedAll {
                         requiredNetwork = true
                     }

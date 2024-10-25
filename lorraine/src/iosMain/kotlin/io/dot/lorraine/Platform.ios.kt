@@ -98,6 +98,8 @@ internal class IOSPlatform : Platform {
                 queue.addOperation(worker)
             }
 
+        Lorraine.dao.insert(workers)
+
         queue.suspended = !Lorraine.constraintChecks
             .match(workers.first().constraints.toDomain())
     }

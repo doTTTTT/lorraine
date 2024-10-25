@@ -7,10 +7,10 @@ import POST_WORKER
 import PUT_WORKER
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.dot.lorraine.models.ExistingLorrainePolicy
 import io.dot.lorraine.Lorraine
 import io.dot.lorraine.dsl.lorraineOperation
 import io.dot.lorraine.dsl.lorraineRequest
+import io.dot.lorraine.models.ExistingLorrainePolicy
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -25,7 +25,7 @@ class TestViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(TestUIState())
     val uiState = combine(
         _uiState.asStateFlow(),
-        Lorraine.observeInfo()
+        Lorraine.listenLorrainesInfo()
     ) { uiState, workers ->
         uiState.copy(
             info = workers

@@ -61,7 +61,7 @@ private fun Content(
             directive = navigator.scaffoldDirective,
             value = navigator.scaffoldValue,
             supportingPane = {
-                Text("Test 4 ddd")
+                Text("Test 5 ddd")
             },
             mainPane = {
                 Text("Test")

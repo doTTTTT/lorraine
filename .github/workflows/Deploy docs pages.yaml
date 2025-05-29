@@ -18,7 +18,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Chmod
-      run: cd app && chmod +x gradlew
+      run: chmod +x gradlew
     - name: Remove previous
       run: rm -r ./docs/*
     - name: Build wasmJsBrowserDistribution

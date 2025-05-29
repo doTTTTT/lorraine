@@ -22,9 +22,9 @@ jobs:
     - name: Remove previous
       run: rm -r ./docs/*
     - name: Build wasmJsBrowserDistribution
-      run: cd app && ./gradlew :docsApp:wasmJsBrowserDistribution
+      run: ./gradlew :docsApp:wasmJsBrowserDistribution
     - name: Move files
-      run: cd app && mv docsApp/build/dist/wasmJs/productionExecutable/* ../docs/
+      run: mv docsApp/build/dist/wasmJs/productionExecutable/* ../docs/
     - name: Setup Pages
       id: pages
       uses: actions/configure-pages@v5

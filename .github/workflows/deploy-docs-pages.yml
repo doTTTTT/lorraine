@@ -1,14 +1,13 @@
 name: Deploy docs page
 
-on:
-  label:
-    types:
-      - documentation
+on: 
   pull_request:
-    branches: [ "main" ]
+    types: [closed]
+    branches: ["main"]
 
 jobs:
   build:
+    if: contains(github.event.pull_request.labels.*.name, 'documentation') && github.event.pull_request.merged == true
     permissions:
       contents: read
       pages: write

@@ -17,7 +17,6 @@ internal fun getDatabaseBuilder(): RoomDatabase.Builder<LorraineDB> {
         "${parent?.path()}/$LORRAINE_DATABASE"
 
     return Room.databaseBuilder<LorraineDB>(
-        name = dbFilePath,
-        factory = { LorraineDB::class.instantiateImpl() }
+        name = dbFilePath
     )
 }

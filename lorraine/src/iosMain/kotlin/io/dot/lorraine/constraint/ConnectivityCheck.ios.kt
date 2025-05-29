@@ -26,7 +26,7 @@ internal actual object ConnectivityCheck : ConstraintCheck {
             object : NetworkObserver.Listener {
                 override fun networkChanged(isOnline: Boolean) {
                     hasInternet = isOnline
-                    if (isOnline && Lorraine::platform.isInitialized) {
+                    if (isOnline) {
                         (Lorraine.platform as IOSPlatform).constraintChanged()
                     }
                 }

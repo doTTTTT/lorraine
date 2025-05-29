@@ -2,4 +2,7 @@ package io.dot.lorraine.db
 
 import androidx.room.RoomDatabaseConstructor
 
-internal expect object LorraineConstructor : RoomDatabaseConstructor<LorraineDB>
+@Suppress("NO_ACTUAL_FOR_EXPECT")
+internal expect object LorraineConstructor : RoomDatabaseConstructor<LorraineDB> {
+    override fun initialize(): LorraineDB
+}

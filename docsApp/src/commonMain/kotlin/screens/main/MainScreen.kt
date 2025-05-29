@@ -64,7 +64,7 @@ private fun Content(
 
             },
             mainPane = {
-
+                Text("Test")
             }
         )
     }

@@ -24,7 +24,7 @@ jobs:
     - name: Build wasmJsBrowserDistribution
       run: ./gradlew :docsApp:wasmJsBrowserDistribution
     - name: Move files
-      run: mv docsApp/build/dist/wasmJs/productionExecutable/* ../docs/
+      run: mv docsApp/build/dist/wasmJs/productionExecutable/* docs/
     - name: Setup Pages
       id: pages
       uses: actions/configure-pages@v5

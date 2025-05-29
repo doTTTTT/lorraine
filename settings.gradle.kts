@@ -18,4 +18,5 @@ dependencyResolutionManagement {
 rootProject.name = "Lorraine-Sample-App"
 
 include(":lorraine")
-include(":composeApp")
+include(":sampleApp")
+include(":docsApp")

@@ -1,12 +1,12 @@
 name: Deploy docs page
 
 on: 
-  pull_request:
-    types: [closed]
+  push:
+    branches:
+      - docs
 
 jobs:
   build:
-    if: contains(github.event.pull_request.labels.*.name, 'documentation') && github.event.pull_request.merged == true
     permissions:
       contents: read
       pages: write

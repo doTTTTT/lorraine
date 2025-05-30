@@ -70,15 +70,19 @@ kotlin {
     }
 
     sourceSets {
-        commonMain.dependencies {
-            implementation(libs.kotlin.coroutine.core)
-            implementation(libs.kotlin.serialization.core)
+        commonMain {
+            kotlin.srcDir("build/generated/ksp/commonMain/kotlin")
 
-            implementation(libs.androidx.room.runtime)
+            dependencies {
+                implementation(libs.kotlin.coroutine.core)
+                implementation(libs.kotlin.serialization.core)
 
-            implementation(libs.androidx.sqlite)
+                implementation(libs.androidx.room.runtime)
 
-            implementation(libs.squareup.okio)
+                implementation(libs.androidx.sqlite)
+
+                implementation(libs.squareup.okio)
+            }
         }
 
         commonTest.dependencies {
@@ -98,9 +102,9 @@ room {
 dependencies {
     kspCommonMainMetadata(libs.androidx.room.compiler)
     add("kspAndroid", libs.androidx.room.compiler)
-//    add("kspIosX64", libs.androidx.room.compiler)
-//    add("kspIosArm64", libs.androidx.room.compiler)
-//    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {

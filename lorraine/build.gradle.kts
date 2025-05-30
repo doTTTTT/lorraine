@@ -107,39 +107,10 @@ dependencies {
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
+tasks.withType<KotlinCompilationTask<*>>().configureEach {
     if (name != "kspCommonMainKotlinMetadata" ) {
         dependsOn("kspCommonMainKotlinMetadata")
     }
-}
-
-project.afterEvaluate {
-//    tasks.named("compileKotlinIosArm64") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//    tasks.named("compileKotlinIosSimulatorArm64") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//
-    tasks.named("sourcesJar") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-    tasks.named("iosX64SourcesJar") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-    tasks.named("iosArm64SourcesJar") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-    tasks.named("iosSimulatorArm64SourcesJar") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-
-//    tasks.named("kspIosArm64") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//    tasks.named("kspIosSimulatorArm64") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
 }
 
 android {

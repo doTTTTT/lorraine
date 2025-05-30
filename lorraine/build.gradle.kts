@@ -71,8 +71,6 @@ kotlin {
 
     sourceSets {
         commonMain {
-            kotlin.srcDir("build/generated/ksp/commonMain/kotlin")
-
             dependencies {
                 implementation(libs.kotlin.coroutine.core)
                 implementation(libs.kotlin.serialization.core)

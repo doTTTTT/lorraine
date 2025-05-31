@@ -114,8 +114,11 @@ tasks.withType<org.gradle.jvm.tasks.Jar>().configureEach {
     }
 }
 
-tasks.maybeCreate("iosArm64EmptyJavadocJar")
-    .dependsOn("kspCommonMainKotlinMetadata")
+tasks.configureEach {
+    if (name == "iosArm64EmptyJavadocJar") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
 
 android {
     namespace = "fr.modulotech.workmanager"

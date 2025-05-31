@@ -47,5 +47,4 @@ jobs:
 
       - name: Publish To Maven Central
         run: |
-          ./gradlew :lorraine:kspCommonMainKotlinMetadata
           ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache

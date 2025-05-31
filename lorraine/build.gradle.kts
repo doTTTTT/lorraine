@@ -109,9 +109,13 @@ tasks.withType<KotlinNativeCompile>().configureEach {
 }
 
 tasks.withType<org.gradle.jvm.tasks.Jar>().configureEach {
-    if (name != "kspCommonMainKotlinMetadata" && name != "iosArm64EmptyJavadocJar") {
+    if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
     }
+}
+
+tasks.create("iosArm64EmptyJavadocJar") {
+    dependsOn("kspCommonMainKotlinMetadata")
 }
 
 android {

@@ -9,7 +9,7 @@ Pod::Spec.new do |spec|
     spec.vendored_frameworks      = 'build/cocoapods/framework/Lorraine.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target    = '15.0'
-    spec.dependency 'Reachability'
+                
                 
     if !Dir.exist?('build/cocoapods/framework/Lorraine.framework') || Dir.empty?('build/cocoapods/framework/Lorraine.framework')
         raise "

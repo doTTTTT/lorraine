@@ -2,8 +2,6 @@ import com.vanniktech.maven.publish.SonatypeHost
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.NativeBuildType
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 
 plugins {
@@ -65,7 +63,7 @@ kotlin {
             isStatic = true
         }
 
-        pod("Reachability")
+        //pod("Reachability")
 
         xcodeConfigurationToNativeBuildType["CUSTOM_DEBUG"] = NativeBuildType.DEBUG
         xcodeConfigurationToNativeBuildType["CUSTOM_RELEASE"] = NativeBuildType.RELEASE
@@ -104,18 +102,6 @@ dependencies {
     add("kspAndroid", libs.androidx.room.compiler)
 }
 
-//tasks.withType<org.jetbrains.kotlin.gradle.dsl.KotlinCompile<*>>().configureEach {
-//    if (name != "kspCommonMainKotlinMetadata") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//}
-//
-//tasks.withType<KotlinCompilationTask<*>>().configureEach {
-//    if (name != "kspCommonMainKotlinMetadata" ) {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//}
-//
 tasks.withType<KotlinNativeCompile>().configureEach {
     if(name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")

@@ -116,11 +116,17 @@ dependencies {
 //    }
 //}
 //
-//tasks.withType<KotlinNativeCompile>().configureEach {
-//    if(name != "kspCommonMainKotlinMetadata") {
-//        dependsOn("kspCommonMainKotlinMetadata")
-//    }
-//}
+tasks.withType<KotlinNativeCompile>().configureEach {
+    if(name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
+
+tasks.withType<org.gradle.jvm.tasks.Jar>().configureEach {
+    if(name != "kspCommonMainKotlinMetadata") {
+        dependsOn("kspCommonMainKotlinMetadata")
+    }
+}
 
 android {
     namespace = "fr.modulotech.workmanager"

@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.kotlin.compose.core)
     alias(libs.plugins.kotlin.compose.compiler)
+    alias(libs.plugins.kotlin.compose.hotreload)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.cocoapods)
 }

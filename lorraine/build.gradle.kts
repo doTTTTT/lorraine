@@ -18,7 +18,7 @@ plugins {
     alias(libs.plugins.publish)
 }
 
-val lorraineVersion = "0.2.0"
+val lorraineVersion = "0.2.1"
 
 group = "io.github.dottttt.lorraine"
 version = lorraineVersion
@@ -113,9 +113,9 @@ tasks.withType<KotlinCompilationTask<*>>().configureEach {
 
 android {
     namespace = "fr.modulotech.workmanager"
-    compileSdk = 34
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

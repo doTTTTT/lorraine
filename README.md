@@ -2,6 +2,8 @@
 
 Subject to change.
 
+I'm having some issue publishing the library due to Room. Opened an issue on issuetracker, waiting. Still trying to fix it on my side.
+
 # Lorraine
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.github.dottttt.lorraine/lorraine/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.github.dottttt.lorraine/lorraine)

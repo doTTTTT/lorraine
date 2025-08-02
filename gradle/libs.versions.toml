@@ -16,12 +16,13 @@ ksp = "2.1.21-2.0.1"
 connectivity = "1.1.0"
 androidx-activityCompose = "1.10.1"
 lifecycle = "2.9.1"
-lorraine = "0.1.7"
 navigationCompose = "2.9.0-beta04"
 compose-adaptive = "1.1.2"
 compose-hotreload = "1.0.0-beta04"
 publish = "0.34.0"
 squareup-okio = "3.16.0"
+
+lorraine = "0.1.7"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }

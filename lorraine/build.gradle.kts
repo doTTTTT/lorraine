@@ -107,15 +107,18 @@ dependencies {
 tasks.withType<KotlinNativeCompile>().configureEach {
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
-        mustRunAfter("kspCommonMainKotlinMetadata")
     }
 }
 
 tasks.withType<org.gradle.jvm.tasks.Jar>().configureEach {
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
-        mustRunAfter("kspCommonMainKotlinMetadata")
     }
+}
+
+getTasksByName("kspKotlinIosArm64", false).forEach {
+    println("TASK_FOUND")
+    it.mustRunAfter("kspCommonMainKotlinMetadata")
 }
 
 android {

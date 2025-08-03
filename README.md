@@ -12,6 +12,8 @@ Lorraine is a work management framework for tasks.
 
 ### Get started
 
+Look at the docs: https://dottttt.github.io/lorraine/
+
 First add the dependency to your project:
 
 Lastest vesion: https://mvnrepository.com/artifact/io.github.dottttt.lorraine/lorraine
